@@ -16,7 +16,8 @@ const userSchema = new Schema({
     story: String,
     follower: String,
     following: String,
-  }]
+  }],
+  
 });
 
 module.exports = model('User', userSchema);

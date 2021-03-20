@@ -6,7 +6,7 @@ const { validateRegisterInput, validateLoginInput } = require('../../util/valida
 const { SECRET_KEY } = require('../../config');
 const User = require('../../models/User.js');
 const checkAuth = require('../../util/check-auth');
-
+const Chat = require('../../models/Chat.js');
 
 
 function generateToken(user) {
@@ -25,7 +25,6 @@ module.exports = {
   Query: {
     async getUsers() {
       try {
-
         const users = await User.find();
         return users;
       }
@@ -33,9 +32,9 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getUser(_,{},context) {
+    async getUser(_, { }, context) {
       try {
-        const {username}=checkAuth(context);
+        const { username } = checkAuth(context);
         const user = await User.findOne({ username });
         if (user) {
           return user;
@@ -82,7 +81,7 @@ module.exports = {
         username,
         email,
         password,
-        confirmPassword
+        confirmPassword,
       );
       if (!valid) {
         throw new UserInputError('Errors', { errors });
@@ -119,26 +118,49 @@ module.exports = {
     async addFriend(_, { username }, context) {
       try {
         const user = checkAuth(context);
-        const me = await User.findOne({ username: user.username}); 
-            
-        var tam=0;
-        for(var i=0;i<me.friends.length;i++){    
-            
-          if(me.friends[i].username===username){
-            tam=1;
+        const me = await User.findOne({ username: user.username });
+        const chat = await Chat.find();
+
+        const from = await Chat.find({ from: username })
+        const to = await Chat.find({ to: username })
+        const check = from.concat(to);
+
+        var addChat = 0;
+        for (var i = 0; i < check.length; i++) {
+          if (check[i].from === username && check[i].to === user.username) {
+            addChat = 1;
+          }
+          else if (check[i].to === username && check[i].from === user.username) {
+            addChat = 1;
+          }
+        }
+
+        if (addChat === 0) {
+          const newRoom = new Chat({
+            from:user.username,
+            to:username,                       
+          });
+        
+        const room = await newRoom.save();
+        }
+        var tam = 0;
+        for (var i = 0; i < me.friends.length; i++) {
+
+          if (me.friends[i].username === username) {
+            tam = 1;
           }
         }
         console.log(tam)
-        if(tam===1){
+        if (tam === 1) {
           throw new Error("Bạn đã là bạn của người này rồi")
         }
-       
-          me.friends.push({
-            username,
-            createdAt: new Date().toISOString(),
-          })
-          await me.save();
-          return me;              
+
+        me.friends.push({
+          username,
+          createdAt: new Date().toISOString(),
+        })
+        await me.save();
+        return me;
       } catch (error) {
         throw new Error(error);
       }
