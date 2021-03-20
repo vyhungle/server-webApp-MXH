@@ -94,6 +94,7 @@ module.exports=gql`
         createGroupChat(body:String!):GroupChat!
         createContentGroupChat(groupId:String!,content:String!):GroupChat!
         createMember(groupId:String!,username:String!):GroupChat!
+        addFriend(username:String!):User!
     }
     type Subscription {
         newPost: Post!
