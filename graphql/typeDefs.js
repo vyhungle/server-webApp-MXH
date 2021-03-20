@@ -53,7 +53,13 @@ module.exports=gql`
         email: String!
         token: String!
         username: String!
-        createdAt: String!    
+        createdAt: String!  
+        friends:[Friend]!  
+    }
+    type Friend{
+        id:ID!
+        username:String!
+        createdAt:String!
     }
     input RegisterInput {
         username: String!
