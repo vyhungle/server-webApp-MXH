@@ -14,6 +14,7 @@ module.exports=gql`
         likeCount: Int!
         commentCount: Int!
     }
+   
     type Comment {
         id: ID!
         createdAt: String!
@@ -57,7 +58,17 @@ module.exports=gql`
         token: String!
         username: String!
         createdAt: String!  
-        friends:[Friend]!  
+        friends:[Friend]! 
+        profile:[Profile]! 
+    }
+    type Profile{
+        id:ID!
+        avatar:String!
+        dateOfBirth:String!
+        fullName:String!
+        story:String!
+        follower:String!
+        following:String!
     }
     type Friend{
         id:ID!

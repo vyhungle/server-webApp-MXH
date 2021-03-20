@@ -9,7 +9,14 @@ const userSchema = new Schema({
     username: String,
     createdAt: String,
   }],
-  
+  profile:[{
+    avatar: String,
+    dateOfBirth: String,
+    fullName: String,
+    story: String,
+    follower: String,
+    following: String,
+  }]
 });
 
 module.exports = model('User', userSchema);
