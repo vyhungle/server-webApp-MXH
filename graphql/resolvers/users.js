@@ -119,7 +119,6 @@ module.exports = {
       try {
         const user = checkAuth(context);
         const me = await User.findOne({ username: user.username });
-        const chat = await Chat.find();
 
         const from = await Chat.find({ from: username })
         const to = await Chat.find({ to: username })
