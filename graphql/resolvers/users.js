@@ -33,8 +33,9 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getUser(_, { username }) {
+    async getUser(_,{},context) {
       try {
+        const {username}=checkAuth(context);
         const user = await User.findOne({ username });
         if (user) {
           return user;

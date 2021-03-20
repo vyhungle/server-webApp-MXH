@@ -87,7 +87,7 @@ module.exports=gql`
         getChats:[RoomChat]
         getChat(roomId:ID!):RoomChat
         getUsers:[User]
-        getUser(username:String!):User
+        getUser:User
         getRoomChat(username:String!):[RoomChat]
         getGroups:[GroupChat]
         getGroup(groupId:ID!):GroupChat
