@@ -59,16 +59,16 @@ module.exports=gql`
         username:String!
         createdAt:String!  
         friends:[Friend]! 
-        profile:[Profile]! 
+        profile:Profile!
     }
     type Profile{
-        id:ID!
-        avatar:String!
-        dateOfBirth:String!
-        fullName:String!
-        story:String!
-        follower:String!
-        following:String!
+        id:ID
+        avatar:String
+        dateOfBirth:String
+        fullName:String
+        story:String
+        follower:String
+        following:String
     }
     type Friend{
         id:ID!
@@ -98,7 +98,7 @@ module.exports=gql`
     type Mutation{
         register(registerInput:RegisterInput):User!
         login(username:String!,password:String!):User!
-        createPost(body: String!,image:String!):Post!
+        createPost(body: String!,image:String!,displayname:String!):Post!
         deletePost(postId:ID!):String!
         createComment(postId: String!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post!
