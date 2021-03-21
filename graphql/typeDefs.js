@@ -5,8 +5,7 @@ module.exports=gql`
         id:ID!,
         body:String!,
         createdAt:String!,
-        username:String!,
-        displayname:String
+        username:String!,     
         image:String
         verified:Boolean
         comments: [Comment]!
@@ -57,7 +56,8 @@ module.exports=gql`
         email:String!
         token:String
         username:String!
-        createdAt:String!  
+        createdAt:String!
+        displayname:String  
         friends:[Friend]! 
         profile:Profile!
     }
@@ -98,7 +98,7 @@ module.exports=gql`
     type Mutation{
         register(registerInput:RegisterInput):User!
         login(username:String!,password:String!):User!
-        createPost(body: String!,image:String!,displayname:String!):Post!
+        createPost(body: String!,image:String!):Post!
         deletePost(postId:ID!):String!
         createComment(postId: String!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post!
