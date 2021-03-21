@@ -5,10 +5,23 @@ const checkAuth = require('../../util/check-auth');
 
 module.exports ={
     Query:{
-        async getPosts(){
+        async getPosts(_,{cursor,limit}){
             try{
                 const posts=await Post.find();
-                return posts;
+                const value=posts.reverse();
+
+                const result=await Post.find({username:"16%%42#$$HHAHA)"});
+                if(limit>value.length){
+                  limit=value.length
+                }
+                for(var i=0;i<limit;i++){
+                  if(Date.parse(value[i].createdAt)>=Date.parse(cursor)){
+                  /*   console.log(value[i]); */
+                    result.push(value[i])
+                  }
+                }
+               /*  console.log(result); */
+                return result
             }
             catch(err){
                 throw new Error(err);

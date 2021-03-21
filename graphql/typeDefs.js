@@ -82,7 +82,7 @@ module.exports=gql`
         email: String!
     }
     type Query{
-        getPosts:[Post]
+        getPosts(cursor:String!,limit:Int!):[Post]
         getPost(postId: ID!): Post
         getChats:[RoomChat]
         getChat(roomId:ID!):RoomChat

@@ -178,6 +178,7 @@ module.exports = {
           me.profile.dateOfBirth=dateOfBirth
           me.profile.fullName=fullName
           me.profile.story=story
+          me.profile.follower=me.friends.length
           await me.save()
           return me
         }
