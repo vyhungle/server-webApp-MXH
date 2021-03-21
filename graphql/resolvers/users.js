@@ -149,7 +149,7 @@ module.exports = {
             tam = 1;
           }
         }
-        console.log(tam)
+        /* console.log(tam) */
         if (tam === 1) {
           throw new Error("Bạn đã là bạn của người này rồi")
         }

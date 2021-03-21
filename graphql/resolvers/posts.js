@@ -28,7 +28,7 @@ module.exports ={
           }
     },
     Mutation: {
-        async createPost(_, { body }, context) {
+        async createPost(_, { body,image }, context) {
           const user = checkAuth(context);        
           if (body.trim() === '') {
             throw new Error('Nội dung bài post không được để trống');
@@ -36,6 +36,7 @@ module.exports ={
     
           const newPost = new Post({
             body,
+            image,
             user: user.id,
             username: user.username,
             createdAt: new Date().toISOString()
