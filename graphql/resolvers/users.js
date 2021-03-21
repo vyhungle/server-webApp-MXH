@@ -136,11 +136,11 @@ module.exports = {
 
         if (addChat === 0) {
           const newRoom = new Chat({
-            from:user.username,
-            to:username,                       
+            from: user.username,
+            to: username,
           });
-        
-        const room = await newRoom.save();
+
+          const room = await newRoom.save();
         }
         var tam = 0;
         for (var i = 0; i < me.friends.length; i++) {
@@ -166,6 +166,30 @@ module.exports = {
 
 
 
+    },
+    async editProfile(_, {avatar, dateOfBirth, fullName , story }, context) {
+      
+      try {
+        const user = checkAuth(context);
+        const me = await User.findOne({ username: user.username });
+        console.log(me.profile);
+        if (me) {
+          me.profile.avatar=avatar
+          me.profile.dateOfBirth=dateOfBirth
+          me.profile.fullName=fullName
+          me.profile.story=story
+          await me.save()
+          return me
+        }
+        else throw new Error("Người dùng này không tồn tại");
+      } catch (error) {
+        throw new Error(error)
+      }
+        
+     
+
     }
+
+
   }
 }

@@ -109,6 +109,8 @@ module.exports=gql`
         createContentGroupChat(groupId:String!,content:String!):GroupChat!
         createMember(groupId:String!,username:String!):GroupChat!
         addFriend(username:String!):User!
+
+        editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!):User!
     }
     type Subscription {
         newPost: Post!
