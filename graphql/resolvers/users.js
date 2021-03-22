@@ -120,24 +120,20 @@ module.exports = {
     
     },
     async register(_, { registerInput: { username, email, password, confirmPassword } }) {
-      //TODO: Validate user data (Xác thực dữ liệu người dùng)
-      const { valid, errors } = validateRegisterInput(
-        username,
-        email,
-        password,
-        confirmPassword,
-      );
-      if (!valid) {
-        throw new UserInputError('Errors', { errors });
-      }
-      //TODO: Make sure user doesnt already exist (Đảm bảo rằng người dùng chưa tồn tại)
       const user = await User.findOne({ username });
-      if (user) {
-        throw new UserInputError('Tên người dùng đã được sử dụng', {
-          errors: {
-            username: 'Tên người dùng này đã được sử dụng'
-          }
-        });
+      var field=""
+      var message=""
+      if (user) {    
+        field="username"
+        message="Tên người dùng này đã được sử dụng"
+        const respone=new UserResponse({
+          error:{
+            field,
+            message
+          },
+          user:null
+        })
+        return respone;
       }
       //TODO: Hash password and create an auth token (mật khẩu băm và tạo mã thông báo xác thực)
       password = await bcrypt.hash(password, 12);
@@ -151,13 +147,17 @@ module.exports = {
       });
 
       const res = await newUser.save();
-
       const token = generateToken(res);
-      return {
-        ...res._doc,
-        id: res._id,
-        token
-      }
+      
+      const respone=new UserResponse({
+        error:null,
+        user:{
+          ...res._doc,
+          id: res._id,
+          token
+        }
+      })
+      return respone
     },
     async addFriend(_, { username }, context) {
       try {
