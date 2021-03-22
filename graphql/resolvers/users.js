@@ -50,19 +50,29 @@ module.exports = {
   },
   Mutation: {
     async login(_, { username, password }) {
-     /*  const { errors, valid } = validateLoginInput(username, password);
- */    
+    const { errors, valid } = validateLoginInput(username, password);
+ 
       var field=""
       var err=""
-     /*  if (!valid) {
-        throw new UserInputError('Errors', { errors });
-      } */
+      if (!valid) {
+        var error=errors.split(",");
+        field=error[1]
+        err=error[0]
+        const respone= new UserResponse({
+          error:{
+            field:field,
+            message:err
+          },
+          user:null
+        })
+        return respone
+        
+      }
 
       const user = await User.findOne({ username });
 
       if (!user) {
-      /*   errors.general = 'Không tìm thấy người dùng';
-        throw new UserInputError('Không tìm thấy người dùng', { errors }); */
+
         field="username"
         err="Không tìm thấy người dùng"
         const respone= new UserResponse({
@@ -79,8 +89,6 @@ module.exports = {
         const match = await bcrypt.compare(password, user.password);
           
         if (!match) {
-        /*  errors.general = 'Thông tin đăng nhập sai';
-          throw new UserInputError('Thông tin đăng nhập sai', { errors }); */
           field="pasword"
           err="Thông tin đăng nhập sai"
           const respone= new UserResponse({
@@ -93,9 +101,7 @@ module.exports = {
           return respone
         }
         else{
-          const token = generateToken(user);
-         
-         /*  console.log(token+" "+user._id ) */
+          const token = generateToken(user);        
           const respone= new UserResponse({
             error:null,
             user:{
@@ -108,21 +114,36 @@ module.exports = {
         }
         
       }
-      
-     
-    
-     
-     /*  return {
-        ...user._doc,
-        id: user._id,
-        token
-      }; */
+
     
     },
     async register(_, { registerInput: { username, email, password, confirmPassword } }) {
+      //TODO: Validate user data (Xác thực dữ liệu người dùng)
+     
       const user = await User.findOne({ username });
       var field=""
       var message=""
+      const { valid, errors } = validateRegisterInput(
+        username,
+        email,
+        password,
+        confirmPassword,
+      );
+      if (!valid) {
+      /*   throw new UserInputError('Errors', { errors });  */
+        var err=errors.split(","); 
+        field=err[1]
+        message=err[0]
+        const respone=new UserResponse({
+          error:{
+            field,
+            message
+          },
+          user:null
+        })
+        return respone;
+
+      }
       if (user) {    
         field="username"
         message="Tên người dùng này đã được sử dụng"
@@ -148,7 +169,7 @@ module.exports = {
 
       const res = await newUser.save();
       const token = generateToken(res);
-      
+
       const respone=new UserResponse({
         error:null,
         user:{
