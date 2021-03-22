@@ -7,6 +7,7 @@ const { SECRET_KEY } = require('../../config');
 const User = require('../../models/User.js');
 const checkAuth = require('../../util/check-auth');
 const Chat = require('../../models/Chat.js');
+const UserResponse = require('../../models/UserResponse');
 
 
 function generateToken(user) {
@@ -49,31 +50,74 @@ module.exports = {
   },
   Mutation: {
     async login(_, { username, password }) {
-      const { errors, valid } = validateLoginInput(username, password);
-      if (!valid) {
+     /*  const { errors, valid } = validateLoginInput(username, password);
+ */    
+      var field=""
+      var err=""
+     /*  if (!valid) {
         throw new UserInputError('Errors', { errors });
-      }
+      } */
 
       const user = await User.findOne({ username });
 
       if (!user) {
-        errors.general = 'Không tìm thấy người dùng';
-        throw new UserInputError('Không tìm thấy người dùng', { errors });
+      /*   errors.general = 'Không tìm thấy người dùng';
+        throw new UserInputError('Không tìm thấy người dùng', { errors }); */
+        field="username"
+        err="Không tìm thấy người dùng"
+        const respone= new UserResponse({
+          error:{
+            field:field,
+            message:err
+          },
+          user:null
+        })
+        return respone
+        
       }
-
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        errors.general = 'Thông tin đăng nhập sai';
-        throw new UserInputError('Thông tin đăng nhập sai', { errors });
+      else{
+        const match = await bcrypt.compare(password, user.password);
+          
+        if (!match) {
+        /*  errors.general = 'Thông tin đăng nhập sai';
+          throw new UserInputError('Thông tin đăng nhập sai', { errors }); */
+          field="pasword"
+          err="Thông tin đăng nhập sai"
+          const respone= new UserResponse({
+            error:{
+              field:field,
+              message:err
+            },
+            user:null
+          })
+          return respone
+        }
+        else{
+          const token = generateToken(user);
+         
+         /*  console.log(token+" "+user._id ) */
+          const respone= new UserResponse({
+            error:null,
+            user:{
+                ...user._doc,
+                id: user._id,
+                token
+            }
+          })
+          return respone
+        }
+        
       }
-
-      const token = generateToken(user);
-
-      return {
+      
+     
+    
+     
+     /*  return {
         ...user._doc,
         id: user._id,
         token
-      };
+      }; */
+    
     },
     async register(_, { registerInput: { username, email, password, confirmPassword } }) {
       //TODO: Validate user data (Xác thực dữ liệu người dùng)

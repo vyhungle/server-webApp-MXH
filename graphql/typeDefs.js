@@ -52,14 +52,24 @@ module.exports=gql`
     }
 
     type User {
-        id: ID!
-        email:String!
+        id: ID
+        email:String
         token:String
-        username:String!
-        createdAt:String!
+        username:String
+        createdAt:String
         displayname:String  
-        friends:[Friend]! 
-        profile:Profile!
+        friends:[Friend]
+        profile:Profile
+    }
+
+    type UserResponse {
+        error: FieldError!
+        user: User!
+    }
+
+    type FieldError {
+        field: String
+        message: String
     }
     type Profile{
         id:ID
@@ -97,7 +107,7 @@ module.exports=gql`
     
     type Mutation{
         register(registerInput:RegisterInput):User!
-        login(username:String!,password:String!):User!
+        login(username:String!,password:String!):UserResponse!
         createPost(body: String!,image:String!):Post!
         deletePost(postId:ID!):String!
         createComment(postId: String!, body: String!): Post!
