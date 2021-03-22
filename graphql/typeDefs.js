@@ -63,7 +63,7 @@ module.exports=gql`
     }
 
     type UserResponse {
-        error: FieldError!
+        error: [FieldError]!
         user: User!
     }
 

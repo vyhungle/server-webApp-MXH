@@ -1,10 +1,10 @@
 const { model, Schema } = require('mongoose');
 
 const userResponseSchema = new Schema({
-    error: {
+    error: [{
         field: String,
         message: String,
-    },
+    }],
     user:{
         id:String,
         token:String,
