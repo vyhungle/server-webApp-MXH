@@ -54,8 +54,9 @@ module.exports = {
  
       var field=""
       var err=""
+      var error=errors.split(",");
+      console.log(error)
       if (!valid) {
-        var error=errors.split(",");
         field=error[1]
         err=error[0]
         const respone= new UserResponse({
@@ -65,6 +66,15 @@ module.exports = {
           },
           user:null
         })
+        if(error.length>2){
+          for(var i=2;i<error.length;i++){
+            respone.error.push({
+              field:"eheh",
+              message:"hehe"
+            })
+          }
+        }
+       
         return respone
         
       }

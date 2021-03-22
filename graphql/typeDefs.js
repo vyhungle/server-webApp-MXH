@@ -63,22 +63,22 @@ module.exports=gql`
     }
 
     type UserResponse {
-        error: [FieldError]!
-        user: User!
+        error: [FieldError!]
+        user: User
     }
 
     type FieldError {
-        field: String
-        message: String
+        field: String!
+        message: String!
     }
     type Profile{
-        id:ID
-        avatar:String
-        dateOfBirth:String
-        fullName:String
-        story:String
-        follower:String
-        following:String
+        id:ID!
+        avatar:String!
+        dateOfBirth:String!
+        fullName:String!
+        story:String!
+        follower:String!
+        following:String!
     }
     type Friend{
         id:ID!
