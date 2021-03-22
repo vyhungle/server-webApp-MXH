@@ -34,7 +34,7 @@ module.exports.validateRegisterInput = (
       errors += 'Tên người dùng không được để trống,username,';
     }
     if (password.trim() === '') {
-      errors += 'Mật khẩu không được để trống,pasword';
+      errors += 'Mật khẩu không được để trống,password';
     }
   
     return {
