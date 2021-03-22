@@ -53,24 +53,27 @@ module.exports = {
     const { errors, valid } = validateLoginInput(username, password);
  
       var field=""
-      var err=""
-      var error=errors.split(",");
-      console.log(error)
+      var message=""
+      var err=errors.split(",");
+      /* console.log(error) */
       if (!valid) {
-        field=error[1]
-        err=error[0]
+        field=err[1]
+        message=err[0]
         const respone= new UserResponse({
           error:{
             field:field,
-            message:err
+            message:message
           },
           user:null
         })
-        if(error.length>2){
-          for(var i=2;i<error.length;i++){
+
+        if(err.length>2){
+          for(var i=2;i<err.length-1;i=i+2){
+            field=err[i+1]
+            message=err[i]           
             respone.error.push({
-              field:"eheh",
-              message:"hehe"
+              field:field,
+              message:message
             })
           }
         }
@@ -84,11 +87,11 @@ module.exports = {
       if (!user) {
 
         field="username"
-        err="Không tìm thấy người dùng"
+        message="Không tìm thấy người dùng"
         const respone= new UserResponse({
           error:{
             field:field,
-            message:err
+            message:message
           },
           user:null
         })
@@ -100,11 +103,11 @@ module.exports = {
           
         if (!match) {
           field="pasword"
-          err="Thông tin đăng nhập sai"
+          message="Thông tin đăng nhập sai"
           const respone= new UserResponse({
             error:{
               field:field,
-              message:err
+              message:message
             },
             user:null
           })
@@ -144,6 +147,7 @@ module.exports = {
         var err=errors.split(","); 
         field=err[1]
         message=err[0]
+        console.log(err)
         const respone=new UserResponse({
           error:{
             field,
@@ -151,7 +155,23 @@ module.exports = {
           },
           user:null
         })
+
+        if(err.length>2){
+          for(var i=2;i<err.length-1;i=i+2){
+
+            field=err[i+1]
+            message=err[i]  
+            console.log(field+" "+message)
+            respone.error.push({
+              field:field,
+              message:message
+            })
+          }
+        }
+
         return respone;
+
+        
 
       }
       if (user) {    

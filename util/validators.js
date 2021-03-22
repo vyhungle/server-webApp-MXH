@@ -6,20 +6,20 @@ module.exports.validateRegisterInput = (
   ) => {
     var errors ="";
     if (username.trim() === '') {
-      errors = 'Tên người dùng không được để trống,username';
+      errors += 'Tên người dùng không được để trống,username,';
     }
     if (email.trim() === '') {
-      errors = 'Email không được để trống,email';
+      errors += 'Email không được để trống,email,';
     } else {
       const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
       if (!email.match(regEx)) {
-        errors = 'Email phải là một địa chỉ email hợp lệ,email';
+        errors += 'Email phải là một địa chỉ email hợp lệ,email,';
       }
     }
     if (password === '') {
-      errors = 'Mật khẩu không được để trống,password';
+      errors += 'Mật khẩu không được để trống,password,';
     } else if (password !== confirmPassword) {
-      errors = 'mật khẩu phải trùng khớp,password';
+      errors += 'mật khẩu phải trùng khớp,password,';
     }
   
     return {
@@ -31,10 +31,10 @@ module.exports.validateRegisterInput = (
   module.exports.validateLoginInput = (username, password) => {
     var errors ="";
     if (username.trim() === '') {
-      errors = 'Tên người dùng không được để trống,username';
+      errors += 'Tên người dùng không được để trống,username,';
     }
     if (password.trim() === '') {
-      errors = 'Mật khẩu không được để trống,pasword';
+      errors += 'Mật khẩu không được để trống,pasword';
     }
   
     return {
