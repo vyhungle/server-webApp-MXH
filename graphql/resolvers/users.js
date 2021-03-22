@@ -102,7 +102,7 @@ module.exports = {
         const match = await bcrypt.compare(password, user.password);
           
         if (!match) {
-          field="pasword"
+          field="password"
           message="Thông tin đăng nhập sai"
           const respone= new UserResponse({
             error:{
