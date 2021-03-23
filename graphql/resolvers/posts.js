@@ -8,24 +8,22 @@ module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
       const posts = await Post.find().sort({createdAt:-1});
-      const value = posts
-    
       var start=0;
       var hasMore=true;
       if(cursor){
-        for (var i = 0; i < value.length; i++) {
-          if (Date.parse(value[i].createdAt) < Date.parse(cursor)) {
+        for (var i = 0; i < posts.length; i++) {
+          if (Date.parse(posts[i].createdAt) < Date.parse(cursor)) {
             start = i;
-            i = value.length;
+            i = posts.length;
           }
         }   
       }
-      if(limit>value.length-start){
+      if(limit>posts.length-start){
           hasMore=false
       }
       const postHas = new PaginatedPost({
         hasMore: hasMore,
-        posts: value.splice(start,limit)
+        posts: posts.splice(start,limit)
       })
       return postHas
 
