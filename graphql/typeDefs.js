@@ -15,7 +15,7 @@ module.exports=gql`
         commentCount: Int!
     }
     type PaginatedPost{
-        hasMore:Boolean,
+        hasMore:Boolean!,
         posts:[Post!]!
     }
     type Comment {
