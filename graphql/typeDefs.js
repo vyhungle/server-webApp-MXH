@@ -96,7 +96,7 @@ module.exports=gql`
         email: String!
     }
     type Query{
-        getPosts(cursor:String,limit:Int!):PaginatedPost
+        getPosts(cursor:String,limit:Int!):PaginatedPost!
         getPost(postId: ID!): Post
         getChats:[RoomChat]
         getChat(roomId:ID!):RoomChat
