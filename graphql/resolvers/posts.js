@@ -1,6 +1,7 @@
 const { AuthenticationError ,UserInputError } = require('apollo-server');
 
 const Post=require('../../models/Post.js');
+const PaginatedPost=require('../../models/PaginatedPost')
 const checkAuth = require('../../util/check-auth');
 
 module.exports ={
@@ -16,21 +17,31 @@ module.exports ={
                   }
                   for(var i=0;i<limit;i++){
                     if(Date.parse(value[i].createdAt)>=Date.parse(cursor)){
-                    /*   console.log(value[i]); */
                       result.push(value[i])
                     }
                   }
-                 /*  console.log(result); */
-                  return result
-                }
-                for(var i=0;i<limit;i++){
                 
-                  /*   console.log(value[i]); */
-                    result.push(value[i])
-                  
                 }
-               /*  console.log(result); */
-                return result
+                else{
+                  for(var i=0;i<posts.length;i++){
+                    result.push(value[i])
+                  }
+                }           
+                if(result.length!=limit){
+                  const postHas=new PaginatedPost({
+                    hasMore:false,
+                    posts:result
+                  })               
+                  return postHas
+                }
+                const postHas=new PaginatedPost({
+                  hasMore:true,
+                  posts:result
+                })             
+                return postHas
+                
+                
+
                
             }
             catch(err){

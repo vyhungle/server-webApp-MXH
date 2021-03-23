@@ -8,13 +8,16 @@ module.exports=gql`
         username:String!, 
         displayname:String    
         image:String
-        verified:Boolean
+        verified:Boolean     
         comments: [Comment]!
         likes: [Like]!
         likeCount: Int!
         commentCount: Int!
     }
-   
+    type PaginatedPost{
+        hasMore:Boolean,
+        posts:[Post!]
+    }
     type Comment {
         id: ID!
         createdAt: String!
@@ -93,7 +96,7 @@ module.exports=gql`
         email: String!
     }
     type Query{
-        getPosts(cursor:String,limit:Int!):[Post]
+        getPosts(cursor:String,limit:Int!):PaginatedPost
         getPost(postId: ID!): Post
         getChats:[RoomChat]
         getChat(roomId:ID!):RoomChat
