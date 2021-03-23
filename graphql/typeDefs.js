@@ -16,7 +16,7 @@ module.exports=gql`
     }
     type PaginatedPost{
         hasMore:Boolean,
-        posts:[Post!]
+        posts:[Post!]!
     }
     type Comment {
         id: ID!
