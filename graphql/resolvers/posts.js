@@ -7,61 +7,29 @@ const checkAuth = require('../../util/check-auth');
 module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
-      try {
-        const posts = await Post.find();
-        const value = posts.reverse();
-        const result = await Post.find({ username: "16%%42#$$HHAHA)" });
-        var n = limit;
-        if (limit > value.length) {
-          n = value.length;
+      const posts = await Post.find();
+      const value = posts.reverse();    
+      var start=0;
+      var hasMore=true;
+      if(cursor){
+        for (var i = 0; i < value.length; i++) {
+          if (Date.parse(value[i].createdAt) < Date.parse(cursor)) {
+            start = i;
+            i = value.length;
+          }
         }
-        var start = 0;
+        console.log(start)
+      }
+      console.log(value.length-start)
+      if(limit>value.length-start){
+          hasMore=false
+      }
+      const postHas = new PaginatedPost({
+        hasMore: hasMore,
+        posts: value.splice(start,limit)
+      })
+      return postHas
 
-        //result
-        if (cursor) {
-          for (var i = 0; i < value.length; i++) {
-            if (Date.parse(value[i].createdAt) < Date.parse(cursor)) {
-              start = i;
-              i = value.length;
-              
-            }
-          }
-          if (n + start < value.length) {
-            for (var i = start; i < n + start; i++) {
-              if (Date.parse(value[i].createdAt) < Date.parse(cursor)) {
-                result.push(value[i])
-              }
-            }
-            
-          } else {
-            for (var i = start; i < value.length; i++) {
-              if (Date.parse(value[i].createdAt) < Date.parse(cursor)) {
-                result.push(value[i])
-              }
-            }
-          }
-        } else {
-          for (var i = 0; i < n; i++) {
-            result.push(value[i])
-          }
-        }
-        //return
-        if (result.length != limit) {
-          const postHas = new PaginatedPost({
-            hasMore: false,
-            posts: result
-          })
-          return postHas
-        }
-        const postHas = new PaginatedPost({
-          hasMore: true,
-          posts: result
-        })
-        return postHas
-      }
-      catch (err) {
-        throw new Error(err);
-      }
     },
     async getPost(_, { postId }) {
       try {
