@@ -15,10 +15,18 @@ module.exports ={
                 if(limit>value.length){               
                   n=value.length;
                 }
+                var start=0;
                 if(cursor){
+                  for(var i=0;i<value.length;i++){
+                    if(Date.parse(value[i].createdAt)<Date.parse(cursor)){
+                        start=i;
+                        i=value.length;
+                        
+                    }
+                  }
                  
-                  for(var i=0;i<n;i++){
-                    if(Date.parse(value[i].createdAt)>=Date.parse(cursor)){
+                  for(var i=start;i<n+start;i++){
+                    if(Date.parse(value[i].createdAt)<=Date.parse(cursor)){
                       result.push(value[i])
                     }
                   }
