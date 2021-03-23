@@ -5,13 +5,14 @@ const userSchema = new Schema({
   password: String,
   email: String,
   createdAt: String,
-  displayname: String,
+
   friends: [{
     username: String,
     createdAt: String,
   }],
   profile:[{
     avatar: String,
+    displayname: String,
     dateOfBirth: String,
     fullName: String,
     story: String,

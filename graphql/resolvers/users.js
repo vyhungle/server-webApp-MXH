@@ -262,7 +262,7 @@ module.exports = {
 
 
     },
-    async editProfile(_, {avatar, dateOfBirth, fullName , story }, context) {
+    async editProfile(_, {avatar, dateOfBirth, fullName , story,displayname }, context) {
       
       try {
         const user = checkAuth(context);
@@ -274,6 +274,7 @@ module.exports = {
           me.profile.fullName=fullName
           me.profile.story=story
           me.profile.follower=me.friends.length
+          me.profile.displayname=displayname
           await me.save()
           return me
         }

@@ -5,7 +5,8 @@ module.exports=gql`
         id:ID!,
         body:String!,
         createdAt:String!,
-        username:String!,     
+        username:String!, 
+        displayname:String    
         image:String
         verified:Boolean
         comments: [Comment]!
@@ -56,8 +57,7 @@ module.exports=gql`
         email:String
         token:String
         username:String
-        createdAt:String
-        displayname:String  
+        createdAt:String     
         friends:[Friend]
         profile:Profile
     }
@@ -74,6 +74,7 @@ module.exports=gql`
     type Profile{
         id:ID!
         avatar:String!
+        displayname:String!
         dateOfBirth:String!
         fullName:String!
         story:String!
@@ -92,7 +93,7 @@ module.exports=gql`
         email: String!
     }
     type Query{
-        getPosts(cursor:String!,limit:Int!):[Post]
+        getPosts(cursor:String,limit:Int!):[Post]
         getPost(postId: ID!): Post
         getChats:[RoomChat]
         getChat(roomId:ID!):RoomChat
@@ -120,7 +121,7 @@ module.exports=gql`
         createMember(groupId:String!,username:String!):GroupChat!
         addFriend(username:String!):User!
 
-        editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!):User!
+        editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!,displayname:String!):User!
     }
     type Subscription {
         newPost: Post!

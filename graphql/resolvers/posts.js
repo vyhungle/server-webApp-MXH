@@ -9,19 +9,29 @@ module.exports ={
             try{
                 const posts=await Post.find();
                 const value=posts.reverse();
-
                 const result=await Post.find({username:"16%%42#$$HHAHA)"});
-                if(limit>value.length){
-                  limit=value.length
+                if(cursor){
+                  if(limit>value.length){
+                    limit=value.length
+                  }
+                  for(var i=0;i<limit;i++){
+                    if(Date.parse(value[i].createdAt)>=Date.parse(cursor)){
+                    /*   console.log(value[i]); */
+                      result.push(value[i])
+                    }
+                  }
+                 /*  console.log(result); */
+                  return result
                 }
                 for(var i=0;i<limit;i++){
-                  if(Date.parse(value[i].createdAt)>=Date.parse(cursor)){
+                
                   /*   console.log(value[i]); */
                     result.push(value[i])
-                  }
+                  
                 }
                /*  console.log(result); */
                 return result
+               
             }
             catch(err){
                 throw new Error(err);
@@ -52,7 +62,8 @@ module.exports ={
             image,
             user: user.id,
             username: user.username,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            displayname:user.profile.displayname
           });
     
           const post = await newPost.save();
