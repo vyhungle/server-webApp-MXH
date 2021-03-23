@@ -11,11 +11,13 @@ module.exports ={
                 const posts=await Post.find();
                 const value=posts.reverse();
                 const result=await Post.find({username:"16%%42#$$HHAHA)"});
+                var n=limit;
+                if(limit>value.length){               
+                  n=value.length;
+                }
                 if(cursor){
-                  if(limit>value.length){
-                    limit=value.length
-                  }
-                  for(var i=0;i<limit;i++){
+                 
+                  for(var i=0;i<n;i++){
                     if(Date.parse(value[i].createdAt)>=Date.parse(cursor)){
                       result.push(value[i])
                     }
@@ -23,7 +25,7 @@ module.exports ={
                 
                 }
                 else{
-                  for(var i=0;i<posts.length;i++){
+                  for(var i=0;i<n;i++){
                     result.push(value[i])
                   }
                 }           
