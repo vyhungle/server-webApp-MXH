@@ -7,8 +7,9 @@ const checkAuth = require('../../util/check-auth');
 module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
-      const posts = await Post.find();
-      const value = posts.reverse();    
+      const posts = await Post.find().sort({createdAt:-1});
+      const value = posts
+    
       var start=0;
       var hasMore=true;
       if(cursor){
@@ -17,10 +18,8 @@ module.exports = {
             start = i;
             i = value.length;
           }
-        }
-        console.log(start)
+        }   
       }
-      console.log(value.length-start)
       if(limit>value.length-start){
           hasMore=false
       }
