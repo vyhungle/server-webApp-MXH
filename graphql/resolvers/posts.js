@@ -24,19 +24,27 @@ module.exports ={
                         
                     }
                   }
-                 
-                  for(var i=start;i<n+start;i++){
-                    if(Date.parse(value[i].createdAt)<=Date.parse(cursor)){
+                  if(n+start<value.length){
+                      for(var i=start;i<n+start;i++){
+                        if(Date.parse(value[i].createdAt)<=Date.parse(cursor)){
+                          result.push(value[i])
+                        }
+                      }
+                  
+                  }
+                  else{
+                    for(var i=start;i<n;i++){
                       result.push(value[i])
                     }
-                  }
-                
+                  }   
                 }
+                  
                 else{
                   for(var i=0;i<n;i++){
                     result.push(value[i])
                   }
-                }           
+                }     
+                      
                 if(result.length!=limit){
                   const postHas=new PaginatedPost({
                     hasMore:false,
