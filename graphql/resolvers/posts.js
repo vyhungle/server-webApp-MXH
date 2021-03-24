@@ -1,29 +1,31 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
+
 const Post = require('../../models/Post.js');
 const PaginatedPost = require('../../models/PaginatedPost')
 const checkAuth = require('../../util/check-auth');
+const cloudinary = require("cloudinary");
 
 module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
-      const posts = await Post.find().sort({createdAt:-1});
-      var start=0;
-      var hasMore=true;
-      if(cursor){
+      const posts = await Post.find().sort({ createdAt: -1 });
+      var start = 0;
+      var hasMore = true;
+      if (cursor) {
         for (var i = 0; i < posts.length; i++) {
           if (Date.parse(posts[i].createdAt) < Date.parse(cursor)) {
             start = i;
             i = posts.length;
           }
-        }   
+        }
       }
-      if(limit>posts.length-start){
-          hasMore=false
+      if (limit > posts.length - start) {
+        hasMore = false
       }
       const postHas = new PaginatedPost({
         hasMore: hasMore,
-        posts: posts.splice(start,limit)
+        posts: posts.splice(start, limit)
       })
       return postHas
 
@@ -43,27 +45,43 @@ module.exports = {
   },
   Mutation: {
     async createPost(_, { body, image }, context) {
-      const user = checkAuth(context);
-      if (body.trim() === '') {
-        throw new Error('Nội dung bài post không được để trống');
-      }
 
-      const newPost = new Post({
-        body,
-        image,
-        user: user.id,
-        username: user.username,
-        createdAt: new Date().toISOString(),
-        displayname: user.profile.displayname
+      var uri = "";
+      cloudinary.config({
+        cloud_name: 'web-img',
+        api_key: '539575672138879',
+        api_secret: '9ELOxX7cMOVowibJjcVMV9CdN2Y'
       });
+         const result = await cloudinary.v2.uploader.upload(image, {
+          allowed_formats: ["jpg", "png"],
+          public_id: "",
+          folder: "posts",
+        });
+        uri = result.url; 
+        const user= checkAuth(context);
+        if (body.trim() === '') {
+          throw new Error('Nội dung bài post không được để trống');
+        }
+       /*   console.log(user)  */
+        const newPost = new Post({
+          body,
+          image: uri,
+          user: user.id,
+          username: user.username,
+          createdAt: new Date().toISOString(),
+          /* displayname: user.profile.displayname */
+        });
 
-      const post = await newPost.save();
+         const post = await newPost.save();
 
-      context.pubsub.publish('NEW_POST', {
-        newPost: post
-      });
+        context.pubsub.publish('NEW_POST', {
+          newPost: post
+        }); 
 
-      return post;
+        return post;
+    
+
+
     },
     async deletePost(_, { postId }, context) {
       const user = checkAuth(context);
@@ -99,8 +117,30 @@ module.exports = {
         await post.save();
         return post;
       } else throw new UserInputError('Post not found');
-    }
+    },
 
+    async Upload(_, { file }) {
+      cloudinary.config({
+        cloud_name: 'web-img',
+        api_key: '539575672138879',
+        api_secret: '9ELOxX7cMOVowibJjcVMV9CdN2Y'
+      });
+
+      try {
+
+        const result = await cloudinary.v2.uploader.upload(file, {
+          allowed_formats: ["jpg", "png"],
+          public_id: "",
+          folder: "posts",
+        });
+        return `Successful-Photo URL: ${result.url}`;
+      } catch (e) {
+
+        return `Image could not be uploaded:${e.message}`;
+      }
+
+
+    }
   },
   Subscription: {
     newPost: {

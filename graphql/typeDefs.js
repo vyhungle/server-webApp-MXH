@@ -14,6 +14,11 @@ module.exports=gql`
         likeCount: Int!
         commentCount: Int!
     }
+
+    type File{
+        url:String!
+    }
+    
     type PaginatedPost{
         hasMore:Boolean!,
         posts:[Post!]!
@@ -43,6 +48,7 @@ module.exports=gql`
         members:[Member]!
         content:[Chat]!
     }
+
     type Chat{
         id:ID!
         username:String!
@@ -56,11 +62,11 @@ module.exports=gql`
     }
 
     type User {
-        id: ID
-        email:String
-        token:String
-        username:String
-        createdAt:String     
+        id: ID!
+        email:String!
+        token:String!
+        username:String!
+        createdAt:String!     
         friends:[Friend]
         profile:Profile
     }
@@ -75,14 +81,14 @@ module.exports=gql`
         message: String!
     }
     type Profile{
-        id:ID!
-        avatar:String!
-        displayname:String!
-        dateOfBirth:String!
-        fullName:String!
-        story:String!
-        follower:String!
-        following:String!
+        id:ID
+        avatar:String
+        displayname:String
+        dateOfBirth:String
+        fullName:String
+        story:String
+        follower:String
+        following:String
     }
     type Friend{
         id:ID!
@@ -112,6 +118,9 @@ module.exports=gql`
     type Mutation{
         register(registerInput:RegisterInput):UserResponse!
         login(username:String!,password:String!):UserResponse!
+
+        Upload(file: String!): String
+
         createPost(body: String!,image:String!):Post!
         deletePost(postId:ID!):String!
         createComment(postId: String!, body: String!): Post!
