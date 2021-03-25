@@ -83,9 +83,10 @@ module.exports = {
           image: uri,
           user: user.id,
           username: user.username,
-          createdAt:new Date.toISOString()
+          createdAt: new Date().toISOString()
          
         });
+        
         
          const post = await newPost.save();
 
@@ -93,7 +94,7 @@ module.exports = {
           newPost: post
         }); 
 
-        return newPost;
+        return post;
     
 
 
