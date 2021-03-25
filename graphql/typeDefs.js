@@ -66,7 +66,7 @@ module.exports=gql`
         token:String
         username:String
         createdAt:String
-        displayname:Stringgit 
+        displayname:String
         friends:[String!]
         profile:Profile
     }
