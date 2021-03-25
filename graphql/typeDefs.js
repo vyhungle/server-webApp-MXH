@@ -61,12 +61,12 @@ module.exports=gql`
     }
 
     type User {
-        id: ID!
-        email:String!
-        token:String!
-        username:String!
-        createdAt:String!
-        displayname:String!
+        id: ID
+        email:String
+        token:String
+        username:String
+        createdAt:String
+        displayname:Stringgit 
         friends:[String!]
         profile:Profile
     }
