@@ -6,7 +6,6 @@ module.exports=gql`
         body:String!,
         createdAt:String!,
         username:String!, 
-        displayname:String    
         image:String
         verified:Boolean     
         comments: [Comment]!

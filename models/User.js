@@ -9,7 +9,7 @@ const userSchema = new Schema({
     username: String,
     createdAt: String,
   }],
-  profile:[{
+  profile:{
     avatar: String,
     displayname: String,
     dateOfBirth: String,
@@ -17,7 +17,7 @@ const userSchema = new Schema({
     story: String,
     follower: String,
     following: String,
-  }],
+  },
   
 });
 

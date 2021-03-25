@@ -18,7 +18,7 @@ function generateToken(user) {
       username: user.username
     },
     SECRET_KEY,
-    { expiresIn: '1h' }
+    { expiresIn: '360d' }
   );
 }
 
@@ -267,14 +267,15 @@ module.exports = {
       try {
         const user = checkAuth(context);
         const me = await User.findOne({ username: user.username });
-        console.log(me.profile);
-        if (me) {
+        if (me) {          
           me.profile.avatar=avatar
           me.profile.dateOfBirth=dateOfBirth
           me.profile.fullName=fullName
           me.profile.story=story
           me.profile.follower=me.friends.length
           me.profile.displayname=displayname
+        
+         console.log(me.profile)
           await me.save()
           return me
         }
