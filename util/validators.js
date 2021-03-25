@@ -1,4 +1,5 @@
 module.exports.validateRegisterInput = (
+    displayname,
     username,
     email,
     password,
@@ -7,6 +8,9 @@ module.exports.validateRegisterInput = (
     var errors ="";
     if (username.trim() === '') {
       errors += 'Tên người dùng không được để trống,username,';
+    }
+    if(displayname.trim()===''){
+      errors += 'Displayname không được để trống,displayname,';
     }
     if (email.trim() === '') {
       errors += 'Email không được để trống,email,';

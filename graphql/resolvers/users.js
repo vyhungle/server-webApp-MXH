@@ -130,73 +130,47 @@ module.exports = {
 
     
     },
-    async register(_, { registerInput: { username, email, password, confirmPassword } }) {
-      //TODO: Validate user data (Xác thực dữ liệu người dùng)
-     
+    async register(_, { registerInput: { username, email, password, confirmPassword,displayname } }) { 
       const user = await User.findOne({ username });
-      var field=""
-      var message=""
-      const { valid, errors } = validateRegisterInput(
-        username,
-        email,
-        password,
-        confirmPassword,
-      );
+      const { valid, errors } = validateRegisterInput(displayname,username,email,password,confirmPassword);
       if (!valid) {
-      /*   throw new UserInputError('Errors', { errors });  */
-        var err=errors.split(","); 
-        field=err[1]
-        message=err[0]
-        console.log(err)
+        var err=errors.split(",");      
         const respone=new UserResponse({
           error:{
-            field,
-            message
+            field:err[1],
+            message:err[0]
           },
           user:null
         })
-
         if(err.length>2){
           for(var i=2;i<err.length-1;i=i+2){
-
-            field=err[i+1]
-            message=err[i]  
-            console.log(field+" "+message)
             respone.error.push({
-              field:field,
-              message:message
+              field:err[i+1],
+              message:err[i]
             })
           }
         }
-
         return respone;
-
-        
-
       }
       if (user) {    
-        field="username"
-        message="Tên người dùng này đã được sử dụng"
         const respone=new UserResponse({
           error:{
-            field,
-            message
+            field:"username",
+            message:"Tên người dùng này đã được sử dụng"
           },
-          user:null
+          user:null 
         })
         return respone;
       }
-      //TODO: Hash password and create an auth token (mật khẩu băm và tạo mã thông báo xác thực)
       password = await bcrypt.hash(password, 12);
-
       const newUser = new User({
         email,
         username,
         password,
         confirmPassword,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        displayname
       });
-
       const res = await newUser.save();
       const token = generateToken(res);
 

@@ -1,17 +1,18 @@
 const { model, Schema } = require('mongoose');
 
 const userSchema = new Schema({
-  username: String,
+  username: {type:String,unique:true},
   password: String,
   email: String,
   createdAt: String,
+  displayname: String,
   friends: [{
     username: String,
     createdAt: String,
   }],
   profile:{
     avatar: String,
-    displayname: String,
+   
     dateOfBirth: String,
     fullName: String,
     story: String,

@@ -65,14 +65,15 @@ module.exports=gql`
         email:String!
         token:String!
         username:String!
-        createdAt:String!     
-        friends:[Friend]
+        createdAt:String!
+        displayname:String!
+        friends:[String!]
         profile:Profile
     }
 
     type UserResponse {
         error: [FieldError!]
-        user: User
+        user: User!
     }
 
     type FieldError {
@@ -81,8 +82,7 @@ module.exports=gql`
     }
     type Profile{
         id:ID
-        avatar:String
-        displayname:String
+        avatar:String      
         dateOfBirth:String
         fullName:String
         story:String
@@ -99,6 +99,7 @@ module.exports=gql`
         password:String!
         confirmPassword: String!
         email: String!
+        displayname:String!
     }
     type Query{
         getPosts(cursor:String,limit:Int!):PaginatedPost!
