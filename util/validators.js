@@ -10,7 +10,10 @@ module.exports.validateRegisterInput = (
       errors += 'Tên người dùng không được để trống,username,';
     }
     if(displayname.trim()===''){
-      errors += 'Displayname không được để trống,displayname,';
+      errors += 'Tên người dùng không được để trống,displayname,';
+    }
+    else if(displayname.length<5){
+      errors += 'Tên người dùng không được nhỏ hơn 5 ký tự,displayname,';
     }
     if (email.trim() === '') {
       errors += 'Email không được để trống,email,';
