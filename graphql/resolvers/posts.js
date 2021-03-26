@@ -58,14 +58,7 @@ module.exports = {
     async getPost(_, { postId }) {
       try {   
         const post = await Post.findById(postId);
-        const user=await User.findOne({username:post.username})
-        var displayname=user.displayname
-        if(user.displayname===undefined){
-          displayname=post.username
-        }
-        if (post) {   
-          post.displayname=displayname
-          post.save()      
+        if (post) {                 
           return post;
         } else {
           throw new Error('Không tìm thấy bài post');
