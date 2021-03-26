@@ -6,24 +6,34 @@ const PaginatedPost = require('../../models/PaginatedPost')
 const checkAuth = require('../../util/check-auth');
 const cloudinary = require("cloudinary");
 const User = require('../../models/User.js');
-/* function  SortDate( array1){
-  for(var i=0;i<array1.length-1;i++ ){
-    for(var j=i+1;j<array1.length;j++){
-      if(Date.parse(array1[i].createdAt)<Date.parse(array1[j].createdAt)){
-        const tam=array1[i]
-        array1[i]=array1[j]
-        array1[j]=tam
-      
-      }
-     
-    }
-  }
-  console.log(array1)
-} */
 module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
       const posts = await Post.find()
+      const values=posts.reverse()
+      var start = 0;
+      var hasMore = true;
+      if (cursor) {
+        for (var i = 0; i < values.length; i++) {
+          if (Date.parse(values[i].createdAt) < Date.parse(cursor)) {
+            start = i;
+            i = values.length;
+          }
+        }
+      }
+      if (limit > values.length - start) {
+        hasMore = false
+      }
+      const postHas = new PaginatedPost({
+        hasMore: hasMore,
+        posts: values.splice(start, limit)
+      })
+      return postHas
+
+    },
+    async getMyPosts(_, { cursor, limit },context) {
+      const user=checkAuth(context)
+      const posts = await Post.find({username:user.username})
       const values=posts.reverse()
       var start = 0;
       var hasMore = true;

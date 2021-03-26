@@ -104,6 +104,8 @@ module.exports=gql`
     type Query{
         getPosts(cursor:String,limit:Int!):PaginatedPost!
         getPost(postId: ID!): Post
+        getMyPosts(cursor:String,limit:Int!):PaginatedPost!
+        
         getChats:[RoomChat]
         getChat(roomId:ID!):RoomChat
         getUsers:[User]
@@ -118,9 +120,8 @@ module.exports=gql`
     type Mutation{
         register(registerInput:RegisterInput):UserResponse!
         login(username:String!,password:String!):UserResponse!
-
         Upload(file: String!): String
-
+        
         createPost(body: String!,image:String!):Post!
         deletePost(postId:ID!):String!
         createComment(postId: String!, body: String!): Post!
