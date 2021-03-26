@@ -95,12 +95,17 @@ module.exports = {
         if (body.trim() === '') {
           throw new Error('Nội dung bài post không được để trống');
         }
+        displayname=user.displayname
+        if(user.displayname===undefined){
+          displayname=user.username
+        }
         const newPost = new Post({
           body,
           image: uri,
           user: user.id,
           username: user.username,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          displayname
          
         });
         
