@@ -98,7 +98,7 @@ module.exports = {
         displayname=user.displayname
         if(user.displayname===undefined){
           displayname=user.username
-        }
+        }     
         const newPost = new Post({
           body,
           image: uri,

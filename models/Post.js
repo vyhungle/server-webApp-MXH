@@ -6,6 +6,7 @@ const postSchema = new Schema({
   createdAt: String,
   image: String,
   verified: Boolean,
+  displayname:String,
   comments: [
     {
       body: String,
