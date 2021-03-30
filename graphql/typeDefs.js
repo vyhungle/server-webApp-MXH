@@ -84,7 +84,6 @@ module.exports=gql`
         message: String!
     }
     type Profile{
-        id:ID
         avatar:String      
         dateOfBirth:String
         fullName:String
@@ -136,7 +135,7 @@ module.exports=gql`
         createMember(groupId:String!,username:String!):GroupChat!
         addFriend(username:String!):User!
 
-        editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!,displayname:String!):User!
+        editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!):User!
     }
     type Subscription {
         newPost: Post!

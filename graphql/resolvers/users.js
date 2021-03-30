@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server');
+const cloudinary = require("cloudinary");
 
 const { validateRegisterInput, validateLoginInput } = require('../../util/validators');
 const { SECRET_KEY } = require('../../config');
@@ -236,18 +237,31 @@ module.exports = {
 
 
     },
-    async editProfile(_, {avatar, dateOfBirth, fullName , story,displayname }, context) {
+    async editProfile(_, {avatar, dateOfBirth, fullName , story }, context) {
       
       try {
         const user = checkAuth(context);
+        var uri = "";
+        cloudinary.config({
+          cloud_name: 'web-img',
+          api_key: '539575672138879',
+          api_secret: '9ELOxX7cMOVowibJjcVMV9CdN2Y'
+        });
+           const result = await cloudinary.v2.uploader.upload(avatar, {
+            allowed_formats: ["jpg", "png"],
+            public_id: "",
+            folder: "avatar",
+          });
+          uri = result.url;
+          console.log(uri) 
         const me = await User.findOne({ username: user.username });
-        if (me) {          
-          me.profile.avatar=avatar
+        if (me) {    
+          me.displayname=fullName      
+          me.profile.avatar=uri
           me.profile.dateOfBirth=dateOfBirth
           me.profile.fullName=fullName
           me.profile.story=story
           me.profile.follower=me.friends.length
-          me.profile.displayname=displayname
           await me.save()
           return me
         }
