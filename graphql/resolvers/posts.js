@@ -98,8 +98,7 @@ module.exports = {
           user: user.id,
           username: user.username,
           createdAt: new Date().toISOString(),
-          displayname
-         
+          displayname        
         });
         
         

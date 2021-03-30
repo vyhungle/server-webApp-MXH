@@ -248,8 +248,6 @@ module.exports = {
           me.profile.story=story
           me.profile.follower=me.friends.length
           me.profile.displayname=displayname
-        
-         console.log(me.profile)
           await me.save()
           return me
         }

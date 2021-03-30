@@ -38,7 +38,7 @@ module.exports = {
             if (post) {
               const commentIndex = post.comments.findIndex((c) => c.id === commentId);
       
-              if (post.comments[commentIndex].username === username) {
+              if (post.comments[commentIndex].username === username || post.username===username) {
                 post.comments.splice(commentIndex, 1); // splice xoa phan tu thu index
                 await post.save();
                 return post;
