@@ -1,7 +1,7 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 
-const Post = require('../../models/Post.js');
+const Post = require('../../models/Post');
 const PaginatedPost = require('../../models/PaginatedPost')
 const checkAuth = require('../../util/check-auth');
 const cloudinary = require("cloudinary");
