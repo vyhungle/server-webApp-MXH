@@ -84,6 +84,10 @@ module.exports = {
         });
         uri = result.url; 
         const user= checkAuth(context);
+
+        const me=await User.findOne({username:user.username})
+        console.log(me.profile.avatar)
+        
       
         if (body.trim() === '') {
           throw new Error('Nội dung bài post không được để trống');
@@ -98,7 +102,8 @@ module.exports = {
           user: user.id,
           username: user.username,
           createdAt: new Date().toISOString(),
-          displayname        
+          displayname ,
+          avatar:me.profile.avatar     
         });
         
         

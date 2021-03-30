@@ -47,7 +47,7 @@ module.exports = {
       } catch (error) {
         throw new Error(err)
       }
-    }
+    },
   },
   Mutation: {
     async login(_, { username, password }) {
@@ -238,7 +238,6 @@ module.exports = {
 
     },
     async editProfile(_, {avatar, dateOfBirth, fullName , story }, context) {
-      
       try {
         const user = checkAuth(context);
         var uri = "";
@@ -253,7 +252,6 @@ module.exports = {
             folder: "avatar",
           });
           uri = result.url;
-          console.log(uri) 
         const me = await User.findOne({ username: user.username });
         if (me) {    
           me.displayname=fullName      

@@ -12,7 +12,6 @@ const userSchema = new Schema({
   }],
   profile:{
     avatar: String,
-   
     dateOfBirth: String,
     fullName: String,
     story: String,

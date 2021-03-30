@@ -7,12 +7,14 @@ const postSchema = new Schema({
   image: String,
   verified: Boolean,
   displayname:String,
+  avatar:String,
   comments: [
     {
       body: String,
       username: String,
       createdAt: String,
-      displayname:String
+      displayname:String,
+      avatar:String
     }
   ],
   likes: [

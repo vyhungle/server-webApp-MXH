@@ -9,12 +9,14 @@ const PaginatedPost = new Schema({
         displayname: String,
         image: String,
         verified: Boolean,
+        avatar:String,
         comments: [
           {
             body: String,
             username: String,
             createdAt: String,
-            displayname:String
+            displayname:String,
+            avatar:String
           }
         ],
         likes: [
