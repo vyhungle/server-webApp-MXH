@@ -32,7 +32,7 @@ module.exports = {
                 username,
                 createdAt: new Date().toISOString(),
                 displayname:name,
-                avatar:me.profile.avatargit
+                avatar:me.profile.avatar
                 });
                 await post.save();
                 return post;
