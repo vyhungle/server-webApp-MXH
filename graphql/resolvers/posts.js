@@ -9,7 +9,7 @@ const User = require('../../models/User.js');
 module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
-      const posts = await Post.find()
+      const posts = await Post.find().sort({createdAt:1})
       const values=posts.reverse()
       var start = 0;
       if (cursor) {
@@ -80,13 +80,8 @@ module.exports = {
         });
         uri = result.url; 
       }
-      
         const user= checkAuth(context);
-
         const me=await User.findOne({username:user.username})
-      
-        
-      
         if (body.trim() === '') {
           throw new Error('Nội dung bài post không được để trống');
         }
@@ -104,18 +99,11 @@ module.exports = {
           displayname ,
           avatar:me.profile.avatar     
         });
-        
-        
          const post = await newPost.save();
-
         context.pubsub.publish('NEW_POST', {
           newPost: post
         }); 
-
         return post;
-    
-
-
     },
     async deletePost(_, { postId }, context) {
       const user = checkAuth(context);
