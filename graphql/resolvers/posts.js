@@ -12,12 +12,16 @@ module.exports = {
       const posts = await Post.find().sort({createdAt:-1})
       const values=posts
       var start = 0;
+    
       if (cursor) {
         for (var i = 0; i < values.length; i++) {
-          if (Date.parse(values[i].createdAt) < Date.parse(cursor)) {
+          if (Date.parse(values[i].createdAt) < Date.parse(cursor) ) {
             start = i;
-            i = values.length;
+            i = values.length;          
           }
+        }
+        if(Date.parse(cursor)===Date.parse(values[values.length-1].createdAt)){
+          start=values.length
         }
       }
       const postHas = new PaginatedPost({
