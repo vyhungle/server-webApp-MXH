@@ -125,7 +125,7 @@ module.exports=gql`
         login(username:String!,password:String!):UserResponse!
         Upload(file: String!): String
         
-        createPost(body: String!,image:String!):Post!
+        createPost(body: String,image:String):Post!
         deletePost(postId:ID!):String!
         createComment(postId: String!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post!

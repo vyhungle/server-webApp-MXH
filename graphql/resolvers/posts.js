@@ -12,7 +12,6 @@ module.exports = {
       const posts = await Post.find()
       const values=posts.reverse()
       var start = 0;
-      var hasMore = true;
       if (cursor) {
         for (var i = 0; i < values.length; i++) {
           if (Date.parse(values[i].createdAt) < Date.parse(cursor)) {
@@ -21,11 +20,8 @@ module.exports = {
           }
         }
       }
-      if (limit > values.length - start) {
-        hasMore = false
-      }
       const postHas = new PaginatedPost({
-        hasMore: hasMore,
+        hasMore: limit > values.length - start,
         posts: values.splice(start, limit)
       })
       return postHas
@@ -86,14 +82,15 @@ module.exports = {
         const user= checkAuth(context);
 
         const me=await User.findOne({username:user.username})
-        console.log(me.profile.avatar)
+      
         
       
         if (body.trim() === '') {
           throw new Error('Nội dung bài post không được để trống');
         }
-        displayname=user.displayname
-        if(user.displayname===undefined){
+    
+        displayname=me.displayname
+        if(displayname===undefined){
           displayname=user.username
         }     
         const newPost = new Post({
