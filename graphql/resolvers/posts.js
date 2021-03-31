@@ -9,8 +9,8 @@ const User = require('../../models/User.js');
 module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
-      const posts = await Post.find().sort({createdAt:1})
-      const values=posts.reverse()
+      const posts = await Post.find().sort({createdAt:-1})
+      const values=posts
       var start = 0;
       if (cursor) {
         for (var i = 0; i < values.length; i++) {
