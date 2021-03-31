@@ -17,14 +17,14 @@ const userResponseSchema = new Schema({
             username: String,
             createdAt: String,
         }],
-        profile:[{
+        profile:{
             avatar: String,
             dateOfBirth: String,
             fullName: String,
             story: String,
             follower: String,
             following: String,
-    }],
+    },
     }
   
   
