@@ -66,8 +66,8 @@ module.exports = {
   },
   Mutation: {
     async createPost(_, { body, image }, context) {
-
       var uri = "";
+      if(image){
       cloudinary.config({
         cloud_name: 'web-img',
         api_key: '539575672138879',
@@ -79,6 +79,8 @@ module.exports = {
           folder: "posts",
         });
         uri = result.url; 
+      }
+      
         const user= checkAuth(context);
 
         const me=await User.findOne({username:user.username})
