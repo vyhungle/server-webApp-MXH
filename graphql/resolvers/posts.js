@@ -56,8 +56,10 @@ module.exports = {
     async getPost(_, { postId }) {
       try {   
         const post = await Post.findById(postId);
-        if (post) {                 
+        if (post) {  
+          console.log(post.comments[0].id)            
           return post;
+          
         } else {
           throw new Error('Không tìm thấy bài post');
         }
