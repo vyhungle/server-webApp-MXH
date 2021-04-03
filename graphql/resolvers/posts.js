@@ -57,7 +57,7 @@ module.exports = {
       try {   
         const post = await Post.findById(postId);
         if (post) {  
-          console.log(post.comments[0].id)            
+               
           return post;
           
         } else {
