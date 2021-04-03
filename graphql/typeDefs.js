@@ -72,7 +72,7 @@ module.exports=gql`
         username:String
         createdAt:String
         displayname:String
-        friends:[String!]
+        friends:[Friend!]
         profile:Profile
     }
 
