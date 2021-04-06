@@ -118,7 +118,7 @@ module.exports=gql`
         getGroup(groupId:ID!):GroupChat
         getGroupChat:[GroupChat]
 
-        findUsers(displayname:String!):[User]
+      
         
     }
     
@@ -126,6 +126,7 @@ module.exports=gql`
         register(registerInput:RegisterInput):UserResponse!
         login(username:String!,password:String!):UserResponse!
         Upload(file: String!): String
+        findUsers(displayname:String!):[User]
         
         createPost(body: String,image:String):Post!
         deletePost(postId:ID!):String!

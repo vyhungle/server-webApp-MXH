@@ -48,15 +48,7 @@ module.exports = {
         throw new Error(err)
       }
     },
-    async findUsers(_,{displayname}){
-      try{
-        const users=await User.find()
-        let values=users.filter(i=>i.displayname.toLowerCase().indexOf(displayname.toLowerCase()) > -1)
-        return values;
-      }catch(error){
-        throw new Error("Username nay khon ton tai")
-      }
-    }
+   
   },
   Mutation: {
     async login(_, { username, password }) {
@@ -279,6 +271,15 @@ module.exports = {
         
      
 
+    },
+    async findUsers(_,{displayname}){
+      try{
+        const users=await User.find()
+        let values=users.filter(i=>i.displayname.toLowerCase().indexOf(displayname.toLowerCase()) > -1)
+        return values;
+      }catch(error){
+        throw new Error("Username nay khon ton tai")
+      }
     }
 
 
