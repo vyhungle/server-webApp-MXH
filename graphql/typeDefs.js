@@ -117,6 +117,8 @@ module.exports=gql`
         getGroups:[GroupChat]
         getGroup(groupId:ID!):GroupChat
         getGroupChat:[GroupChat]
+
+        findUsers(displayname:String!):[User]
         
     }
     
