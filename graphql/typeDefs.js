@@ -8,7 +8,7 @@ module.exports=gql`
         username:String!, 
         image:String
         verified:Boolean     
-        comments: [Comment]
+        comments: [Comment]!
         likes: [Like]!
         likeCount: Int!
         commentCount: Int!
