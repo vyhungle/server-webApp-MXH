@@ -8,8 +8,9 @@ module.exports = {
   Mutation: {
         createComment: async (_, { postId, body }, context) => 
         {
-            const { username,displayname } = checkAuth(context);
+            const { username } = checkAuth(context);
             const me=await User.findOne({username:username})
+          
 
             if (body.trim() === '') 
             {
@@ -27,7 +28,7 @@ module.exports = {
                 body,
                 username,
                 createdAt: new Date().toISOString(),
-                displayname,
+                displayname:me.displayname,
                 avatar:me.profile.avatar
                 });
                 await post.save();
