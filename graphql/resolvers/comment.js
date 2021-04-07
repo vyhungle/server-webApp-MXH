@@ -19,11 +19,7 @@ module.exports = {
                 }
                 });
             }
-            var name=""
-            name=displayname
-            if(displayname===undefined){
-              name=username
-            }
+           
             const post = await Post.findById(postId);
 
             if (post) {
@@ -31,7 +27,7 @@ module.exports = {
                 body,
                 username,
                 createdAt: new Date().toISOString(),
-                displayname:name,
+                displayname,
                 avatar:me.profile.avatar
                 });
                 await post.save();
