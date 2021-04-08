@@ -186,10 +186,10 @@ module.exports = {
       })
       return respone
     },
-    async addFriend(_, { username }, context) {
+    async addFriend(_, { usernameId,username }, context) {
       try {
         const user = checkAuth(context);
-        const me = await User.findOne({ username: user.username });
+        const me = await User.findById(usernameId);
 
         const from = await Chat.find({ from: username })
         const to = await Chat.find({ to: username })

@@ -54,22 +54,22 @@ module.exports = {
 
     },
     Mutation: {
-        async createRoomChat(_, { username }, context) {
+        async createRoomChat(_, { userId }, context) {
             const user = checkAuth(context);
             /*  console.log(user)      */
             try {
-                const to = await User.findOne({ username });
-
-                const from = await Chat.find({ from: username })
-                const a = await Chat.find({ to: username })
+                const to = await User.findById( userId );
+                console.log(to)
+                const from = await Chat.find({ from: to.username })
+                const a = await Chat.find({ to: to.username })
                 const check = from.concat(a);
 
                 var addChat = 0;
                 for (var i = 0; i < check.length; i++) {
-                  if (check[i].from === username && check[i].to === user.username) {
+                  if (check[i].from === to.username && check[i].to === user.username) {
                     addChat = 1;
                   }
-                  else if (check[i].to === username && check[i].from === user.username) {
+                  else if (check[i].to === to.username && check[i].from === user.username) {
                     addChat = 1;
                   }
                 }
@@ -96,7 +96,7 @@ module.exports = {
 
               
             } catch (error) {
-                throw new Error(err)
+                throw new Error(error)
             }
 
 

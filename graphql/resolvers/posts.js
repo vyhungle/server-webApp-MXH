@@ -12,7 +12,6 @@ module.exports = {
       const posts = await Post.find().sort({createdAt:-1})
       const values=posts
       var start = 0;
-      console.log(values.length)
       if (cursor) {
         for (var i = 0; i < values.length; i++) {
           if (Date.parse(values[i].createdAt) < Date.parse(cursor) ) {

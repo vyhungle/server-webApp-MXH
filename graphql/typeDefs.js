@@ -133,12 +133,12 @@ module.exports=gql`
         createComment(postId: String!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post!
         likePost(postId: ID!): Post!
-        createRoomChat(username:String!):RoomChat!
+        createRoomChat(userId:String!):RoomChat!
         createContentChat(roomId:String!,content:String!):RoomChat!
         createGroupChat(body:String!):GroupChat!
         createContentGroupChat(groupId:String!,content:String!):GroupChat!
         createMember(groupId:String!,username:String!):GroupChat!
-        addFriend(username:String!):User!
+        addFriend(usernameId:String!,username:String!):User!
 
         editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!):User!
     }
