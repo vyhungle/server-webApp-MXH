@@ -39,6 +39,7 @@ const chatSchema = new Schema({
     },
     content: [
         {
+            displayname:String,
             username: String,
             createdAt: String,
             content: String

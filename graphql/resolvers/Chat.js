@@ -93,19 +93,21 @@ module.exports = {
         },
         async createContentChat(_, { roomId, content }, context) {
             const { username } = checkAuth(context);
+            const user=await User.findOne({username:username})
             if (content.trim() === '') {
                 throw new Error('Nội dung chat không được để trống');
             }
             const chat = await Chat.findById(roomId)
-            console.log(chat);
+           
 
             if (chat) {
                 chat.content.push({
                     username,
                     createdAt: new Date().toISOString(),
                     content,
+                    displayname:user.displayname,
                 })
-                await chat.save();
+                await chat.save(); 
                 return chat;
             }
             else {

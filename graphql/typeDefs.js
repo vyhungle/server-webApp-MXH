@@ -56,6 +56,7 @@ module.exports=gql`
     type Chat{
         id:ID!
         username:String!
+        displayname:String!
         createdAt:String!
         content:String!
     }
