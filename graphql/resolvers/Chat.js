@@ -1,4 +1,5 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
+const { formatError } = require('graphql');
 
 const Chat = require('../../models/Chat.js');
 const User = require('../../models/User.js');
@@ -29,23 +30,27 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async getRoomChat(_, { username }) {
+        async getRoomChat(_, {  },context) {
+            let values=[]
+            
+            const user=checkAuth(context)
+            var username=user.username
             try {
-                const from = await Chat.find({ from: username });
-                const to = await Chat.find({ to: username });
-
-                for (var i = 0; i < to.length; i++) {
-                    var tam = to[i].to
-                    to[i].to = to[i].from;
-                    to[i].from = tam;
-                }
-                const chat = from.concat(to);
-
-                if (chat) {
-                    return chat;
-                }
-                else throw new Error("nguoi dung nay k ton tai")
-
+               const chat=await Chat.find();
+               chat.forEach(element => {
+                    if(element.from.username===username || element.to.username===username){
+                        values.push(element);
+                    }
+                });
+               values.forEach(element => {
+                   if(element.to.username==username){              
+                       let tam=element.to;
+                       element.to=element.from;
+                       element.from= tam;            
+                   }                
+               });
+             
+                return  values;
             }
             catch (err) {
                 throw new Error(err);
@@ -56,47 +61,32 @@ module.exports = {
     Mutation: {
         async createRoomChat(_, { userId }, context) {
             const user = checkAuth(context);
-            /*  console.log(user)      */
+            const to= await User.findById(userId);
+            const from= await User.findOne({username:user.username})
+            const chat= await Chat.find();
+            var dk=1;
             try {
-                const to = await User.findById( userId );
-                console.log(to)
-                const from = await Chat.find({ from: to.username })
-                const a = await Chat.find({ to: to.username })
-                const check = from.concat(a);
-
-                var addChat = 0;
-                for (var i = 0; i < check.length; i++) {
-                  if (check[i].from === to.username && check[i].to === user.username) {
-                    addChat = 1;
-                  }
-                  else if (check[i].to === to.username && check[i].from === user.username) {
-                    addChat = 1;
-                  }
-                }
-        
-                if (addChat === 0) {
-                    if (to) {
-                        const newRoom = new Chat({
-                            from: user.username,
-                            to: to.username,
-                        });
-    
-                        const room = await newRoom.save();
-    
-                        context.pubsub.publish('NEW_ROOMCHAT', {
-                            newRoom: room
-                        });
-                        return room;
+                chat.forEach(element => {
+                    if((element.to.username===to.username && element.from.username===from.username) 
+                    || (element.to.username===from.username && element.from.username===to.username)){
+                        dk=0;
                     }
-                    else {
-                        throw new Error("Không tìm thấy người dùng này")
-                    }
+                });
+                if(dk==1){
+                    const room=new Chat({
+                        from,
+                        to,                 
+                    })
+                    room.save();     
+                    return room; 
                 }
-                else throw new Error("bạn đã có chat với người này rồi")
-
+                else throw new Error("Bạn đã là bạn của người này rồi");
+                         
               
             } catch (error) {
                 throw new Error(error)
+                
+                
             }
 
 

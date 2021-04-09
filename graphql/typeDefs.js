@@ -41,8 +41,8 @@ module.exports=gql`
 
     type RoomChat{
         id:ID!
-        from:String!
-        to:String!
+        from:User!
+        to:User!
         content:[Chat]!
     }
     type GroupChat{
@@ -113,7 +113,7 @@ module.exports=gql`
         getChat(roomId:ID!):RoomChat
         getUsers:[User]
         getUser:User
-        getRoomChat(username:String!):[RoomChat]
+        getRoomChat:[RoomChat]
         getGroups:[GroupChat]
         getGroup(groupId:ID!):GroupChat
         getGroupChat:[GroupChat]

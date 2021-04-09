@@ -1,8 +1,42 @@
 const { model, Schema } = require('mongoose');
 
 const chatSchema = new Schema({
-    from: String,
-    to: String,
+    from: {
+        username: String,
+        email: String,
+        createdAt: String,
+        displayname: String,
+        friends: [{
+          username: String,
+          createdAt: String,
+        }],
+        profile:{
+          avatar: String,
+          dateOfBirth: String,
+          fullName: String,
+          story: String,
+          follower: String,
+          following: String,
+        },
+    },
+    to: {
+        username: String,
+        email: String,
+        createdAt: String,
+        displayname: String,
+        friends: [{
+          username: String,
+          createdAt: String,
+        }],
+        profile:{
+          avatar: String,
+          dateOfBirth: String,
+          fullName: String,
+          story: String,
+          follower: String,
+          following: String,
+        },
+    },
     content: [
         {
             username: String,
