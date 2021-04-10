@@ -186,58 +186,6 @@ module.exports = {
       })
       return respone
     },
-    async addFriend(_, { usernameId,username }, context) {
-      try {
-        const user = checkAuth(context);
-        const me = await User.findById(usernameId);
-
-        const from = await Chat.find({ from: username })
-        const to = await Chat.find({ to: username })
-        const check = from.concat(to);
-
-        var addChat = 0;
-        for (var i = 0; i < check.length; i++) {
-          if (check[i].from === username && check[i].to === user.username) {
-            addChat = 1;
-          }
-          else if (check[i].to === username && check[i].from === user.username) {
-            addChat = 1;
-          }
-        }
-
-        if (addChat === 0) {
-          const newRoom = new Chat({
-            from: user.username,
-            to: username,
-          });
-
-          const room = await newRoom.save();
-        }
-        var tam = 0;
-        for (var i = 0; i < me.friends.length; i++) {
-
-          if (me.friends[i].username === username) {
-            tam = 1;
-          }
-        }
-        /* console.log(tam) */
-        if (tam === 1) {
-          throw new Error("Bạn đã là bạn của người này rồi")
-        }
-
-        me.friends.push({
-          username,
-          createdAt: new Date().toISOString(),
-        })
-        await me.save();
-        return me;
-      } catch (error) {
-        throw new Error(error);
-      }
-
-
-
-    },
     async following(_,{userId},context){
       const ct= checkAuth(context);
       const user=await User.findOne({username:ct.username});
@@ -254,11 +202,13 @@ module.exports = {
               username:user2.username,
               createdAt:new Date().toISOString(),
               displayname:user2.displayname,
+              avatar:user2.profile.avatar,
             })
             user2.follower.push({
               username:user.username,
               createdAt:new Date().toISOString(),
               displayname:user.displayname,
+              avatar:user.profile.avatar,
             })
           }
             await user2.save();
