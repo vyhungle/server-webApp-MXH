@@ -6,9 +6,15 @@ const userSchema = new Schema({
   email: String,
   createdAt: String,
   displayname: String,
-  friends: [{
+  following: [{
     username: String,
     createdAt: String,
+    displayname:String,
+  }],
+  follower: [{
+    username: String,
+    createdAt: String,
+    displayname:String,
   }],
   profile:{
     avatar: String,

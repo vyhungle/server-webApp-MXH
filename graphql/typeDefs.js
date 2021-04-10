@@ -73,8 +73,9 @@ module.exports=gql`
         username:String
         createdAt:String
         displayname:String
-        friends:[Friend!]
         profile:Profile
+        following:[Follow!]
+        follower:[Follow]
     }
 
     type UserResponse {
@@ -98,6 +99,12 @@ module.exports=gql`
         id:ID!
         username:String!
         createdAt:String!
+    }
+    type Follow{
+        id:ID!
+        username:String!
+        createdAt:String!
+        displayname:String!
     }
     input RegisterInput {
         username:String!
@@ -140,6 +147,8 @@ module.exports=gql`
         createContentGroupChat(groupId:String!,content:String!):GroupChat!
         createMember(groupId:String!,username:String!):GroupChat!
         addFriend(usernameId:String!,username:String!):User!
+
+        following(userId:String):User!
 
         editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!):User!
     }

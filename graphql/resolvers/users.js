@@ -238,6 +238,38 @@ module.exports = {
 
 
     },
+    async following(_,{userId},context){
+      const ct= checkAuth(context);
+      const user=await User.findOne({username:ct.username});
+      const user2=await User.findById(userId);
+        try {
+          //unfollow
+          if(user.following.find((i)=>i.username===user2.username)){ 
+            user.following = user.following.filter((i) => i.username !== user2.username);
+            user2.follower = user2.follower.filter((i) => i.username !== user.username);
+          }
+          //follow
+          else{
+            user.following.push({
+              username:user2.username,
+              createdAt:new Date().toISOString(),
+              displayname:user2.displayname,
+            })
+            user2.follower.push({
+              username:user.username,
+              createdAt:new Date().toISOString(),
+              displayname:user.displayname,
+            })
+          }
+            await user2.save();
+            await user.save();
+            return user;
+          
+          
+        } catch (error) {
+          throw new Error(error);
+        }
+    },
     async editProfile(_, {avatar, dateOfBirth, fullName , story }, context) {
       try {
         const user = checkAuth(context);
