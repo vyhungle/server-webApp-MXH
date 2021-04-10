@@ -92,8 +92,6 @@ module.exports=gql`
         dateOfBirth:String
         fullName:String
         story:String
-        follower:String
-        following:String
     }
  
     type Follow{

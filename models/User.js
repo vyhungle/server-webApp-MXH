@@ -23,8 +23,6 @@ const userSchema = new Schema({
     dateOfBirth: String,
     fullName: String,
     story: String,
-    follower: String,
-    following: String,
   },
   
 });
