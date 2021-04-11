@@ -213,9 +213,7 @@ module.exports = {
           }
             await user2.save();
             await user.save();
-            return user;
-          
-          
+            return user; 
         } catch (error) {
           throw new Error(error);
         }
@@ -229,7 +227,7 @@ module.exports = {
           api_key: '539575672138879',
           api_secret: '9ELOxX7cMOVowibJjcVMV9CdN2Y'
         });
-           const result = await cloudinary.v2.uploader.upload(avatar, {
+            const result = await cloudinary.v2.uploader.upload(avatar, {
             allowed_formats: ["jpg", "png"],
             public_id: "",
             folder: "avatar",
@@ -250,9 +248,6 @@ module.exports = {
       } catch (error) {
         throw new Error(error)
       }
-        
-     
-
     },
     async findUsers(_,{displayname}){
       try{

@@ -13,10 +13,18 @@ const userResponseSchema = new Schema({
         email: String,
         createdAt: String,
         displayname: String,
-        friends: [{
+        following: [{
             username: String,
             createdAt: String,
-        }],
+            displayname:String,
+            avatar:String,
+          }],
+          follower: [{
+            username: String,
+            createdAt: String,
+            displayname:String,
+            avatar:String,
+          }],
         profile:{
             avatar: String,
             dateOfBirth: String,
