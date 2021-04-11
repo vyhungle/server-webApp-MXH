@@ -37,6 +37,8 @@ module.exports=gql`
         id: ID!
         createdAt: String!
         username: String!
+        displayname:String!
+        avatar:String!
     }
 
     type RoomChat{

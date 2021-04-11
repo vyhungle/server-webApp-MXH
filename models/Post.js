@@ -20,7 +20,9 @@ const postSchema = new Schema({
   likes: [
     {
       username: String,
-      createdAt: String
+      createdAt: String,
+      displayname:String,
+      avatar:String
     }
   ],
   user: {

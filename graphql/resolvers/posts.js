@@ -126,6 +126,8 @@ module.exports = {
     async likePost(_, { postId }, context) {
       const { username } = checkAuth(context);
 
+      const user=await User.findOne({username:username})
+     /*  console.log(user.displayname,user.profile.avatar) */
       const post = await Post.findById(postId);
       if (post) {
         if (post.likes.find((like) => like.username === username)) {
@@ -135,7 +137,9 @@ module.exports = {
           // Not liked, like post
           post.likes.push({
             username,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            displayname:user.displayname,
+            avatar:user.profile.avatar,
           });
         }
 
