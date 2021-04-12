@@ -101,7 +101,7 @@ module.exports=gql`
         username:String!
         createdAt:String!
         displayname:String!
-        avatar:String!
+        avatar:String
     }
     input RegisterInput {
         username:String!
