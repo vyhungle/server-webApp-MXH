@@ -21,7 +21,7 @@ module.exports = {
                 
                 const user=checkAuth(context)
                 var chat;
-                if(roomId===undefined){
+                if(roomId===""){
                    const values =await Chat.find();
                    const chats=values.filter(t=>t.to.username===user.username || t.from.username===user.username)
                    chat=chats[0];
