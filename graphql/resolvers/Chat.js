@@ -25,7 +25,6 @@ module.exports = {
                    const values =await Chat.find();
                    const chats=values.filter(t=>t.to.username===user.username || t.from.username===user.username)
                    chat=chats[0];
-                   console.log(chats)
                 }
                 else chat= await Chat.findById(roomId);
                 if (chat) {

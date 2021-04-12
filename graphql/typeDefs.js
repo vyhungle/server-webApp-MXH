@@ -13,7 +13,7 @@ module.exports=gql`
         likeCount: Int!
         commentCount: Int!
         displayname:String!
-        avatar:String!
+        avatar:String
     }
 
     type File{
