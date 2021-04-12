@@ -115,7 +115,7 @@ module.exports=gql`
         getPost(postId: ID!): Post!
         getMyPosts(cursor:String,limit:Int!):PaginatedPost!       
         getChats:[RoomChat]
-        getChat(roomId:ID!):RoomChat
+        getChat(roomId:ID):RoomChat
         getUsers:[User]
         getUser(username:String!):User
         getRoomChat:[RoomChat]

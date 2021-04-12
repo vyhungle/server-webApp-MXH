@@ -16,10 +16,18 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async getChat(_, { roomId }) {
+        async getChat(_, { roomId },context) {
             try {
-                const chat = await Chat.findById(roomId);
-
+                
+                const user=checkAuth(context)
+                var chat;
+                if(roomId===undefined){
+                   const values =await Chat.find();
+                   const chats=values.filter(t=>t.to.username===user.username || t.from.username===user.username)
+                   chat=chats[0];
+                   console.log(chats)
+                }
+                else chat= await Chat.findById(roomId);
                 if (chat) {
                     return chat;
                 }
