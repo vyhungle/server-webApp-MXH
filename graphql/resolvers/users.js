@@ -134,7 +134,18 @@ module.exports = {
     async register(_, { registerInput: { username, email, password, confirmPassword,displayname } }) { 
       const user = await User.findOne({ username });
       const { valid, errors } = validateRegisterInput(displayname,username,email,password,confirmPassword);
+      if (user) {    
+        const respone=new UserResponse({
+          error:{
+            field:"username",
+            message:"Tên người dùng này đã được sử dụng"
+          },
+          user:null 
+        })
+        return respone;
+      }
       if (!valid) {
+       
         var err=errors.split(",");      
         const respone=new UserResponse({
           error:{
@@ -153,16 +164,7 @@ module.exports = {
         }
         return respone;
       }
-      if (user) {    
-        const respone=new UserResponse({
-          error:{
-            field:"username",
-            message:"Tên người dùng này đã được sử dụng"
-          },
-          user:null 
-        })
-        return respone;
-      }
+     
       password = await bcrypt.hash(password, 12);
       const newUser = new User({
         email,
