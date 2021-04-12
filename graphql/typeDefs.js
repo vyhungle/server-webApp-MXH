@@ -117,7 +117,7 @@ module.exports=gql`
         getChats:[RoomChat]
         getChat(roomId:ID!):RoomChat
         getUsers:[User]
-        getUser:User
+        getUser(username:String!):User
         getRoomChat:[RoomChat]
         getGroups:[GroupChat]
         getGroup(groupId:ID!):GroupChat
@@ -143,7 +143,7 @@ module.exports=gql`
         createGroupChat(body:String!):GroupChat!
         createContentGroupChat(groupId:String!,content:String!):GroupChat!
         createMember(groupId:String!,username:String!):GroupChat!
-        following(userId:String):User!
+        following(username:String):User!
 
         editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!):User!
     }

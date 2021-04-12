@@ -34,10 +34,9 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getUser(_, { }, context) {
+    async getUser(_, { username}) {
       try {
-        const { username } = checkAuth(context);
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username:username });
         if (user) {
           return user;
         }
@@ -186,10 +185,10 @@ module.exports = {
       })
       return respone
     },
-    async following(_,{userId},context){
+    async following(_,{username},context){
       const ct= checkAuth(context);
       const user=await User.findOne({username:ct.username});
-      const user2=await User.findById(userId);
+      const user2=await User.findOne({username:username});
         try {
           //unfollow
           if(user.following.find((i)=>i.username===user2.username)){ 
