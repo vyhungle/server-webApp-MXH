@@ -6,6 +6,7 @@ const cloudinary = require("cloudinary");
 const { validateRegisterInput, validateLoginInput } = require('../../util/validators');
 const { SECRET_KEY } = require('../../config');
 const User = require('../../models/User.js');
+const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
 const Chat = require('../../models/Chat.js');
 const UserResponse = require('../../models/UserResponse');
@@ -265,6 +266,21 @@ module.exports = {
           me.profile.story=story
           me.profile.coverImage=uriCover
           await me.save()
+
+          const posts = await Post.find()
+          for(var i=0;i<posts.length;i++){
+            if(posts[i].username===user.username){
+              posts[i].displayname=fullName
+              posts[i].avatar=uri
+            }
+            for(var j=0;j<posts[i].comments.length;j++){
+              if(posts[i].comments[j].username===user.username){
+                posts[i].comments[j].displayname=fullName
+                posts[i].comments[j].avatar=uri
+              }
+            }
+            await posts[i].save();
+          }
           return me
         }
         else throw new Error("Người dùng này không tồn tại");
