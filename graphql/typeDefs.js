@@ -102,6 +102,7 @@ module.exports=gql`
         createdAt:String!
         displayname:String!
         avatar:String
+        story:String
     }
     input RegisterInput {
         username:String!

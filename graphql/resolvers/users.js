@@ -204,12 +204,14 @@ module.exports = {
               createdAt:new Date().toISOString(),
               displayname:user2.displayname,
               avatar:user2.profile.avatar,
+              story:user2.profile.story,
             })
             user2.follower.push({
               username:user.username,
               createdAt:new Date().toISOString(),
               displayname:user.displayname,
               avatar:user.profile.avatar,
+              story:user.profile.story,
             })
           }
             await user2.save();

@@ -11,12 +11,14 @@ const userSchema = new Schema({
     createdAt: String,
     displayname:String,
     avatar:String,
+    story:String,
   }],
   follower: [{
     username: String,
     createdAt: String,
     displayname:String,
     avatar:String,
+    story:String,
   }],
   profile:{
     avatar: String,
