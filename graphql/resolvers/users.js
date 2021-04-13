@@ -47,6 +47,20 @@ module.exports = {
         throw new Error(err)
       }
     },
+    async getMyUser(_, {}, context) {
+      try {
+        const ct=checkAuth(context);
+        const user=await User.findOne({username:ct.username});
+        if (user) {
+          return user;
+        }
+        else {
+          throw new Error("Không tìm thấy người dùng này")
+        }
+      } catch (error) {
+        throw new Error(err)
+      }
+    },
    
   },
   Mutation: {
