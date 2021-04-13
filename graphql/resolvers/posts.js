@@ -10,7 +10,7 @@ module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
       const posts = await Post.find().sort({createdAt:-1})
-
+/* 
       for(var i=0;i<posts.length;i++){
         const user =await User.findOne({username:posts[i].username})
         posts[i].displayname=user.displayname
@@ -24,7 +24,7 @@ module.exports = {
         }
         posts[i].comments=comments;
         await posts[i].save()
-      }
+      } */
 
       var start = 0;
       if (cursor) {
@@ -71,7 +71,7 @@ module.exports = {
       try {   
         const post = await Post.findById(postId);
         if (post) {  
-          const contents=post.comments;
+        /*   const contents=post.comments;
           const user=await User.findOne({username:post.username});
           post.displayname=user.displayname
           post.avatar=user.profile.avatar
@@ -81,7 +81,7 @@ module.exports = {
             contents[i].avatar=user.profile.avatar
           }  
           post.comments=contents;
-          await post.save();
+          await post.save(); */
           return post;
           
         } else {
@@ -114,18 +114,12 @@ module.exports = {
           throw new Error('Nội dung bài post không được để trống');
         }
     
-        displayname=me.displayname
-        if(displayname===undefined){
-          displayname=user.username
-        }     
         const newPost = new Post({
           body,
           image: uri,
           user: user.id,
           username: user.username,
-          createdAt: new Date().toISOString(),
-          displayname ,
-          avatar:me.profile.avatar     
+          createdAt: new Date().toISOString(),      
         });
          const post = await newPost.save();
         context.pubsub.publish('NEW_POST', {
