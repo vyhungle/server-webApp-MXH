@@ -10,20 +10,35 @@ module.exports = {
   Query: {
     async getPosts(_, { cursor, limit }) {
       const posts = await Post.find().sort({createdAt:-1})
-      const values=posts
+
+      for(var i=0;i<posts.length;i++){
+        const user =await User.findOne({username:posts[i].username})
+        posts[i].displayname=user.displayname
+        posts[i].avatar=user.profile.avatar
+        const comments=posts[i].comments;
+
+        for(var j=0;j<posts[i].comments.length;j++){
+          const user =await User.findOne({username:comments[j].username})
+          comments[j].displayname=user.profile.fullName
+          comments[j].avatar=user.profile.avatar
+        }
+        posts[i].comments=comments;
+        await posts[i].save()
+      }
+
       var start = 0;
       if (cursor) {
-        for (var i = 0; i < values.length; i++) {
-          if (Date.parse(values[i].createdAt) < Date.parse(cursor) ) {
+        for (var i = 0; i < posts.length; i++) {
+          if (Date.parse(posts[i].createdAt) < Date.parse(cursor) ) {
             start = i;
-            i = values.length;          
+            i = posts.length;          
           }
-          else start=values.length
+          else start=posts.length
         }
       }
       const postHas = new PaginatedPost({
-        hasMore: limit <= values.length - start,
-        posts: values.splice(start, limit)
+        hasMore: limit <= posts.length - start,
+        posts: posts.splice(start, limit)
       })
       return postHas
 
@@ -56,7 +71,17 @@ module.exports = {
       try {   
         const post = await Post.findById(postId);
         if (post) {  
-               
+          const contents=post.comments;
+          const user=await User.findOne({username:post.username});
+          post.displayname=user.displayname
+          post.avatar=user.profile.avatar
+          for(var i=0;i<contents.length;i++){
+            const user=await User.findOne({username:contents[i].username});
+            contents[i].displayname=user.profile.fullName
+            contents[i].avatar=user.profile.avatar
+          }  
+          post.comments=contents;
+          await post.save();
           return post;
           
         } else {
