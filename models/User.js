@@ -25,6 +25,7 @@ const userSchema = new Schema({
     dateOfBirth: String,
     fullName: String,
     story: String,
+    coverImage:String,
   },
   
 });

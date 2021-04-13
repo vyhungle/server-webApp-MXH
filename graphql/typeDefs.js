@@ -94,6 +94,7 @@ module.exports=gql`
         dateOfBirth:String
         fullName:String
         story:String
+        coverImage:String
     }
  
     type Follow{
@@ -146,7 +147,7 @@ module.exports=gql`
         createMember(groupId:String!,username:String!):GroupChat!
         following(username:String):User!
 
-        editProfile(avatar:String!, dateOfBirth:String!, fullName:String! , story:String!):User!
+        editProfile(avatar:String, dateOfBirth:String, fullName:String! , story:String,coverImage:String):User!
     }
     type Subscription {
         newPost: Post!

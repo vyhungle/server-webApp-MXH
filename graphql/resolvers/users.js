@@ -221,21 +221,27 @@ module.exports = {
           throw new Error(error);
         }
     },
-    async editProfile(_, {avatar, dateOfBirth, fullName , story }, context) {
+    async editProfile(_, {avatar, dateOfBirth, fullName , story, coverImage }, context) {
       try {
         const user = checkAuth(context);
-        var uri = "";
+        var uri = "",uriCover="";
         cloudinary.config({
           cloud_name: 'web-img',
           api_key: '539575672138879',
           api_secret: '9ELOxX7cMOVowibJjcVMV9CdN2Y'
         });
-            const result = await cloudinary.v2.uploader.upload(avatar, {
+          const result = await cloudinary.v2.uploader.upload(avatar, {
             allowed_formats: ["jpg", "png"],
             public_id: "",
             folder: "avatar",
           });
+          const result2 = await cloudinary.v2.uploader.upload(coverImage, {
+            allowed_formats: ["jpg", "png"],
+            public_id: "",
+            folder: "CoverImage",
+          });
           uri = result.url;
+          uriCover=result2.url;
         const me = await User.findOne({ username: user.username });
         if (me) {    
           me.displayname=fullName      
@@ -243,7 +249,7 @@ module.exports = {
           me.profile.dateOfBirth=dateOfBirth
           me.profile.fullName=fullName
           me.profile.story=story
-          me.profile.follower=me.friends.length
+          me.profile.coverImage=uriCover
           await me.save()
           return me
         }
