@@ -12,9 +12,10 @@ module.exports = {
       const user = await User.findOne({ username: ct.username });
       const posts = await Post.find().sort({ createdAt: -1 });
       var values = await Post.find({ username: user.username });
-      user.following.map((u) => {
-        const post = posts.find((p) => p.username === u.username);
-        post ? values.push(post) : null;
+      posts.map((p) => {
+        user.following.map((u)=>{
+          if(p.username===u.username) values.push(p)
+        }) 
       });
       //sort
       values.sort(function (a, b) {
