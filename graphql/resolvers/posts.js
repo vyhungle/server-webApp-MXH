@@ -25,7 +25,7 @@ module.exports = {
       }
       var start = 0;
       if (cursor) {
-        for (var i = 0; i < valuesosts.length; i++) {
+        for (var i = 0; i < values.length; i++) {
           if (Date.parse(values[i].createdAt) < Date.parse(cursor) ) {
             start = i;
             i = values.length;          
