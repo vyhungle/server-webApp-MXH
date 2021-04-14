@@ -26,7 +26,7 @@ module.exports = {
         }
       }
       const postHas = new PaginatedPost({
-        hasMore: limit <= values.length - start,
+        hasMore: limit < values.length - start,
         posts: values.splice(start, limit),
       });
       return postHas;
