@@ -16,6 +16,11 @@ module.exports = {
         const post = posts.find((p) => p.username === u.username);
         post ? values.push(post) : null;
       });
+      //sort
+      values.sort(function(a,b){
+        return Date.parse(b.createdAt)-Date.parse(a.createdAt);
+      })
+      //curosr
       var start = 0;
       if (cursor) {
         for (var i = 0; i < values.length; i++) {
@@ -45,6 +50,7 @@ module.exports = {
           }
         }
       }
+
       if (limit > values.length - start) {
         hasMore = false;
       }
