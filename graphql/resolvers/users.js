@@ -271,22 +271,24 @@ module.exports = {
           await me.save()
 
           //update post
-          const posts = await Post.find()
-          for (var i = 0; i < posts.length; i++) {
-            if (posts[i].username === user.username) {
-              posts[i].displayname = fullName
-              posts[i].avatar = uri
+          const posts=await Post.find();
+          posts.map((p)=>{
+            if(p.username===user.username){
+              p.displayname=fullName
+              p.avatar=uri
             }
-            for (var j = 0; j < posts[i].comments.length; j++) {
-              if (posts[i].comments[j].username === user.username) {
-                posts[i].comments[j].displayname = fullName
-                posts[i].comments[j].avatar = uri
+            p.comments.map((cm)=>{
+              if(cm.username===user.username){
+                cm.displayname=fullName
+                cm.avatar=uri
               }
-            }
-            await posts[i].save();
-          }
-          //update chat
-
+            })
+            p.likes.map((l)=>{
+              l.displayname=fullName
+              l.avatar=uri
+            })
+            p.save();
+          })
           return me
         }
         else throw new Error("Người dùng này không tồn tại");
