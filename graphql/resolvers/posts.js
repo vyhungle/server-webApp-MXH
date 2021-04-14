@@ -11,15 +11,15 @@ module.exports = {
       const ct = checkAuth(context);
       const user = await User.findOne({ username: ct.username });
       const posts = await Post.find().sort({ createdAt: -1 });
-      var values = await Post.find({username:user.username});
+      var values = await Post.find({ username: user.username });
       user.following.map((u) => {
         const post = posts.find((p) => p.username === u.username);
         post ? values.push(post) : null;
       });
       //sort
-      values.sort(function(a,b){
-        return Date.parse(b.createdAt)-Date.parse(a.createdAt);
-      })
+      values.sort(function (a, b) {
+        return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      });
       //curosr
       var start = 0;
       if (cursor) {
@@ -101,8 +101,8 @@ module.exports = {
         user: user.id,
         username: user.username,
         createdAt: new Date().toISOString(),
-        displayname: user.displayname,
-        avatar: user.profile.avatar,
+        displayname: me.displayname,
+        avatar: me.profile.avatar,
       });
       const post = await newPost.save();
       context.pubsub.publish("NEW_POST", {
