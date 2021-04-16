@@ -284,8 +284,10 @@ module.exports = {
               }
             })
             p.likes.map((l)=>{
-              l.displayname=fullName
-              l.avatar=uri
+              if(l.username===user.username){
+                l.displayname=fullName
+                l.avatar=uri
+              }
             })
             p.save();
           })
