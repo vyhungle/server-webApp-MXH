@@ -70,10 +70,13 @@ module.exports = {
         var values=[];     
         user.map((u)=>{
           var flag=0;
-          u.follower.map((f)=>{
+          if(u.username!==ct.username){
+            u.follower.map((f)=>{
               if(f.username===ct.username) flag=1;
           })
           if(flag===0) values.push(u)
+          }
+        
         })
 
         if (values) {
