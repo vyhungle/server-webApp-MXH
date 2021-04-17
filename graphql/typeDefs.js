@@ -114,6 +114,11 @@ module.exports=gql`
         username:String!,
         avatar:String!,
         whose:String!
+        watched:Boolean!
+    }
+    type Notifications{
+        count:String!
+        notifications:[Notification]
     }
     input RegisterInput {
         username:String!
@@ -138,7 +143,7 @@ module.exports=gql`
         getGroup(groupId:ID!):GroupChat
         getGroupChat:[GroupChat]
 
-        getNotification:[Notification]
+        getNotification:Notifications
       
         
     }

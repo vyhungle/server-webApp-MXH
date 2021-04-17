@@ -8,6 +8,7 @@ const notificationSchema = new Schema({
     username:String,
     avatar:String,
     whose:String,
+    watched:Boolean,
 });
 
 module.exports = model('Notification', notificationSchema);

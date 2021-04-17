@@ -151,6 +151,7 @@ module.exports = {
             username,
             avatar: user.profile.avatar,
             whose:post.username,
+            watched:false,
           })   
           const notification = await newNotification.save();  
           context.pubsub.publish("NEW_NOTIFICATION", {
