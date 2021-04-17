@@ -62,8 +62,32 @@ module.exports = {
         throw new Error(err)
       }
     },
+    async getUserFollowing(_,{},context){
+      try {
+        const ct = checkAuth(context);
+        const user = await User.find();
+        console.log(user)
+        var values=[];     
+        user.map((u)=>{
+          var flag=0;
+          u.follower.map((f)=>{
+              if(f.username===ct.username) flag=1;
+          })
+          if(flag===0) values.push(u)
+        })
 
+        if (values) {
+          return values;
+        }
+        else {
+          throw new Error("Khong tim thay nguoi dung")
+        }
+      } catch (error) {
+        throw new Error(err)
+      }
+    }
   },
+
   Mutation: {
     async login(_, { username, password }) {
       const { errors, valid } = validateLoginInput(username, password);
