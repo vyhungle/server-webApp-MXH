@@ -105,12 +105,23 @@ module.exports=gql`
         avatar:String
         story:String
     }
+    type Notification{
+        id:ID!,
+        type:String!,
+        title:String!,
+        createdAt:String!,
+        displayname:String!,
+        username:String!,
+        avatar:String!,
+        whose:String!
+    }
     input RegisterInput {
         username:String!
         password:String!
         confirmPassword: String!
         email: String!
         displayname:String!
+       
     }
     type Query{
         getPosts(cursor:String,limit:Int!):PaginatedPost!
@@ -127,6 +138,7 @@ module.exports=gql`
         getGroup(groupId:ID!):GroupChat
         getGroupChat:[GroupChat]
 
+        getNotification:[Notification]
       
         
     }

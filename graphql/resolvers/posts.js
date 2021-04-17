@@ -1,6 +1,7 @@
 const { AuthenticationError, UserInputError } = require("apollo-server");
 
 const Post = require("../../models/Post");
+const Notification=require("../../models/Notification");
 const PaginatedPost = require("../../models/PaginatedPost");
 const checkAuth = require("../../util/check-auth");
 const cloudinary = require("cloudinary");
@@ -128,9 +129,7 @@ module.exports = {
     },
     async likePost(_, { postId }, context) {
       const { username } = checkAuth(context);
-
       const user = await User.findOne({ username: username });
-      /*  console.log(user.displayname,user.profile.avatar) */
       const post = await Post.findById(postId);
       if (post) {
         if (post.likes.find((like) => like.username === username)) {
@@ -144,8 +143,20 @@ module.exports = {
             displayname: user.displayname,
             avatar: user.profile.avatar,
           });
+          const newNotification=new Notification({
+            type:"Like",
+            title:`${user.displayname} đã thích bài viết của bạn`,
+            createdAt:new Date().toISOString(),
+            displayname: user.displayname,
+            username,
+            avatar: user.profile.avatar,
+            whose:post.username,
+          })   
+          const notification = await newNotification.save();  
+          context.pubsub.publish("NEW_NOTIFICATION", {
+            newNotification: notification,
+          }); 
         }
-
         await post.save();
         return post;
       } else throw new UserInputError("Post not found");

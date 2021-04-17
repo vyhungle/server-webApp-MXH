@@ -66,7 +66,6 @@ module.exports = {
       try {
         const ct = checkAuth(context);
         const user = await User.find();
-        console.log(user)
         var values=[];     
         user.map((u)=>{
           var flag=0;
