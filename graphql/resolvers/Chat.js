@@ -24,10 +24,19 @@ module.exports = {
                 if(roomId===""){
                    const values =await Chat.find();
                    const chats=values.filter(t=>t.to.username===user.username || t.from.username===user.username)
+                   if(chats[0].from.username===user.username){
+                       var tam=chats[0].to;
+                       chats[0].to=chats[0].form;
+                       chats[0].form=tam;
+                   }
                    chat=chats[0];
                 }
                 else chat= await Chat.findById(roomId);
                 if (chat) {
+                
+                    if(chat.from.username===user.username){                 
+                      chat.from=chat.to                  
+                    }
                     return chat;
                 }
                 else throw new Error("Phong nay khong ton tai")
