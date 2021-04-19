@@ -3,6 +3,7 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 const checkAuth = require('../../util/check-auth');
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const Notification = require('../../models/Notification');
 
 module.exports = {
   Mutation: {
@@ -32,6 +33,20 @@ module.exports = {
                 avatar:me.profile.avatar
                 });
                 await post.save();
+                const newNotification=new Notification({
+                  type:"Comment",
+                  title:`đã bình luận về bài viết của bạn`,
+                  createdAt:new Date().toISOString(),
+                  displayname: me.displayname,
+                  username,
+                  avatar: me.profile.avatar,
+                  whose:post.username,
+                  watched:false,
+                })   
+                const notification = await newNotification.save();  
+                context.pubsub.publish("NEW_NOTIFICATION", {
+                  newNotification: notification,
+                }); 
                 return post;
             } else throw new UserInputError('Post not found');
         },

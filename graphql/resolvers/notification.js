@@ -15,6 +15,7 @@ module.exports = {
             notification.map((n)=>{
                 if(n.watched===false) count++;
             })
+            notification.reverse()
             const notifications={
                 count,
                 notifications:notification
