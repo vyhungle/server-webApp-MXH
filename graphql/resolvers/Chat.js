@@ -29,7 +29,9 @@ module.exports = {
                        chats[0].to=chats[0].form;
                        chats[0].form=tam;
                    }
+                   
                    chat=chats[0];
+                  
                 }
                 else chat= await Chat.findById(roomId);
                 if (chat) {
@@ -37,6 +39,7 @@ module.exports = {
                     if(chat.from.username===user.username){                 
                       chat.from=chat.to                  
                     }
+                    chat.content.reverse();
                     return chat;
                 }
                 else throw new Error("Phong nay khong ton tai")
