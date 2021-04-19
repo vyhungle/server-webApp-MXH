@@ -20,20 +20,7 @@ module.exports = {
             try {
                 
                 const user=checkAuth(context)
-                var chat;
-                if(roomId===""){
-                   const values =await Chat.find();
-                   const chats=values.filter(t=>t.to.username===user.username || t.from.username===user.username)
-                   if(chats[0].from.username===user.username){
-                       var tam=chats[0].to;
-                       chats[0].to=chats[0].form;
-                       chats[0].form=tam;
-                   }
-                   
-                   chat=chats[0];
-                  
-                }
-                else chat= await Chat.findById(roomId);
+                const chat= await Chat.findById(roomId);
                 if (chat) {
                 
                     if(chat.from.username===user.username){                 
@@ -57,17 +44,11 @@ module.exports = {
             try {
                const chat=await Chat.find();
                chat.forEach(element => {
-                    if(element.from.username===username || element.to.username===username){
+                    if(element.members[0].username===username || element.members[1].username===username){
                         values.push(element);
                     }
-                });
-               values.forEach(element => {
-                   if(element.to.username==username){              
-                       let tam=element.to;
-                       element.to=element.from;
-                       element.from= tam;            
-                   }                
-               });
+                    
+                });        
              
                 return  values;
             }
@@ -81,20 +62,21 @@ module.exports = {
         async createRoomChat(_, { userId }, context) {
             const user = checkAuth(context);
             const to= await User.findById(userId);
+         
             const from= await User.findOne({username:user.username})
             const chat= await Chat.find();
             var dk=1;
             try {
-                chat.forEach(element => {
-                    if((element.to.username===to.username && element.from.username===from.username) 
-                    || (element.to.username===from.username && element.from.username===to.username)){
+                chat.forEach(element => {                 
+                  if((element.members[0].username===to.username && element.members[1].username===from.username) ||   
+                    (element.members[0].username===from.username && element.members[1].username===to.username)){
                         dk=0;
                     }
                 });
-                if(dk==1){
+                if(dk==1 && to && from){
+                    const members=[];members.push(to);members.push(from);
                     const room=new Chat({
-                        from,
-                        to,                 
+                        members                
                     })
                     room.save();     
                     return room; 

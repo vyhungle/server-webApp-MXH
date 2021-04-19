@@ -46,6 +46,7 @@ module.exports=gql`
         from:User!
         to:User!
         content:[Chat]!
+        members:[User]!
     }
     type GroupChat{
         id:ID!

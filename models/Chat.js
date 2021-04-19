@@ -37,6 +37,24 @@ const chatSchema = new Schema({
           following: String,
         },
     },
+    members:[{
+      username: String,
+        email: String,
+        createdAt: String,
+        displayname: String,
+        friends: [{
+          username: String,
+          createdAt: String,
+        }],
+        profile:{
+          avatar: String,
+          dateOfBirth: String,
+          fullName: String,
+          story: String,
+          follower: String,
+          following: String,
+        },
+    }],
     content: [
         {
             displayname:String,
