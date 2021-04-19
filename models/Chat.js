@@ -1,37 +1,52 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require("mongoose");
 
 const chatSchema = new Schema({
-   
-    members:[{
+  members: [
+    {
       username: String,
-        email: String,
-        createdAt: String,
-        displayname: String,
-        friends: [{
+      password: String,
+      email: String,
+      createdAt: String,
+      displayname: String,
+      following: [
+        {
           username: String,
           createdAt: String,
-        }],
-        profile:{
+          displayname: String,
           avatar: String,
-          dateOfBirth: String,
-          fullName: String,
           story: String,
-          follower: String,
-          following: String,
         },
-    }],
-    content: [
+      ],
+      follower: [
         {
-            displayname:String,
-            username: String,
-            createdAt: String,
-            content: String
-        }
-    ],
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
-      }
+          username: String,
+          createdAt: String,
+          displayname: String,
+          avatar: String,
+          story: String,
+        },
+      ],
+      profile: {
+        avatar: String,
+        dateOfBirth: String,
+        fullName: String,
+        story: String,
+        coverImage: String,
+      },
+    },
+  ],
+  content: [
+    {
+      displayname: String,
+      username: String,
+      createdAt: String,
+      content: String,
+    },
+  ],
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
 });
 
-module.exports = model('Chat', chatSchema);
+module.exports = model("Chat", chatSchema);
