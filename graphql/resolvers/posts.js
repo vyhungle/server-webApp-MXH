@@ -145,7 +145,7 @@ module.exports = {
           });
           const newNotification=new Notification({
             type:"Like",
-            title:`${user.displayname} đã thích bài viết của bạn`,
+            title:`đã thích bài viết của bạn`,
             createdAt:new Date().toISOString(),
             displayname: user.displayname,
             username,
