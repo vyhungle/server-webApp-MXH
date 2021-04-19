@@ -43,8 +43,6 @@ module.exports=gql`
 
     type RoomChat{
         id:ID!
-        from:User!
-        to:User!
         content:[Chat]!
         members:[User]!
     }

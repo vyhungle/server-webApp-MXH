@@ -18,14 +18,8 @@ module.exports = {
         },
         async getChat(_, { roomId },context) {
             try {
-                
-                const user=checkAuth(context)
                 const chat= await Chat.findById(roomId);
                 if (chat) {
-                
-                    if(chat.from.username===user.username){                 
-                      chat.from=chat.to                  
-                    }
                     chat.content.reverse();
                     return chat;
                 }
