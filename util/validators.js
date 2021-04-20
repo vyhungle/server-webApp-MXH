@@ -65,13 +65,13 @@ module.exports.validateRegisterInput = (
       errors += 'Giá sản phẩm không được bé hơn 0,price,'
     }
     if(address.trim()===""){
-      errors += 'Vui lòng chọn địa chỉ,address'
+      errors += 'Vui lòng chọn địa chỉ,address,'
     }
     if(body.trim()===""){
-      errors +='Nội dung sản phẩm không được để trống,body'
+      errors +='Nội dung sản phẩm không được để trống,body,'
     }
     if(category.trim()===""){
-      errors +='Vui lòng chọn thể loại cho sản phẩm,category'
+      errors +='Vui lòng chọn thể loại cho sản phẩm,category,'
     }
     return {
       errors,
