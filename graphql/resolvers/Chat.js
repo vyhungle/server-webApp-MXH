@@ -20,7 +20,7 @@ module.exports = {
             try {
                 const chat= await Chat.findById(roomId);
                 if (chat) {
-                    chat.content.reverse();
+                  
                     return chat;
                 }
                 else throw new Error("Phong nay khong ton tai")
@@ -39,7 +39,7 @@ module.exports = {
                const chat=await Chat.find();
                chat.forEach(element => {
                     if(element.members[0].username===username || element.members[1].username===username){
-                        element.content.reverse()
+                      
                         values.push(element);
                     }                   
                     
