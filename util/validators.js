@@ -53,7 +53,7 @@ module.exports.validateRegisterInput = (
   module.exports.validateProductInput=( image,price,address,body,category )=>{
     var errors="";
     if(image.trim()===""){
-      errors += 'Vui lòng chọn hình cho sản phẩm,immage,'
+      errors += 'Vui lòng chọn hình cho sản phẩm,image,'
     }
     if(price.trim()===""){
       errors += 'Giá sản phẩm không được để trống,price,'
