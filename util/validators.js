@@ -50,6 +50,35 @@ module.exports.validateRegisterInput = (
     };
   };
   
+  module.exports.validateProductInput=( image,price,address,body,category )=>{
+    var errors="";
+    if(image.trim()===""){
+      errors += 'Vui lòng chọn hình cho sản phẩm,immage,'
+    }
+    if(price.trim()===""){
+      errors += 'Giá sản phẩm không được để trống,price,'
+    }
+    else if(!parseInt(price.trim())){
+      errors += 'Giá sản phẩm phải được nhập bằng số,price,'
+    }
+    else if(parseInt(price.trim())<0){
+      errors += 'Giá sản phẩm không được bé hơn 0,price,'
+    }
+    if(address.trim()===""){
+      errors += 'Vui lòng chọn địa chỉ,address,'
+    }
+    if(body.trim()===""){
+      errors +='Nội dung sản phẩm không được để trống,body'
+    }
+    if(category.trim()===""){
+      errors +='Vui lòng chọn thể loại cho sản phẩm,category'
+    }
+    return {
+      errors,
+      valid: Object.keys(errors).length < 1
+    };
+    
+  }
   
 
   

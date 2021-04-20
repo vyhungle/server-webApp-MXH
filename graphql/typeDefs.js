@@ -15,7 +15,8 @@ module.exports=gql`
         displayname:String!
         avatar:String
     }
-
+    
+  
     type File{
         url:String!
     }
@@ -83,6 +84,20 @@ module.exports=gql`
         error: [FieldError!]
         user: User!
     }
+    type Product{
+        id:ID!,
+        price:String!
+        body:String!,
+        address:String!
+        createdAt:String!,    
+        image:String!,
+        category:String!,   
+        seller:User!
+    }
+    type ProductResponse{
+        error: [FieldError!]
+        product: Product
+    }
 
     type FieldError {
         field: String!
@@ -143,7 +158,7 @@ module.exports=gql`
         getGroupChat:[GroupChat]
 
         getNotification:Notifications
-      
+        getProducts:[Product]
         
     }
     
@@ -166,6 +181,7 @@ module.exports=gql`
         following(username:String):User!
 
         editProfile(avatar:String, dateOfBirth:String, fullName:String! , story:String,coverImage:String):User!
+        createProduct(image:String!,price:String!,address:String!,body:String!,category:String!):ProductResponse!
     }
     type Subscription {
         newPost: Post!

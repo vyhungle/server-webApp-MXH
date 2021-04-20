@@ -4,6 +4,7 @@ const commentResolvers=require('./comment');
 const ChatsResolver=require('./Chat');
 const GroupChatReolver=require('./GroupChat');
 const NotificationResolver=require("./notification")
+const ProductResolver=require("./product");
 
 module.exports ={
     Post: {       
@@ -16,7 +17,7 @@ module.exports ={
         ...usersResolvers.Query,
         ...GroupChatReolver.Query,
         ...NotificationResolver.Query,
-
+        ...ProductResolver.Query
     },
     Mutation:{
         ...usersResolvers.Mutation,
@@ -24,6 +25,7 @@ module.exports ={
         ...commentResolvers.Mutation,
         ...ChatsResolver.Mutation,
         ...GroupChatReolver.Mutation,
+        ...ProductResolver.Mutation,
     },
     Subscription: {
         ...postsResolvers.Subscription
