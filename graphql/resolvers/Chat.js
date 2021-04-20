@@ -39,11 +39,12 @@ module.exports = {
                const chat=await Chat.find();
                chat.forEach(element => {
                     if(element.members[0].username===username || element.members[1].username===username){
+                        element.content.reverse()
                         values.push(element);
-                    }
+                    }                   
                     
                 });        
-             
+               
                 return  values;
             }
             catch (err) {
