@@ -10,6 +10,7 @@ const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
 const Chat = require('../../models/Chat.js');
 const UserResponse = require('../../models/UserResponse');
+const Notification =require("../../models/Notification")
 
 
 function generateToken(user) {
@@ -254,6 +255,22 @@ module.exports = {
             avatar: user.profile.avatar,
             story: user.profile.story,
           })
+
+          const newNotification=new Notification({
+            type:"Following",
+            title:`đã theo dõi bạn`,
+            createdAt:new Date().toISOString(),
+            displayname: user.displayname,
+            username,
+            avatar: user.profile.avatar,
+            whose:user2.username,
+            watched:false,
+          })   
+          const notification = await newNotification.save();  
+          context.pubsub.publish("NEW_NOTIFICATION", {
+            newNotification: notification,
+          }); 
+        
         }
         await user2.save();
         await user.save();
