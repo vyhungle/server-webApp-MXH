@@ -85,7 +85,7 @@ module.exports = {
           api_secret: "9ELOxX7cMOVowibJjcVMV9CdN2Y",
         });
         const result = await cloudinary.v2.uploader.upload(image, {
-          allowed_formats: ["jpg", "png"],
+          allowed_formats: ["jpg", "png" , "gif"],
           public_id: "",
           folder: "posts",
         });
