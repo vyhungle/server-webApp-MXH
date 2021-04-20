@@ -126,7 +126,7 @@ module.exports=gql`
         createdAt:String!,
         displayname:String!,
         username:String!,
-        avatar:String!,
+        avatar:String,
         whose:String!
         watched:Boolean!
     }
