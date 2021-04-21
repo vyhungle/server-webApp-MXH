@@ -215,7 +215,9 @@ module.exports = {
         confirmPassword,
         createdAt: new Date().toISOString(),
         displayname
+
       });
+      newUser.profile.fullName=displayname;
       const res = await newUser.save();
       const token = generateToken(res);
 

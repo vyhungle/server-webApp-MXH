@@ -31,7 +31,7 @@ module.exports=gql`
         username: String!
         displayname:String!
         body: String!
-        avatar:String!
+        avatar:String
        
     }
     type Like {
@@ -39,7 +39,7 @@ module.exports=gql`
         createdAt: String!
         username: String!
         displayname:String!
-        avatar:String!
+        avatar:String
     }
 
     type RoomChat{

@@ -20,7 +20,7 @@ module.exports = {
             try {
                 const chat= await Chat.findById(roomId);
                 if (chat) {
-                  
+                    
                     return chat;
                 }
                 else throw new Error("Phong nay khong ton tai")
