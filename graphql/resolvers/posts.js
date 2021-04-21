@@ -38,9 +38,9 @@ module.exports = {
       });
       return postHas;
     },
-    async getMyPosts(_, { cursor, limit }, context) {
-      const user = checkAuth(context);
-      const posts = await Post.find({ username: user.username });
+    async getMyPosts(_, {username, cursor, limit }, context) {
+      
+      const posts = await Post.find({ username: username });
       const values = posts.reverse();
       var start = 0;
       var hasMore = true;

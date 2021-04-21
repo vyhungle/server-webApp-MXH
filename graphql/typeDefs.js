@@ -145,7 +145,7 @@ module.exports=gql`
     type Query{
         getPosts(cursor:String,limit:Int!):PaginatedPost!
         getPost(postId: ID!): Post!
-        getMyPosts(cursor:String,limit:Int!):PaginatedPost!       
+        getMyPosts(username:String!,cursor:String,limit:Int!):PaginatedPost!       
         getChats:[RoomChat]
         getChat(roomId:ID):RoomChat
         getChatReverse(roomId:ID):RoomChat
