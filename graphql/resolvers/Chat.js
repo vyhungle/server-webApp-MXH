@@ -30,6 +30,20 @@ module.exports = {
                 throw new Error(err);
             }
         },
+        async getChatReverse(_, { roomId },context) {
+            try {
+                const chat= await Chat.findById(roomId);
+                if (chat) {
+                    chat.content.reverse();
+                    return chat;
+                }
+                else throw new Error("Phong nay khong ton tai")
+
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        },
         async getRoomChat(_, {  },context) {
             let values=[]
             
@@ -51,6 +65,8 @@ module.exports = {
                 throw new Error(err);
             }
         },
+       
+
 
     },
     Mutation: {

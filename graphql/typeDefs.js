@@ -148,11 +148,13 @@ module.exports=gql`
         getMyPosts(cursor:String,limit:Int!):PaginatedPost!       
         getChats:[RoomChat]
         getChat(roomId:ID):RoomChat
+        getChatReverse(roomId:ID):RoomChat
         getUsers:[User]
         getUser(username:String!):User
         getMyUser:User
         getUserFollowing:[User]
         getRoomChat:[RoomChat]
+      
         getGroups:[GroupChat]
         getGroup(groupId:ID!):GroupChat
         getGroupChat:[GroupChat]
