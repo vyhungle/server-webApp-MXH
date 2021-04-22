@@ -38,8 +38,7 @@ module.exports = {
       });
       return postHas;
     },
-    async getMyPosts(_, {username, cursor, limit }, context) {
-      
+    async getMyPosts(_, {username, cursor, limit }, context) {      
       const posts = await Post.find({ username: username });
       const values = posts.reverse();
       var start = 0;

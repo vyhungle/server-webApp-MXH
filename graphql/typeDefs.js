@@ -176,10 +176,11 @@ module.exports=gql`
         deleteComment(postId: ID!, commentId: ID!): Post!
         likePost(postId: ID!): Post!
         createRoomChat(userId:String!):RoomChat!
+        deleteRoomChat(roomId:ID!):String
         createContentChat(roomId:String!,content:String!):RoomChat!
         createGroupChat(body:String!):GroupChat!
         createContentGroupChat(groupId:String!,content:String!):GroupChat!
-        createMember(groupId:String!,username:String!):GroupChat!
+        createMember(groupId:String!,username:String!):GroupChat!       
         following(username:String):User!
 
         editProfile(avatar:String, dateOfBirth:String, fullName:String! , story:String,coverImage:String):User!

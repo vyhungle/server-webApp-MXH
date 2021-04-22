@@ -103,6 +103,16 @@ module.exports = {
 
 
         },
+        async deleteRoomChat(_,{roomId}){
+            const room=await Chat.findById(roomId);
+            if(room){
+                await room.delete()
+            }
+            else{
+                throw new Error("Khong tim thay phong nay")
+            }
+            return "Xoa thanh cong"
+        },
         async createContentChat(_, { roomId, content }, context) {
             const { username } = checkAuth(context);
             const user=await User.findOne({username:username})
