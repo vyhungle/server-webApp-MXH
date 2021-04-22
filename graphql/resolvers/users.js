@@ -292,12 +292,12 @@ module.exports = {
           api_secret: '9ELOxX7cMOVowibJjcVMV9CdN2Y'
         });
         const result = await cloudinary.v2.uploader.upload(avatar, {
-          allowed_formats: ["jpg", "png"],
+          allowed_formats: ["jpg", "png" ,"gif"],
           public_id: "",
           folder: "avatar",
         });
         const result2 = await cloudinary.v2.uploader.upload(coverImage, {
-          allowed_formats: ["jpg", "png"],
+          allowed_formats: ["jpg", "png","gif"],
           public_id: "",
           folder: "CoverImage",
         });
