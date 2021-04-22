@@ -340,6 +340,22 @@ module.exports = {
             })
             p.save();
           })
+          //update chat room
+          const roomChats=await Chat.find();
+          roomChats.map((r)=>{
+           r.members.map((m)=>{
+            if(m.username===user.username){
+              m.displayname=fullName,
+              m.profile.fullName=fullName,
+              m.profile.avatar=uri,
+              m.profile.dateOfBirth = dateOfBirth,
+              m.profile.fullName = fullName,
+              m.profile.story = story,
+              m.profile.coverImage = uriCover
+            }         
+           })
+           r.save();
+          })
           return me
         }
         else throw new Error("Người dùng này không tồn tại");
