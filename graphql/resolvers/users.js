@@ -285,26 +285,30 @@ module.exports = {
       try {
         const user = checkAuth(context);
         //save image
-        var uri = "", uriCover = "";
+        var uri = null,
+        uriCover = null;
         cloudinary.config({
           cloud_name: 'web-img',
           api_key: '539575672138879',
           api_secret: '9ELOxX7cMOVowibJjcVMV9CdN2Y'
         });
-        const result = await cloudinary.v2.uploader.upload(avatar, {
-          allowed_formats: ["jpg", "png" ,"gif"],
-          public_id: "",
-          folder: "avatar",
-        });
+        if(avatar!=null){
+          const result = await cloudinary.v2.uploader.upload(avatar, {
+            allowed_formats: ["jpg", "png" ,"gif"],
+            public_id: "",
+            folder: "avatar",
+          });
+          uri = result.url;
+        }
+       if(coverImage!=null){
         const result2 = await cloudinary.v2.uploader.upload(coverImage, {
           allowed_formats: ["jpg", "png","gif"],
           public_id: "",
           folder: "CoverImage",
         });
-
-        //edit profile
-        uri = result.url;
         uriCover = result2.url;
+       }
+        //edit profile
         const me = await User.findOne({ username: user.username });
         if (me) {
           me.displayname = fullName
