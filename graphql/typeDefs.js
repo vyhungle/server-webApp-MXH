@@ -161,6 +161,7 @@ module.exports=gql`
 
         getNotification:Notifications
         getProducts:[Product]
+        getProduct(productId:ID!):Product
         
     }
     

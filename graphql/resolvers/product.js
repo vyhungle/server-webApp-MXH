@@ -15,6 +15,13 @@ module.exports = {
         return products;
       }
       throw new Error("khong co product");
+    },
+    async getProduct(_,{productId}){
+        const product=await Product.findById(productId);
+        if(product){
+          return product;
+        }
+        throw new Error("San phan nay khong ton tai")
     }
   },
   Mutation: {
