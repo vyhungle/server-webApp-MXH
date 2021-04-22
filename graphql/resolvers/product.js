@@ -11,6 +11,7 @@ module.exports = {
     async getProducts(_,{}){
       const products=await Product.find();
       if(products){
+        products.reverse();
         return products;
       }
       throw new Error("khong co product");
@@ -63,7 +64,7 @@ module.exports = {
           body,
           address,
           createdAt: new Date().toISOString(),
-          image,
+          image:uri,
           category,
           seller,     
         });
