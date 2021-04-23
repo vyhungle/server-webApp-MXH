@@ -92,7 +92,8 @@ module.exports=gql`
         createdAt:String!,    
         image:String!,
         category:String!,   
-        seller:User!
+        seller:User!,
+        describe:String
     }
     type ProductResponse{
         error: [FieldError!]
@@ -154,7 +155,7 @@ module.exports=gql`
         getMyUser:User
         getUserFollowing:[User]
         getRoomChat:[RoomChat]
-      
+        
         getGroups:[GroupChat]
         getGroup(groupId:ID!):GroupChat
         getGroupChat:[GroupChat]
@@ -185,7 +186,10 @@ module.exports=gql`
         following(username:String):User!
 
         editProfile(avatar:String, dateOfBirth:String, fullName:String! , story:String,coverImage:String):User!
-        createProduct(image:String!,price:String!,address:String!,body:String!,category:String!):ProductResponse!
+        createProduct(image:String!,price:String!,
+                      address:String!,body:String!,
+                      category:String!,describe:String):ProductResponse!
+        setWatchedTrue:[Notification]
     }
     type Subscription {
         newPost: Post!

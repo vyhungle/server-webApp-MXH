@@ -29,5 +29,20 @@ module.exports = {
       }
     },
   },
+  Mutation:{
+    async setWatchedTrue(_,{},context){
+      const user=checkAuth(context);
+      const notification = await Notification.find({whose:user.username});
+      if(notification){
+        notification.map((n)=>{
+          n.watched=true;
+          n.save();
+        })
+        console.log(notification)
+        return notification;
+      }
+     
+    }
+  }
  
 };

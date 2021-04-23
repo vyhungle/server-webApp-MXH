@@ -26,6 +26,7 @@ module.exports ={
         ...ChatsResolver.Mutation,
         ...GroupChatReolver.Mutation,
         ...ProductResolver.Mutation,
+        ...NotificationResolver.Mutation
     },
     Subscription: {
         ...postsResolvers.Subscription

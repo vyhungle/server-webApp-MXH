@@ -25,13 +25,13 @@ module.exports = {
     }
   },
   Mutation: {
-    async createProduct(_, { image, price, address, body, category }, context) {
+    async createProduct(_, { image, price, address, body, category,describe }, context) {
       const { errors, valid } = validateProductInput(
         image,
         price,
         address,
         body,
-        category
+        category,      
       );
       var field = "";
       var message = "";
@@ -73,6 +73,7 @@ module.exports = {
           createdAt: new Date().toISOString(),
           image:uri,
           category,
+          describe,
           seller,     
         });
         const product = await newProduct.save();
