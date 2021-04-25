@@ -163,6 +163,12 @@ module.exports=gql`
         getNotification:Notifications
         getProducts:[Product]
         getProduct(productId:ID!):Product
+        getMyProducts:[Product]
+        getIncreasedProducts:[Product]
+        getDecreasedProducts:[Product]
+        FilterProducts(category:String!,address:String!):[Product]
+        FilterProductsByCategory(category:String!):[Product]
+        FilterProductsByAddress(address:String!):[Product]
         
     }
     
@@ -190,6 +196,8 @@ module.exports=gql`
                       address:String!,body:String!,
                       category:String!,describe:String):ProductResponse!
         setWatchedTrue:[Notification]
+
+        deleteProduct(productId:ID!):String!
     }
     type Subscription {
         newPost: Post!

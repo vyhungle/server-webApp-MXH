@@ -5,7 +5,7 @@ const Product = require("../../models/Product");
 const checkAuth = require("../../util/check-auth");
 const cloudinary = require("cloudinary");
 const User = require("../../models/User.js");
-const { validate } = require("../../models/Post");
+
 module.exports = {
   Query: {
     async getProducts(_,{}){
@@ -22,7 +22,66 @@ module.exports = {
           return product;
         }
         throw new Error("San phan nay khong ton tai")
-    }
+    },
+    async getMyProducts(_,{},context){
+      const ct=checkAuth(context);
+      const product=await Product.find();
+      const values= product.filter(x=>x.seller.username===ct.username)
+      if(values){
+        return values;
+      }
+      throw new Error("Ban khong co san pham")
+    },
+    async getIncreasedProducts(_,{}){
+      const product=await Product.find().sort({'price':1});   
+      if(product){
+        return product;
+      }
+      throw new Error("Ban khong co san pham")
+    },
+    async getDecreasedProducts(_,{}){
+      const product=await Product.find().sort({'price':-1});   
+      if(product){
+        return product;
+      }
+      throw new Error("Ban khong co san pham")
+    },
+    async FilterProducts(_,{category,address}){
+      const product=await Product.find()
+     
+      if(category==="ALL" && address!=="ALL"){
+        values=product.filter(x=>x.address===address)
+      }
+      else if(category!=="ALL" && address==="ALL"){
+        values=product.filter(x=>x.category===category)
+      }
+      else if(address==="ALL" && category==="ALL"){
+        values=product;
+      }
+      else{
+        values=product.filter(x=>x.category===category && x.address===address)
+      } 
+      if(values){
+        return values;
+      }
+      throw new Error("Ban khong co san pham")
+    },
+    async FilterProductsByCategory(_,{category}){
+      const product=await Product.find()
+      const values=product.filter(x=>x.category===category)
+      if(values){
+        return values;
+      }
+      throw new Error("Ban khong co san pham")
+    },
+    async FilterProductsByAddress(_,{address}){
+      const product=await Product.find()
+      const values=product.filter(x=>x.address===address)
+      if(values){
+        return values;
+      }
+      throw new Error("Ban khong co san pham")
+    },
   },
   Mutation: {
     async createProduct(_, { image, price, address, body, category,describe }, context) {
@@ -84,5 +143,16 @@ module.exports = {
       }
       return ProductResponse;
     },
+    async deleteProduct(_,{productId}){
+        const product=await Product.findById(productId)
+        if(product){
+          await product.delete();
+          return "Xoa thanh cong"
+        }
+        else{
+          throw new Error("Khong tim thay san pham nay")
+        }    
+        
+    }
   },
 };
