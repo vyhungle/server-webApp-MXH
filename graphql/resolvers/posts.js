@@ -76,26 +76,27 @@ module.exports = {
   },
   Mutation: {
     async createPost(_, { body, image }, context) {
-      var uri = "";
-      if (image) {
-        cloudinary.config({
-          cloud_name: "web-img",
-          api_key: "539575672138879",
-          api_secret: "9ELOxX7cMOVowibJjcVMV9CdN2Y",
-        });
-        const result = await cloudinary.v2.uploader.upload(image, {         
-          allowed_formats: ["jpg", "png" , "gif", "mp4"],
-          public_id: "",
-          folder: "posts",
-        });
-        uri = result.url;
-      }
+      var uri=[];
+     for(var i=0;i<image.length;i++){
+        if(image[i]) {
+          cloudinary.config({
+            cloud_name: "web-img",
+            api_key: "539575672138879",
+            api_secret: "9ELOxX7cMOVowibJjcVMV9CdN2Y",
+          });
+          const result =await cloudinary.v2.uploader.upload(image[i], {         
+            allowed_formats: ["jpg", "png" , "gif"],
+            public_id: "",
+            folder: "posts",
+          });
+          uri.push(result.url.toString());
+        }
+      };
       const user = checkAuth(context);
       const me = await User.findOne({ username: user.username });
       if (body.trim() === "") {
         throw new Error("Nội dung bài post không được để trống");
       }
-
       const newPost = new Post({
         body,
         image: uri,
@@ -109,6 +110,7 @@ module.exports = {
       context.pubsub.publish("NEW_POST", {
         newPost: post,
       });
+
       return post;
     },
     async deletePost(_, { postId }, context) {

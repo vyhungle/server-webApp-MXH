@@ -90,11 +90,12 @@ module.exports=gql`
         body:String!,
         address:String!
         createdAt:String!,    
-        image:String!,
+        image:[String],
         category:String!,   
         seller:User!,
         describe:String
     }
+  
     type ProductResponse{
         error: [FieldError!]
         product: Product
@@ -178,7 +179,7 @@ module.exports=gql`
         Upload(file: String!): String
         findUsers(displayname:String!):[User]
         
-        createPost(body: String,image:String):Post!
+        createPost(body: String,image:[String]):Post!
         deletePost(postId:ID!):String!
         createComment(postId: String!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post!

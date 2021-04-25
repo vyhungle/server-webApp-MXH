@@ -4,7 +4,9 @@ const postSchema = new Schema({
   body: String,
   username: String,
   createdAt: String,
-  image: String,
+  image:[
+   String,
+  ],
   verified: Boolean,
   displayname:String,
   avatar:String,
