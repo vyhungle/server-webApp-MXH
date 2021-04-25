@@ -52,7 +52,7 @@ module.exports.validateRegisterInput = (
   
   module.exports.validateProductInput=( image,price,address,body,category )=>{
     var errors="";
-    if(image.trim()===""){
+    if(image.length===0){
       errors += 'Vui lòng chọn hình cho sản phẩm,image,'
     }
     if(price.trim()===""){
