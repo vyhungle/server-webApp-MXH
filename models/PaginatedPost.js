@@ -7,7 +7,7 @@ const PaginatedPost = new Schema({
         username: String,
         createdAt: String,
         displayname: String,
-        image: String,
+        image:[String],
         verified: Boolean,
         avatar:String,
         comments: [

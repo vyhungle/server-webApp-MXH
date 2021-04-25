@@ -6,7 +6,7 @@ module.exports=gql`
         body:String!,
         createdAt:String!,
         username:String!, 
-        image:String
+        image:[String]
         verified:Boolean     
         comments: [Comment]!
         likes: [Like]!
@@ -90,7 +90,7 @@ module.exports=gql`
         body:String!,
         address:String!
         createdAt:String!,    
-        image:[String],
+        image:String,
         category:String!,   
         seller:User!,
         describe:String
