@@ -86,7 +86,7 @@ module.exports = gql`
     id: ID!
     price: String!
     body: String!
-    address: String!
+    address: Location
     createdAt: String!
     image: [String]
     category: Category
@@ -97,6 +97,11 @@ module.exports = gql`
     id:ID!,
     name:String!,
     slug:String!,
+  }
+  type Location{
+    id:ID!,
+    location:String!,
+    zipcode:String!,
   }
   type ProductResponse {
     error: [FieldError!]

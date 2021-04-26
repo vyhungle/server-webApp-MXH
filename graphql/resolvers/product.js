@@ -5,7 +5,8 @@ const Product = require("../../models/Product");
 const checkAuth = require("../../util/check-auth");
 const cloudinary = require("cloudinary");
 const User = require("../../models/User.js");
-const Category=require("../../models/Category");
+const Category = require("../../models/Category");
+const Location = require("../../models/Location");
 
 module.exports = {
   Query: {
@@ -28,18 +29,27 @@ module.exports = {
     async getProducts(_, { category, address, sort }) {
       sort === 1
         ? (product = await Product.find().sort({ price: 1 }))
-        : sort === undefined
+        : sort === undefined || sort === 0
         ? (product = await Product.find())
         : (product = await Product.find().sort({ price: -1 }));
-      if (category === undefined && address !== undefined) {
-        values = product.filter((x) => x.address === address);
-      } else if (category !== undefined && address === undefined) {
-        values = product.filter((x) => x.category === category);
-      } else if (address === undefined && category === undefined) {
+      if (
+        (address === undefined || address === "") &&
+        (category === undefined || category === "")
+      ) {
         values = product;
+      } else if (
+        (category !== undefined || category !== "") &&
+        (address === undefined || address === "")
+      ) {
+        values = product.filter((x) => x.category.slug === category);
+      } else if (
+        (category === undefined || category === "") &&
+        (address !== undefined || address !== "")
+      ) {
+        values = product.filter((x) => x.address.zipcode  === address);
       } else {
         values = product.filter(
-          (x) => x.category === category && x.address === address
+          (x) => x.category.slug === category && x.address.zipcode === address
         );
       }
       if (values) {
@@ -92,15 +102,16 @@ module.exports = {
           }
         }
         const user = checkAuth(context);
-        const categoties=await Category.findOne({name:category})
+        const categoties = await Category.findOne({ name: category });
+        const location=await Location.findOne({location:address});
         const seller = await User.findOne({ username: user.username });
         const newProduct = new Product({
           price,
           body,
-          address,
+          address:location,
           createdAt: new Date().toISOString(),
           image: uri,
-          category:categoties,
+          category: categoties,
           describe,
           seller,
         });
