@@ -89,11 +89,15 @@ module.exports = gql`
     address: String!
     createdAt: String!
     image: [String]
-    category: String!
+    category: Category
     seller: User!
     describe: String
   }
-
+  type Category{
+    id:ID!,
+    name:String!,
+    slug:String!,
+  }
   type ProductResponse {
     error: [FieldError!]
     product: Product

@@ -5,6 +5,7 @@ const Product = require("../../models/Product");
 const checkAuth = require("../../util/check-auth");
 const cloudinary = require("cloudinary");
 const User = require("../../models/User.js");
+const Category=require("../../models/Category");
 
 module.exports = {
   Query: {
@@ -91,6 +92,7 @@ module.exports = {
           }
         }
         const user = checkAuth(context);
+        const categoties=await Category.findOne({name:category})
         const seller = await User.findOne({ username: user.username });
         const newProduct = new Product({
           price,
@@ -98,7 +100,7 @@ module.exports = {
           address,
           createdAt: new Date().toISOString(),
           image: uri,
-          category,
+          category:categoties,
           describe,
           seller,
         });

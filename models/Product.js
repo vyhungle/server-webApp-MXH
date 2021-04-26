@@ -6,7 +6,10 @@ const productSchema = new Schema({
   address:String,
   createdAt:String,    
   image:[String],
-  category:String,
+  category:{
+    name:String,
+    slug:String,
+  },
   describe:String, 
   seller:{
     username: String,
