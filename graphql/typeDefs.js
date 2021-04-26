@@ -170,8 +170,11 @@ module.exports = gql`
     getNotification: Notifications
 
     getProduct(productId: ID!): Product
+  
     getMyProducts: [Product]
     getProducts(category: String, address: String, sort: Int): [Product]
+    getCategories: [Category]
+    getLocations: [Location]
   }
 
   type Mutation {

@@ -18,6 +18,22 @@ module.exports = {
       }
       throw new Error("khong co product");
     },
+    async getCategories(_, {}) {
+      const categories = await Category.find();
+      if (categories) {
+        categories;
+        return categories;
+      }
+      throw new Error("khong co product");
+    },
+    async getLocations(_, {}) {
+      const locations = await Location.find();
+      if (locations) {
+        locations;
+        return locations;
+      }
+      throw new Error("khong co product");
+    },
     async getProduct(_, { productId }) {
       const product = await Product.findById(productId);
       if (product) {
