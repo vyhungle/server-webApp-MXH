@@ -41,7 +41,15 @@ module.exports = {
       }
       throw new Error("San phan nay khong ton tai");
     },
-
+    async getMyProducts(_, {  },context) {
+      const ct=checkAuth(context);
+      const product = await Product.find();
+      product.filter((p)=>p.seller.username===ct.username)
+      if (product) {
+        return product;
+      }
+      throw new Error("San phan nay khong ton tai");
+    },
     async getProducts(_, { category, address, sort }) {
       sort === 1
         ? (product = await Product.find().sort({ price: 1 }))
