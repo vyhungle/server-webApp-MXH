@@ -15,6 +15,7 @@ const productSchema = new Schema({
   },
   describe:String, 
   seller:{
+    id:Schema.Types.ObjectId,
     username: String,
     password: String,
     email: String,

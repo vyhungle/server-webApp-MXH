@@ -142,7 +142,10 @@ module.exports = {
           image: uri,
           category: categoties,
           describe,
-          seller,
+          seller:{
+            ...seller.doc,
+            id:seller._id
+          }
         });
         const product = await newProduct.save();
         context.pubsub.publish("NEW_PRODUCT", {
