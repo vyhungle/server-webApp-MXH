@@ -143,7 +143,7 @@ module.exports = {
           category: categoties,
           describe,
           seller:{
-            ...seller.doc,
+            ...seller._doc,
             id:seller._id
           }
         });
