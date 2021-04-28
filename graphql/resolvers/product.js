@@ -41,21 +41,26 @@ module.exports = {
       }
       throw new Error("San phan nay khong ton tai");
     },
-    async getMyProducts(_, {  },context) {
-      const ct=checkAuth(context);
+    async getMyProducts(_, {}, context) {
+      const ct = checkAuth(context);
       const product = await Product.find();
-      product.filter((p)=>p.seller.username===ct.username)
+      product.filter((p) => p.seller.username === ct.username);
       if (product) {
         return product;
       }
       throw new Error("San phan nay khong ton tai");
     },
     async getProducts(_, { category, address, sort }) {
+      product = await Product.find();
       sort === 1
-        ? (product = await Product.find().sort({ price: 1 }))
+        ? product.sort(function (a, b) {
+            return a.price - b.price;
+          })
         : sort === undefined || sort === 0
         ? (product = await Product.find())
-        : (product = await Product.find().sort({ price: -1 }));
+        : product.sort(function (a, b) {
+            return b.price - a.price;
+          });
       if (
         (address === undefined || address === "") &&
         (category === undefined || category === "")
@@ -70,7 +75,7 @@ module.exports = {
         (category === undefined || category === "") &&
         (address !== undefined || address !== "")
       ) {
-        values = product.filter((x) => x.address.zipcode  === address);
+        values = product.filter((x) => x.address.zipcode === address);
       } else {
         values = product.filter(
           (x) => x.category.slug === category && x.address.zipcode === address
@@ -127,12 +132,12 @@ module.exports = {
         }
         const user = checkAuth(context);
         const categoties = await Category.findOne({ name: category });
-        const location=await Location.findOne({location:address});
+        const location = await Location.findOne({ location: address });
         const seller = await User.findOne({ username: user.username });
         const newProduct = new Product({
           price,
           body,
-          address:location,
+          address: location,
           createdAt: new Date().toISOString(),
           image: uri,
           category: categoties,
