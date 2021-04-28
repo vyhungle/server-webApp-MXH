@@ -44,9 +44,9 @@ module.exports = {
     async getMyProducts(_, {}, context) {
       const ct = checkAuth(context);
       const product = await Product.find();
-      product.filter((p) => p.seller.username === ct.username);
-      if (product) {
-        return product;
+      const values= product.filter((p) => p.seller.username === ct.username);
+      if (values) {
+        return values;
       }
       throw new Error("San phan nay khong ton tai");
     },
