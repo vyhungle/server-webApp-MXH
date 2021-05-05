@@ -128,7 +128,7 @@ module.exports = {
           createdAt: new Date().toISOString(),
           content,
           displayname: user.displayname,
-          image,
+          image:uri,
         });
         await chat.save();
         return chat;
