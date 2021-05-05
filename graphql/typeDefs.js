@@ -58,7 +58,8 @@ module.exports = gql`
     username: String!
     displayname: String!
     createdAt: String!
-    content: String!
+    content: String
+    image:String
   }
   type Member {
     id: ID!
@@ -190,9 +191,10 @@ module.exports = gql`
     likePost(postId: ID!): Post!
     createRoomChat(userId: String!): RoomChat!
     deleteRoomChat(roomId: ID!): String
-    createContentChat(roomId: String!, content: String!): RoomChat!
+    createContentChat(roomId: String!, content: String,image:String): RoomChat!
+
     createGroupChat(body: String!): GroupChat!
-    createContentGroupChat(groupId: String!, content: String!): GroupChat!
+    createContentGroupChat(groupId: String!, content: String! ): GroupChat!
     createMember(groupId: String!, username: String!): GroupChat!
     following(username: String): User!
 
