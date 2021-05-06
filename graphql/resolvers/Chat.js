@@ -92,6 +92,38 @@ module.exports = {
         throw new Error(error);
       }
     },
+    async createRoomChatUsername(_, { username }, context) {
+      const user = checkAuth(context);
+      const to = await User.findOne({username:username});
+
+      const from = await User.findOne({ username: user.username });
+      const chat = await Chat.find();
+      var dk = 1;
+      try {
+        chat.forEach((element) => {
+          if (
+            (element.members[0].username === to.username &&
+              element.members[1].username === from.username) ||
+            (element.members[0].username === from.username &&
+              element.members[1].username === to.username)
+          ) {
+            dk = 0;
+          }
+        });
+        if (dk == 1 && to && from) {
+          const members = [];
+          members.push(to);
+          members.push(from);
+          const room = new Chat({
+            members,
+          });
+          room.save();
+          return room;
+        } else throw new Error("Bạn đã là bạn của người này rồi");
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
     async deleteRoomChat(_, { roomId }) {
       const room = await Chat.findById(roomId);
       if (room) {
