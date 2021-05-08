@@ -163,6 +163,7 @@ module.exports = gql`
     getMyUser: User
     getUserFollowing: [User]
     getRoomChat: [RoomChat]
+    findUsers(displayname: String!): [User]
 
     getGroups: [GroupChat]
     getGroup(groupId: ID!): GroupChat
