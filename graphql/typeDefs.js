@@ -144,6 +144,26 @@ module.exports = gql`
     count: String!
     notifications: [Notification]
   }
+
+  type TypeGroup{
+    name:String!,
+    slug:String!
+  }
+
+  type Group{
+    leader:User!
+    admins:[User]
+    members:[User]!
+    typeGroup:TypeGroup!
+    name:String!,
+    imageCover:String!,
+    countMembers:String!,
+    public:Boolean!,
+    describe:String!,
+    posts:[Post]
+  }
+
+  
   input RegisterInput {
     username: String!
     password: String!
@@ -177,6 +197,9 @@ module.exports = gql`
     getProducts(category: String, address: String, sort: Int): [Product]
     getCategories: [Category]
     getLocations: [Location]
+
+
+    getTypeGroup:[TypeGroup]!
   }
 
   type Mutation {
@@ -190,7 +213,7 @@ module.exports = gql`
     createComment(postId: String!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
-    createRoomChat(userId: String!): RoomChat!
+    createRoomChat(userId: String!): String!
     createRoomChatUsername(username: String!): RoomChat!
     deleteRoomChat(roomId: ID!): String
     createContentChat(roomId: String!, content: String,image:String): RoomChat!

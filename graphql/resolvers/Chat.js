@@ -63,7 +63,6 @@ module.exports = {
     async createRoomChat(_, { userId }, context) {
       const user = checkAuth(context);
       const to = await User.findById(userId);
-
       const from = await User.findOne({ username: user.username });
       const chat = await Chat.find();
       var dk = 1;
@@ -86,15 +85,28 @@ module.exports = {
             members,
           });
           room.save();
-          return room;
-        } else throw new Error("Bạn đã là bạn của người này rồi");
+          return room.id;
+        } else {
+          const seller = await User.findById(userId);
+          const rooms = await Chat.find();
+          var rID = "";
+          rooms.map((r) => {
+            if (
+              r.members[0].username === user.username &&
+              r.members[1].username === seller.username
+            ) {
+              rID = r.id;
+            }
+          });
+          return rID;
+        }
       } catch (error) {
         throw new Error(error);
       }
     },
     async createRoomChatUsername(_, { username }, context) {
       const user = checkAuth(context);
-      const to = await User.findOne({username:username});
+      const to = await User.findOne({ username: username });
 
       const from = await User.findOne({ username: user.username });
       const chat = await Chat.find();
@@ -160,7 +172,7 @@ module.exports = {
           createdAt: new Date().toISOString(),
           content,
           displayname: user.displayname,
-          image:uri,
+          image: uri,
         });
         await chat.save();
         return chat;
