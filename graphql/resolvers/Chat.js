@@ -92,8 +92,9 @@ module.exports = {
           var rID = "";
           rooms.map((r) => {
             if (
-              r.members[0].username === user.username &&
-              r.members[1].username === seller.username
+            (  r.members[0].username === user.username &&
+              r.members[1].username === seller.username) ||( r.members[1].username === user.username &&
+                r.members[0].username === seller.username)
             ) {
               rID = r.id;
             }

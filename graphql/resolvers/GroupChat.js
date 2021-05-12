@@ -13,45 +13,45 @@ module.exports={
                 throw new Error(err);
             }
         },
-        async getGroup(_,{groupId}){
-            try{
+        // async getGroup(_,{groupId}){
+        //     try{
                 
-                const group=await GroupChat.findById(groupId);               
-                if(group){
-                    return group;
-                }
-                else throw new Error("Phong nay khong ton tai")
+        //         const group=await GroupChat.findById(groupId);               
+        //         if(group){
+        //             return group;
+        //         }
+        //         else throw new Error("Phong nay khong ton tai")
                 
-            }
-            catch(err){
-                throw new Error(err);
-            }
-        },
-        async getGroupChat(_,{},context){
-            try{
-                const user=checkAuth(context);
+        //     }
+        //     catch(err){
+        //         throw new Error(err);
+        //     }
+        // },
+        // async getGroupChat(_,{},context){
+        //     try{
+        //         const user=checkAuth(context);
                
-                const groups=await GroupChat.find()
-                const value=await GroupChat.find({leader:"aaaaaaaadd$#add@##^^^^"});
+        //         const groups=await GroupChat.find()
+        //         const value=await GroupChat.find({leader:"aaaaaaaadd$#add@##^^^^"});
 
-                for(var i=0;i<groups.length;i++){
-                    for(var j=0;j<groups[i].members.length;j++){
-                        if(groups[i].members[j].username===user.username){                          
-                            value.push(groups[i])    
-                        }
-                    }
-                }           
+        //         for(var i=0;i<groups.length;i++){
+        //             for(var j=0;j<groups[i].members.length;j++){
+        //                 if(groups[i].members[j].username===user.username){                          
+        //                     value.push(groups[i])    
+        //                 }
+        //             }
+        //         }           
                  
-                if(value){
-                    return value;
-                }
-                else throw new Error("nguoi dung nay k ton tai")
+        //         if(value){
+        //             return value;
+        //         }
+        //         else throw new Error("nguoi dung nay k ton tai")
                 
-            }
-            catch(err){
-                throw new Error(err);
-            }
-        },
+        //     }
+        //     catch(err){
+        //         throw new Error(err);
+        //     }
+        // },
     },
     Mutation:{
         async createGroupChat(_,{body},context){
