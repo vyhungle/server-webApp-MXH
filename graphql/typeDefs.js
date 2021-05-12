@@ -151,6 +151,7 @@ module.exports = gql`
   }
 
   type Group{
+    id:ID!,
     leader:User!
     admins:[User]
     members:[User]!
@@ -160,7 +161,8 @@ module.exports = gql`
     countMembers:String!,
     public:Boolean!,
     describe:String!,
-    posts:[Post]
+    posts:[Post],
+    createdAt:String!,
   }
 
   
@@ -242,6 +244,16 @@ module.exports = gql`
     setWatchedTrue: [Notification]
 
     deleteProduct(productId: ID!): String!
+
+    createGroup(
+      name:String!,
+      describe:String!,
+      imageCover:String!,
+      typeGroup:String!,
+      public:Boolean!
+    ):Boolean!
+
+  
   }
   type Subscription {
     newPost: Post!

@@ -1,4 +1,4 @@
-export const User = {
+export default User = {
   username: String,
   password: String,
   email: String,
@@ -31,12 +31,12 @@ export const User = {
   },
 };
 
-export const TypeGroup = {
+export default TypeGroup = {
   name: String,
   slug: String,
 };
 
-export const Post = {
+export default Post = {
   body: String,
   username: String,
   createdAt: String,
