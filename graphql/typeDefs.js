@@ -187,7 +187,6 @@ module.exports = gql`
     getRoomChat: [RoomChat]
     findUsers(displayname: String!): [User]
 
-    # getGroups: [GroupChat]
     getGroup(groupId: ID!): GroupChat
     getGroupChat: [GroupChat]
 
@@ -221,9 +220,6 @@ module.exports = gql`
     deleteRoomChat(roomId: ID!): String
     createContentChat(roomId: String!, content: String,image:String): RoomChat!
 
-    createGroupChat(body: String!): GroupChat!
-    createContentGroupChat(groupId: String!, content: String! ): GroupChat!
-    createMember(groupId: String!, username: String!): GroupChat!
     following(username: String): User!
 
     editProfile(
@@ -253,6 +249,7 @@ module.exports = gql`
       public:Boolean!
     ):Boolean!
 
+    createPostInGroup(groupId:String!,body: String, image: [String]): Boolean!
   
   }
   type Subscription {
