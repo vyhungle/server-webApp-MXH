@@ -31,6 +31,7 @@ module.exports = {
       const posts=[];
       values.map((g)=>{
         g.posts.map((p)=>{
+          p.displayname=p.displayname+","+g.name;
           posts.push(p)
         })
       })
