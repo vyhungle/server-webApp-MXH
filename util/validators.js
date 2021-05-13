@@ -79,6 +79,28 @@ module.exports.validateRegisterInput = (
     };
     
   }
+
+
+  module.exports.validateGroupInput=( name,describe, imageCover, typeGroup, public )=>{
+    var errors="";
+    if(imageCover===""){
+      errors += 'Vui lòng chọn ảnh bìa,imageCover,'
+    }
+    if(name.trim()===""){
+      errors += 'Vui lòng nhập tên nhóm,name,'
+    }
+    if(describe.trim()===""){
+      errors += 'Vui lòng mô tả nhóm,describe,'
+    }
+    if(typeGroup.trim()===""){
+      errors +='Vui lòng chọn thể loại nhóm,typeGroup,'
+    }
+    return {
+      errors,
+      valid: Object.keys(errors).length < 1
+    };
+    
+  }
   
 
   

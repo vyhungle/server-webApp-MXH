@@ -4,6 +4,7 @@ const Post = require("../../models/Post");
 const Group = require("../../models/Group");
 const cloudinary = require("cloudinary");
 const checkAuth = require("../../util/check-auth");
+const { validateGroupInput } = require("../../util/validators");
 
 module.exports = {
   Query: {
@@ -25,7 +26,23 @@ module.exports = {
       context
     ) {
       try {
-        if (imageCover) {
+        const { errors, valid } = validateGroupInput(
+          name,
+          describe,
+          imageCover,
+          typeGroup
+        );
+  
+        var err = errors.split(",");
+        const groupResponse = { error: [], group: null };
+        if (!valid) {
+          for (var i = 0; i < err.length - 1; i = i + 2) {
+            groupResponse.error.push({
+              field: err[i + 1],
+              message: err[i],
+            });
+          }
+        } else {
           cloudinary.config({
             cloud_name: "web-img",
             api_key: "539575672138879",
@@ -37,27 +54,30 @@ module.exports = {
             folder: "Group",
           });
           imageCover = result.url.toString();
+  
+          const type = await TypeGroup.findOne({ name: typeGroup });
+          const ct = checkAuth(context);
+          const leader = await User.findOne({ username: ct.username });
+          const newGroup = new Group({
+            leader,
+            name,
+            describe,
+            imageCover,
+            typeGroup: type,
+            public,
+            createdAt: new Date().toISOString(),
+          });
+          const group = await newGroup.save();
+          context.pubsub.publish("NEW_GROUP", {
+            newGroup: group,
+          });
+          
+          groupResponse.group=group;
         }
-        const type = await TypeGroup.findOne({ name: typeGroup });
-        const ct = checkAuth(context);
-        const leader = await User.findOne({ username: ct.username });
-        if (type === null) return false;
-        const newGroup = new Group({
-          leader,
-          name,
-          describe,
-          imageCover,
-          typeGroup: type,
-          public,
-          createdAt: new Date().toISOString(),
-        });
-        const group = await newGroup.save();
-        context.pubsub.publish("NEW_GROUP", {
-          newGroup: group,
-        });
-        return true;
+  
+        return groupResponse;
       } catch (error) {
-        return false;
+        throw new Error ("zang source")
       }
     },
     async createPostInGroup(_, { groupId, body, image }, context) {

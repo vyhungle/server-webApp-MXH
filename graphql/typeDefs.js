@@ -164,7 +164,10 @@ module.exports = gql`
     posts:[Post],
     createdAt:String!,
   }
-
+  type GroupResponse {
+    error: [FieldError!]
+    group: Group
+  }
   
   input RegisterInput {
     username: String!
@@ -247,7 +250,7 @@ module.exports = gql`
       imageCover:String!,
       typeGroup:String!,
       public:Boolean!
-    ):Boolean!
+    ):GroupResponse!
 
     createPostInGroup(groupId:String!,body: String, image: [String]): Boolean!
   
