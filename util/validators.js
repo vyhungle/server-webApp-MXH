@@ -101,6 +101,22 @@ module.exports.validateRegisterInput = (
     };
     
   }
+
+
+  module.exports.checkUserInGroup=( username, leader, admin, members)=>{
+    if(username===leader.username) return true;
+    else{
+      admin.map((u)=>{
+        if(u.username===username) return true;
+      })
+      members.map((u)=>{
+        if(u.username===username) return true;
+      })
+    }
+    return false;
+    
+    
+  }
   
 
   

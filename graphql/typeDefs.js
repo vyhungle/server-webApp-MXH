@@ -205,6 +205,8 @@ module.exports = gql`
 
     getTypeGroup:[TypeGroup]!
     getGroups:[Group]!
+    getMyGroups:[Group]!
+    getPostInMyGroup:[Post]!
   }
 
   type Mutation {

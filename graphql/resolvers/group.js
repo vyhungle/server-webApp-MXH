@@ -4,7 +4,7 @@ const Post = require("../../models/Post");
 const Group = require("../../models/Group");
 const cloudinary = require("cloudinary");
 const checkAuth = require("../../util/check-auth");
-const { validateGroupInput } = require("../../util/validators");
+const { validateGroupInput, checkUserInGroup } = require("../../util/validators");
 
 module.exports = {
   Query: {
@@ -18,6 +18,25 @@ module.exports = {
       if (groups) return groups;
       else throw new Error("khong tim thay group");
     },
+    async getMyGroups(_, {}, context) {
+      const ct = checkAuth(context);
+      const groups=await Group.find();
+      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);
+      return values;
+    },
+    async getPostInMyGroup(_,{},context){
+      const ct = checkAuth(context);
+      const groups=await Group.find();
+      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);
+      const posts=[];
+      values.map((g)=>{
+        g.posts.map((p)=>{
+          posts.push(p)
+        })
+      })
+
+      return posts;
+    }
   },
   Mutation: {
     async createGroup(
@@ -32,7 +51,7 @@ module.exports = {
           imageCover,
           typeGroup
         );
-  
+
         var err = errors.split(",");
         const groupResponse = { error: [], group: null };
         if (!valid) {
@@ -54,7 +73,7 @@ module.exports = {
             folder: "Group",
           });
           imageCover = result.url.toString();
-  
+
           const type = await TypeGroup.findOne({ name: typeGroup });
           const ct = checkAuth(context);
           const leader = await User.findOne({ username: ct.username });
@@ -71,13 +90,13 @@ module.exports = {
           context.pubsub.publish("NEW_GROUP", {
             newGroup: group,
           });
-          
-          groupResponse.group=group;
+
+          groupResponse.group = group;
         }
-  
+
         return groupResponse;
       } catch (error) {
-        throw new Error ("zang source")
+        throw new Error("zang source");
       }
     },
     async createPostInGroup(_, { groupId, body, image }, context) {
