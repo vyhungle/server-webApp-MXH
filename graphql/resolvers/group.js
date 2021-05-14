@@ -5,6 +5,7 @@ const Group = require("../../models/Group");
 const cloudinary = require("cloudinary");
 const checkAuth = require("../../util/check-auth");
 const { validateGroupInput, checkUserInGroup } = require("../../util/validators");
+const { CountMembers, Posts } = require("../../util/function/group");
 
 module.exports = {
   Query: {
@@ -22,7 +23,8 @@ module.exports = {
       const ct = checkAuth(context);
       const groups=await Group.find();
       const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);
-      return values;
+      
+      return CountMembers(values);
     },
     async getPostInMyGroup(_,{},context){
       const ct = checkAuth(context);
@@ -36,7 +38,7 @@ module.exports = {
         })
       })
 
-      return posts;
+      return Posts(posts);
     }
   },
   Mutation: {
