@@ -16,14 +16,15 @@ module.exports = {
     },
     async getGroups(_, {}) {
       const groups = await Group.find();
-      if (groups) return groups;
+      if (groups) return CountMembers(groups);
       else throw new Error("khong tim thay group");
     },
     async getMyGroups(_, {}, context) {
       const ct = checkAuth(context);
       const groups=await Group.find();
-      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);      
+      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);  
       return CountMembers(values);
+
     },
     async getPostInMyGroup(_,{},context){
       const ct = checkAuth(context);
