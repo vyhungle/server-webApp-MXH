@@ -32,12 +32,15 @@ module.exports = {
       const posts=[];
       values.map((g)=>{
         g.posts.map((p)=>{
-          p.displayname=p.displayname+","+g.name;
-          posts.push(p)
+          const post=[];
+          post.posts=Posts(p);
+          post.groupId=g.id;
+          post.groupName=g.name;
+          posts.push(post);
         })
       })
-
-      return Posts(posts);
+      
+      return posts;
     },
     async getGroup(_,{groupId}){
       const group=await Group.findById(groupId);

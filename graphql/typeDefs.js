@@ -150,6 +150,7 @@ module.exports = gql`
     slug:String!
   }
 
+  
   type Group{
     id:ID!,
     leader:User!
@@ -163,6 +164,11 @@ module.exports = gql`
     describe:String!,
     posts:[Post],
     createdAt:String!,
+  }
+  type PostInGroup{
+    groupId:String!,
+    groupName:String!
+    posts:Post!
   }
   type GroupResponse {
     error: [FieldError!]
@@ -206,7 +212,7 @@ module.exports = gql`
     getTypeGroup:[TypeGroup]!
     getGroups:[Group]!
     getMyGroups:[Group]!
-    getPostInMyGroup:[Post]!
+    getPostInMyGroup:[PostInGroup]!
     getGroup(groupId:String!):Group!
   }
 

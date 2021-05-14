@@ -5,10 +5,8 @@ module.exports.CountMembers=(values)=>{
     return values;
 }
 
-module.exports.Posts=(values)=>{
-    values.map((x)=>{
-        x.commentCount=x.comments.length
-        x.likeCount=x.likes.length
-    })
-    return values;
+module.exports.Posts=(value)=>{
+        value.commentCount=value.comments.length
+        value.likeCount=value.likes.length
+    return value;
 }
