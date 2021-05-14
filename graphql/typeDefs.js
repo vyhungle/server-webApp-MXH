@@ -215,6 +215,7 @@ module.exports = gql`
     getPostInMyGroup:[PostInGroup]!
     getGroup(groupId:String!):Group!
     getCommentInGroup(groupId:String!,postId:String!):[Comment]!
+    getPostInGroup(groupId:String!,postId:String!):Post!
   }
 
   type Mutation {

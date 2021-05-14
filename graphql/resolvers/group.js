@@ -68,6 +68,14 @@ module.exports = {
       });
       return comments;
     },
+    async getPostInGroup(_,{groupId,postId}){
+      const group = await Group.findById(groupId);
+      var post;
+      group.posts.map((p)=>{
+        if(p.id===postId) post=p;
+      })
+      return post
+    }
   },
   Mutation: {
     async createGroup(
