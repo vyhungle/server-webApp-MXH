@@ -22,8 +22,7 @@ module.exports = {
     async getMyGroups(_, {}, context) {
       const ct = checkAuth(context);
       const groups=await Group.find();
-      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);
-      
+      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);      
       return CountMembers(values);
     },
     async getPostInMyGroup(_,{},context){
@@ -39,6 +38,10 @@ module.exports = {
       })
 
       return Posts(posts);
+    },
+    async getGroup(_,{groupId}){
+      const group=await Group.findById(groupId);
+      return group;
     }
   },
   Mutation: {
