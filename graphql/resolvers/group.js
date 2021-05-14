@@ -2,10 +2,14 @@ const TypeGroup = require("../../models/TypeGroup");
 const User = require("../../models/User");
 const Post = require("../../models/Post");
 const Group = require("../../models/Group");
+const Notification = require("../../models/Notification");
 const cloudinary = require("cloudinary");
 const checkAuth = require("../../util/check-auth");
-const { validateGroupInput, checkUserInGroup } = require("../../util/validators");
-const { CountMembers, Posts,RefGroup } = require("../../util/function/group");
+const {
+  validateGroupInput,
+  checkUserInGroup,
+} = require("../../util/validators");
+const { CountMembers, Posts, RefGroup } = require("../../util/function/group");
 
 module.exports = {
   Query: {
@@ -21,32 +25,37 @@ module.exports = {
     },
     async getMyGroups(_, {}, context) {
       const ct = checkAuth(context);
-      const groups=await Group.find();
-      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);  
+      const groups = await Group.find();
+      const values = groups.filter(
+        (x) =>
+          checkUserInGroup(ct.username, x.leader, x.admins, x.members) === true
+      );
       return CountMembers(values);
-
     },
-    async getPostInMyGroup(_,{},context){
+    async getPostInMyGroup(_, {}, context) {
       const ct = checkAuth(context);
-      const groups=await Group.find();
-      const values= groups.filter(x=>checkUserInGroup(ct.username,x.leader,x.admins,x.members)===true);
-      const posts=[];
-      values.map((g)=>{
-        g.posts.map((p)=>{
-          const post=[];
-          post.post=Posts(p);
-          post.groupId=g.id;
-          post.groupName=g.name;
+      const groups = await Group.find();
+      const values = groups.filter(
+        (x) =>
+          checkUserInGroup(ct.username, x.leader, x.admins, x.members) === true
+      );
+      const posts = [];
+      values.map((g) => {
+        g.posts.map((p) => {
+          const post = [];
+          post.post = Posts(p);
+          post.groupId = g.id;
+          post.groupName = g.name;
           posts.push(post);
-        })
-      })
-      
+        });
+      });
+
       return posts;
     },
-    async getGroup(_,{groupId}){
-      const group=await Group.findById(groupId);
-      return  RefGroup(group);
-    }
+    async getGroup(_, { groupId }) {
+      const group = await Group.findById(groupId);
+      return RefGroup(group);
+    },
   },
   Mutation: {
     async createGroup(
@@ -101,7 +110,7 @@ module.exports = {
             newGroup: group,
           });
 
-          group.countMembers=1;
+          group.countMembers = 1;
           groupResponse.group = group;
         }
 
@@ -151,5 +160,79 @@ module.exports = {
         return false;
       }
     },
+    async likePostInGroup(_, { groupId, postId }, context) {
+      const ct = checkAuth(context);
+      const user = await User.findOne({ username: ct.username });
+      const group = await Group.findById(groupId);
+      var ref = "khong tim thay post!";
+      group.posts.map(async (p) => {
+        if (p.id === postId) {
+          if (p.likes.find((like) => like.username === ct.username)) {
+            // Post already likes, unlike it
+            p.likes = p.likes.filter((like) => like.username !== ct.username);
+            ref = "Dislike";
+          } else {
+            // Not liked, like post
+            p.likes.push({
+              username: user.username,
+              createdAt: new Date().toISOString(),
+              displayname: user.displayname,
+              avatar: user.profile.avatar,
+            });
+            const newNotification = new Notification({
+              type: "Like",
+              title: `đã thích bài viết của bạn trong ${group.name}`,
+              createdAt: new Date().toISOString(),
+              displayname: user.displayname,
+              username: user.username,
+              avatar: user.profile.avatar,
+              whose: p.username,
+              watched: false,
+            });
+            const notification = await newNotification.save();
+            context.pubsub.publish("NEW_NOTIFICATION", {
+              newNotification: notification,
+            });
+            ref = "Like";
+          }
+        }
+      });
+      await group.save();
+      return ref;
+    },
+    async CommentPostInGroup(_,{groupId,postId,body},context){
+      const ct=checkAuth(context);
+      const user=await User.findOne({username:ct.username});
+      const group=await Group.findById(groupId);
+      let ref=false
+      group.posts.map(async(p)=>{
+        if(p.id===postId){
+          p.comments.unshift({
+            body,
+            username:user.username,
+            createdAt: new Date().toISOString(),
+            displayname:user.displayname,
+            avatar:user.profile.avatar
+            });
+            const newNotification=new Notification({
+              type:"Comment",
+              title:`đã bình luận về bài viết của bạn trong ${group.name}`,
+              createdAt:new Date().toISOString(),
+              displayname: user.displayname,
+              username:user.username,
+              avatar: user.profile.avatar,
+              whose:p.username,
+              watched:false,
+            })   
+            const notification = await newNotification.save();  
+            context.pubsub.publish("NEW_NOTIFICATION", {
+              newNotification: notification,
+            }); 
+            ref=true
+        }
+      })
+      await group.save();
+      return ref;
+    }
   },
 };

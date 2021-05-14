@@ -262,7 +262,8 @@ module.exports = gql`
     ):GroupResponse!
 
     createPostInGroup(groupId:String!,body: String, image: [String]): Boolean!
-  
+    likePostInGroup(groupId:String!,postId:String!):String!
+    CommentPostInGroup(groupId:String!,postId:String!,body:String!):Boolean!
   }
   type Subscription {
     newPost: Post!
