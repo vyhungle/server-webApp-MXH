@@ -56,6 +56,18 @@ module.exports = {
       const group = await Group.findById(groupId);
       return RefGroup(group);
     },
+    async getCommentInGroup(_, { groupId, postId }) {
+      const group = await Group.findById(groupId);
+      const comments = [];
+      group.posts.map((p) => {
+        if (p.id === postId) {
+          p.comments.map((c) => {
+            comments.push(c);
+          });
+        }
+      });
+      return comments;
+    },
   },
   Mutation: {
     async createGroup(
@@ -200,39 +212,39 @@ module.exports = {
       await group.save();
       return ref;
     },
-    async CommentPostInGroup(_,{groupId,postId,body},context){
-      const ct=checkAuth(context);
-      const user=await User.findOne({username:ct.username});
-      const group=await Group.findById(groupId);
-      let ref=false
-      group.posts.map(async(p)=>{
-        if(p.id===postId){
+    async CommentPostInGroup(_, { groupId, postId, body }, context) {
+      const ct = checkAuth(context);
+      const user = await User.findOne({ username: ct.username });
+      const group = await Group.findById(groupId);
+      let ref = false;
+      group.posts.map(async (p) => {
+        if (p.id === postId) {
           p.comments.unshift({
             body,
-            username:user.username,
+            username: user.username,
             createdAt: new Date().toISOString(),
-            displayname:user.displayname,
-            avatar:user.profile.avatar
-            });
-            const newNotification=new Notification({
-              type:"Comment",
-              title:`đã bình luận về bài viết của bạn trong ${group.name}`,
-              createdAt:new Date().toISOString(),
-              displayname: user.displayname,
-              username:user.username,
-              avatar: user.profile.avatar,
-              whose:p.username,
-              watched:false,
-            })   
-            const notification = await newNotification.save();  
-            context.pubsub.publish("NEW_NOTIFICATION", {
-              newNotification: notification,
-            }); 
-            ref=true
+            displayname: user.displayname,
+            avatar: user.profile.avatar,
+          });
+          const newNotification = new Notification({
+            type: "Comment",
+            title: `đã bình luận về bài viết của bạn trong ${group.name}`,
+            createdAt: new Date().toISOString(),
+            displayname: user.displayname,
+            username: user.username,
+            avatar: user.profile.avatar,
+            whose: p.username,
+            watched: false,
+          });
+          const notification = await newNotification.save();
+          context.pubsub.publish("NEW_NOTIFICATION", {
+            newNotification: notification,
+          });
+          ref = true;
         }
-      })
+      });
       await group.save();
       return ref;
-    }
+    },
   },
 };
