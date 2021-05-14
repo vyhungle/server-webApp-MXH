@@ -190,8 +190,8 @@ module.exports = gql`
     getRoomChat: [RoomChat]
     findUsers(displayname: String!): [User]
 
-    getGroup(groupId: ID!): GroupChat
-    getGroupChat: [GroupChat]
+    # getGroup(groupId: ID!): GroupChat
+    # getGroupChat: [GroupChat]
 
     getNotification: Notifications
 
@@ -207,7 +207,7 @@ module.exports = gql`
     getGroups:[Group]!
     getMyGroups:[Group]!
     getPostInMyGroup:[Post]!
-    getGroup:[Group]!
+    getGroup(groupId:String!):Group!
   }
 
   type Mutation {
