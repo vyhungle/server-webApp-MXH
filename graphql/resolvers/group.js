@@ -5,7 +5,7 @@ const Group = require("../../models/Group");
 const cloudinary = require("cloudinary");
 const checkAuth = require("../../util/check-auth");
 const { validateGroupInput, checkUserInGroup } = require("../../util/validators");
-const { CountMembers, Posts } = require("../../util/function/group");
+const { CountMembers, Posts,RefGroup } = require("../../util/function/group");
 
 module.exports = {
   Query: {
@@ -44,7 +44,7 @@ module.exports = {
     },
     async getGroup(_,{groupId}){
       const group=await Group.findById(groupId);
-      return group;
+      return  RefGroup(group);
     }
   },
   Mutation: {

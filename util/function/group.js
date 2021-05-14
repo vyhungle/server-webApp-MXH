@@ -10,3 +10,8 @@ module.exports.Posts=(value)=>{
         value.likeCount=value.likes.length
     return value;
 }
+
+module.exports.RefGroup=(values)=>{ 
+        values.countMembers=values.members.length+1+values.admins.length;
+    return values;
+}
