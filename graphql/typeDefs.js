@@ -168,7 +168,7 @@ module.exports = gql`
   type PostInGroup{
     groupId:String!,
     groupName:String!
-    posts:Post!
+    post:Post!
   }
   type GroupResponse {
     error: [FieldError!]

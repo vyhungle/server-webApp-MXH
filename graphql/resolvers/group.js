@@ -33,7 +33,7 @@ module.exports = {
       values.map((g)=>{
         g.posts.map((p)=>{
           const post=[];
-          post.posts=Posts(p);
+          post.post=Posts(p);
           post.groupId=g.id;
           post.groupName=g.name;
           posts.push(post);
