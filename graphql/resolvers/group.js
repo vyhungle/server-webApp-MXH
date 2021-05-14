@@ -101,6 +101,7 @@ module.exports = {
             newGroup: group,
           });
 
+          group.CountMembers=1;
           groupResponse.group = group;
         }
 
