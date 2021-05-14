@@ -107,7 +107,7 @@ module.exports = {
 
         return groupResponse;
       } catch (error) {
-        throw new Error("zang source");
+        throw new Error(error);
       }
     },
     async createPostInGroup(_, { groupId, body, image }, context) {
