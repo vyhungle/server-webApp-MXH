@@ -29,8 +29,8 @@ module.exports = {
           groupId: group.id,
           name: group.name,
           imageCover: group.imageCover,
-          from: from,
-          to: to,
+          from: { ...from._doc, id: from._id },
+          to: { ...to._doc, id: to._id },
         });
         const invite = await newInvite.save();
         context.pubsub.publish("NEW_INVITE", {

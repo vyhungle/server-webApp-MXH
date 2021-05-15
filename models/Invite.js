@@ -1,6 +1,7 @@
 const { model, Schema } = require("mongoose");
 
 const User = {
+  id:Schema.Types.ObjectId,
   username: String,
   password: String,
   email: String,
