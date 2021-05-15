@@ -230,6 +230,8 @@ module.exports = gql`
     getGroup(groupId: String!): Group!
     getCommentInGroup(groupId: String!, postId: String!): [Comment]!
     getPostInGroup(groupId: String!, postId: String!): Post!
+
+    getMyInvites:[Invite]!
   }
 
   type Mutation {
@@ -289,7 +291,8 @@ module.exports = gql`
       body: String!
     ): Boolean!
 
-    createInvite(groupId:String!,userId:String!):Invite!
+    createInvite(groupId:String!,userId:String!):Boolean!
+    acceptInvite(groupId:String!,userId:String!,inviteId:String!):Boolean!
   }
   type Subscription {
     newPost: Post!
