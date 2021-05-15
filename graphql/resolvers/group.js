@@ -26,8 +26,7 @@ module.exports = {
       const ct = checkAuth(context);
       const groups = await Group.find();
       const values = groups.filter(
-        (x) =>
-          checkUserInGroup(ct.username, x.members) === true
+        (x) => checkUserInGroup(ct.username, x.members) === true
       );
       return CountMembers(values);
     },
@@ -35,8 +34,7 @@ module.exports = {
       const ct = checkAuth(context);
       const groups = await Group.find();
       const values = groups.filter(
-        (x) =>
-          checkUserInGroup(ct.username,x.members) === true
+        (x) => checkUserInGroup(ct.username, x.members) === true
       );
       const posts = [];
       values.map((g) => {
@@ -49,10 +47,11 @@ module.exports = {
         });
       });
 
-      return posts;
+      return posts.reverse();
     },
     async getGroup(_, { groupId }) {
       const group = await Group.findById(groupId);
+      group.posts=group.posts.reverse();
       return RefGroup(group);
     },
     async getCommentInGroup(_, { groupId, postId }) {
@@ -67,14 +66,14 @@ module.exports = {
       });
       return comments;
     },
-    async getPostInGroup(_,{groupId,postId}){
+    async getPostInGroup(_, { groupId, postId }) {
       const group = await Group.findById(groupId);
       var post;
-      group.posts.map((p)=>{
-        if(p.id===postId) post=p;
-      })
-      return post
-    }
+      group.posts.map((p) => {
+        if (p.id === postId) post = p;
+      });
+      return post;
+    },
   },
   Mutation: {
     async createGroup(
@@ -115,7 +114,7 @@ module.exports = {
           const type = await TypeGroup.findOne({ name: typeGroup });
           const ct = checkAuth(context);
           const leader = await User.findOne({ username: ct.username });
-          const members=[];
+          const members = [];
           members.push(leader);
           const newGroup = new Group({
             leader,
