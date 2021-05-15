@@ -12,18 +12,14 @@ module.exports.Posts = (value) => {
 };
 
 module.exports.RefGroup = (values) => {
-  values.countMembers = values.members.length ;
+  values.countMembers = values.members.length;
   return values;
 };
 
 module.exports.isUser = (values, username) => {
-    let ref=true;
-  if (values.leader.username === username) ref=false;
-  values.admins.map((a) => {
-    if (a.username === username) ref=false;
-  });
+  let ref = true;
   values.members.map((m) => {
-    if (m.username === username) ref=false;
+    if (m.username === username) ref = false;
   });
 
   return ref;
