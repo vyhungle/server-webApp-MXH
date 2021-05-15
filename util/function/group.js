@@ -1,6 +1,6 @@
 module.exports.CountMembers = (values) => {
   values.map((x) => {
-    x.countMembers = x.members.length + 1 + x.admins.length;
+    x.countMembers = x.members.length;
   });
   return values;
 };
@@ -12,7 +12,7 @@ module.exports.Posts = (value) => {
 };
 
 module.exports.RefGroup = (values) => {
-  values.countMembers = values.members.length + 1 + values.admins.length;
+  values.countMembers = values.members.length ;
   return values;
 };
 

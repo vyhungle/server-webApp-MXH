@@ -37,7 +37,6 @@ module.exports = {
           newInvite: invite,
         });
       }
-
       return ref;
     },
     async acceptInvite(_, { groupId, userId, inviteId }, context) {

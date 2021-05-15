@@ -15,7 +15,6 @@ module.exports = {
   Query: {
     async getTypeGroup(_, {}) {
       const type = await TypeGroup.find();
-      console.log(type);
       return type;
     },
     async getGroups(_, {}) {
@@ -28,7 +27,7 @@ module.exports = {
       const groups = await Group.find();
       const values = groups.filter(
         (x) =>
-          checkUserInGroup(ct.username, x.leader, x.admins, x.members) === true
+          checkUserInGroup(ct.username, x.members) === true
       );
       return CountMembers(values);
     },
@@ -37,7 +36,7 @@ module.exports = {
       const groups = await Group.find();
       const values = groups.filter(
         (x) =>
-          checkUserInGroup(ct.username, x.leader, x.admins, x.members) === true
+          checkUserInGroup(ct.username,x.members) === true
       );
       const posts = [];
       values.map((g) => {
@@ -116,8 +115,11 @@ module.exports = {
           const type = await TypeGroup.findOne({ name: typeGroup });
           const ct = checkAuth(context);
           const leader = await User.findOne({ username: ct.username });
+          const members=[];
+          members.push(leader);
           const newGroup = new Group({
             leader,
+            members,
             name,
             describe,
             imageCover,
