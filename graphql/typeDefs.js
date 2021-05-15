@@ -59,7 +59,7 @@ module.exports = gql`
     displayname: String!
     createdAt: String!
     content: String
-    image:String
+    image: String
   }
   type Member {
     id: ID!
@@ -94,15 +94,15 @@ module.exports = gql`
     seller: User!
     describe: String
   }
-  type Category{
-    id:ID!,
-    name:String!,
-    slug:String!,
+  type Category {
+    id: ID!
+    name: String!
+    slug: String!
   }
-  type Location{
-    id:ID!,
-    location:String!,
-    zipcode:String!,
+  type Location {
+    id: ID!
+    location: String!
+    zipcode: String!
   }
   type ProductResponse {
     error: [FieldError!]
@@ -145,36 +145,51 @@ module.exports = gql`
     notifications: [Notification]
   }
 
-  type TypeGroup{
-    name:String!,
-    slug:String!
+  type TypeGroup {
+    name: String!
+    slug: String!
   }
 
-  
-  type Group{
-    id:ID!,
-    leader:User!
-    admins:[User]
-    members:[User]!
-    typeGroup:TypeGroup!
-    name:String!,
-    imageCover:String!,
-    countMembers:String!,
-    public:Boolean!,
-    describe:String!,
-    posts:[Post],
-    createdAt:String!,
+  type Group {
+    id: ID!
+    leader: User!
+    admins: [User]
+    members: [User]!
+    typeGroup: TypeGroup!
+    name: String!
+    imageCover: String!
+    countMembers: String!
+    public: Boolean!
+    describe: String!
+    posts: [Post]
+    createdAt: String!
   }
-  type PostInGroup{
-    groupId:String!,
-    groupName:String!
-    post:Post!
+  type PostInGroup {
+    groupId: String!
+    groupName: String!
+    post: Post!
   }
   type GroupResponse {
     error: [FieldError!]
     group: Group
   }
-  
+
+  type Invite {
+    id: ID!
+    groupId: String!
+    name: String!
+    imageCover: String!
+    to: User!
+    from: User!
+  }
+  type Join {
+    id: ID!
+    groupId: String!
+    name: String!
+    imageCover: String!
+    to: User!
+  }
+
   input RegisterInput {
     username: String!
     password: String!
@@ -202,20 +217,19 @@ module.exports = gql`
     getNotification: Notifications
 
     getProduct(productId: ID!): Product
-  
+
     getMyProducts: [Product]
     getProducts(category: String, address: String, sort: Int): [Product]
     getCategories: [Category]
     getLocations: [Location]
 
-
-    getTypeGroup:[TypeGroup]!
-    getGroups:[Group]!
-    getMyGroups:[Group]!
-    getPostInMyGroup:[PostInGroup]!
-    getGroup(groupId:String!):Group!
-    getCommentInGroup(groupId:String!,postId:String!):[Comment]!
-    getPostInGroup(groupId:String!,postId:String!):Post!
+    getTypeGroup: [TypeGroup]!
+    getGroups: [Group]!
+    getMyGroups: [Group]!
+    getPostInMyGroup: [PostInGroup]!
+    getGroup(groupId: String!): Group!
+    getCommentInGroup(groupId: String!, postId: String!): [Comment]!
+    getPostInGroup(groupId: String!, postId: String!): Post!
   }
 
   type Mutation {
@@ -232,7 +246,11 @@ module.exports = gql`
     createRoomChat(userId: String!): String!
     createRoomChatUsername(username: String!): RoomChat!
     deleteRoomChat(roomId: ID!): String
-    createContentChat(roomId: String!, content: String,image:String): RoomChat!
+    createContentChat(
+      roomId: String!
+      content: String
+      image: String
+    ): RoomChat!
 
     following(username: String): User!
 
@@ -256,16 +274,22 @@ module.exports = gql`
     deleteProduct(productId: ID!): String!
 
     createGroup(
-      name:String!,
-      describe:String!,
-      imageCover:String!,
-      typeGroup:String!,
-      public:Boolean!
-    ):GroupResponse!
+      name: String!
+      describe: String!
+      imageCover: String!
+      typeGroup: String!
+      public: Boolean!
+    ): GroupResponse!
 
-    createPostInGroup(groupId:String!,body: String, image: [String]): Boolean!
-    likePostInGroup(groupId:String!,postId:String!):String!
-    CommentPostInGroup(groupId:String!,postId:String!,body:String!):Boolean!
+    createPostInGroup(groupId: String!, body: String, image: [String]): Boolean!
+    likePostInGroup(groupId: String!, postId: String!): String!
+    CommentPostInGroup(
+      groupId: String!
+      postId: String!
+      body: String!
+    ): Boolean!
+
+    createInvite(groupId:String!,userId:String!):Invite!
   }
   type Subscription {
     newPost: Post!
