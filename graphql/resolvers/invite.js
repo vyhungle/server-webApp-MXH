@@ -45,6 +45,7 @@ module.exports = {
       const invite = await Invite.findById(inviteId);
 
       let ref = false;
+      console.log(invite.to.username,user.username)
       if (invite.to.username === user.username) {
         ref = true;
         group.members.map((u) => {
@@ -60,5 +61,14 @@ module.exports = {
       }
       return ref;
     },
+    async remoteInvite(_,{inviteId}){
+      const invite=await Invite.findById(inviteId);
+      if(invite){
+        await invite.delete();
+        return true;
+      }
+      return false;
+     
+    }
   },
 };

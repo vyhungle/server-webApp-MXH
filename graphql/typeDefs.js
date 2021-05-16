@@ -187,7 +187,7 @@ module.exports = gql`
     groupId: String!
     name: String!
     imageCover: String!
-    to: User!
+    member: User!
   }
 
   input RegisterInput {
@@ -232,6 +232,7 @@ module.exports = gql`
     getPostInGroup(groupId: String!, postId: String!): Post!
 
     getMyInvites:[Invite]!
+    getJoinInGroup(groupId:String!):[Join]!
   }
 
   type Mutation {
@@ -293,6 +294,11 @@ module.exports = gql`
 
     createInvite(groupId:String!,userId:String!):Boolean!
     acceptInvite(groupId:String!,userId:String!,inviteId:String!):Boolean!
+    remoteInvite(inviteId:String!):Boolean!
+
+    createJoin(groupId:String!):Boolean!
+    acceptJoin(groupId:String!,userId:String!,joinId:String!):Boolean!
+    remoteJoin(joinId:String!):Boolean!
   }
   type Subscription {
     newPost: Post!

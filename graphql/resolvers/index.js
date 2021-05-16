@@ -6,7 +6,7 @@ const NotificationResolver=require("./notification")
 const ProductResolver=require("./product");
 const GroupResolver=require("./group");
 const InviteResolver=require("./invite");
-
+const JoinResolver=require("./join");
 
 module.exports ={
     Post: {       
@@ -21,6 +21,7 @@ module.exports ={
         ...ProductResolver.Query,
         ...GroupResolver.Query,
         ...InviteResolver.Query,
+        ...JoinResolver.Query,
     },
     Mutation:{
         ...usersResolvers.Mutation,
@@ -31,6 +32,7 @@ module.exports ={
         ...NotificationResolver.Mutation,
         ...GroupResolver.Mutation,
         ...InviteResolver.Mutation,
+        ...JoinResolver.Mutation,
     },
     Subscription: {
         ...postsResolvers.Subscription
