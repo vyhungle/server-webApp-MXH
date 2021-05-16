@@ -230,6 +230,7 @@ module.exports = gql`
     getGroup(groupId: String!): Group!
     getCommentInGroup(groupId: String!, postId: String!): [Comment]!
     getPostInGroup(groupId: String!, postId: String!): Post!
+    findGroups(name:String!):[Group]!
 
     getMyInvites:[Invite]!
     getJoinInGroup(groupId:String!):[Join]!

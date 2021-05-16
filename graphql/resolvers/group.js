@@ -74,6 +74,11 @@ module.exports = {
       });
       return post;
     },
+    async findGroups(_,{name}){
+      const group=await Group.find();
+      let values = group.filter(i => i.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
+      return values;
+    }
   },
   Mutation: {
     async createGroup(
