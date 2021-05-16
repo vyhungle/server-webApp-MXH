@@ -295,11 +295,11 @@ module.exports = gql`
 
     createInvite(groupId:String!,userId:String!):Boolean!
     acceptInvite(groupId:String!,userId:String!,inviteId:String!):Boolean!
-    remoteInvite(inviteId:String!):Boolean!
+    removeInvite(inviteId:String!):Boolean!
 
     createJoin(groupId:String!):Boolean!
     acceptJoin(groupId:String!,userId:String!,joinId:String!):Boolean!
-    remoteJoin(joinId:String!):Boolean!
+    removeJoin(joinId:String!):Boolean!
   }
   type Subscription {
     newPost: Post!

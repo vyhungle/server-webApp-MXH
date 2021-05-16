@@ -51,7 +51,7 @@ module.exports = {
       }
       return ref;
     },
-    async remoteJoin(_, { joinId }) {
+    async removeJoin(_, { joinId }) {
       const join = await Join.findById(joinId);
       if (join) {
         await join.delete();

@@ -61,7 +61,7 @@ module.exports = {
       }
       return ref;
     },
-    async remoteInvite(_,{inviteId}){
+    async removeInvite(_,{inviteId}){
       const invite=await Invite.findById(inviteId);
       if(invite){
         await invite.delete();
