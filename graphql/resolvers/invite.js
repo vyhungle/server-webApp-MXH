@@ -55,7 +55,7 @@ module.exports = {
         });
       }
       if (ref === true) {
-        group.members.push(user);
+        group.members.push({...user._doc, id : user._id});
         await group.save();
         await invite.delete();
       }

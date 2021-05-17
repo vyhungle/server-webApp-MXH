@@ -26,9 +26,9 @@ module.exports = {
           groupId: group.id,
           name: group.name,
           imageCover: group.imageCover,
-          member: { ...newJoin._doc, id: newJoin._id },
+          member: { ...user._doc, id: user._id },
         });
-       group.joins.push({...to._doc, id: to._id });
+       group.joins.push(newJoin);
        await group.save();
       }
       return ref;
@@ -42,6 +42,7 @@ module.exports = {
       const ref = isUser(group, user.username);
       if (ref === true) {
         if (user.username === join.member.username) {
+          join.member.id=userId
           group.members.push(join.member);
           const index=group.joins.findIndex(x=>x.id===joinId);
           group.joins.splice(index,1);
