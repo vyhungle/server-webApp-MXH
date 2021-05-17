@@ -11,8 +11,8 @@ module.exports = {
   Query: {
     async getJoinInGroup(_, { groupId }) {
       const group = await Group.findById(groupId);
-      const joins = await Join.find();
-      return joins.filter((x) => x.groupId === group.id);
+      const joins = group.joins;
+      return joins;
     },
   },
   Mutation: {
@@ -28,11 +28,8 @@ module.exports = {
           imageCover: group.imageCover,
           member: { ...user._doc, id: user._id },
         });
-        const join = await newJoin.save();
-
-        context.pubsub.publish("NEW_JOIN", {
-          newJoin: join,
-        });
+       group.joins.push(newJoin);
+       await group.save();
       }
       return ref;
     },
@@ -40,21 +37,24 @@ module.exports = {
     async acceptJoin(_, { groupId, userId, joinId }) {
       const group = await Group.findById(groupId);
       const user = await User.findById(userId);
-      const join = await Join.findById(joinId);
+      const join = group.joins.find(x=>x.id===joinId);
       const ref = isUser(group, user.username);
       if (ref === true) {
         if (user.username === join.member.username) {
           group.members.push(join.member);
+          const index=group.joins.findIndex(x=>x.id===joinId);
+          group.joins.splice(index,1);
           await group.save();
-          await join.delete();
         } else ref = false;
       }
       return ref;
     },
-    async removeJoin(_, { joinId }) {
-      const join = await Join.findById(joinId);
-      if (join) {
-        await join.delete();
+    async removeJoin(_, { groupId,joinId }) {
+      const group=await Group.findById(groupId);
+      if (group) {
+        const index=group.joins.findIndex(x=>x.id===joinId);
+        group.joins.splice(index,1);
+        await group.save();
         return true;
       }
       return false;

@@ -163,6 +163,7 @@ module.exports = gql`
     describe: String!
     posts: [Post]
     createdAt: String!
+    joins:[Join]
   }
   type PostInGroup {
     groupId: String!
@@ -299,7 +300,7 @@ module.exports = gql`
 
     createJoin(groupId:String!):Boolean!
     acceptJoin(groupId:String!,userId:String!,joinId:String!):Boolean!
-    removeJoin(joinId:String!):Boolean!
+    removeJoin(groupId:String!,joinId:String!):Boolean!
   }
   type Subscription {
     newPost: Post!
