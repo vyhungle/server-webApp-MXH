@@ -51,7 +51,7 @@ module.exports = {
     },
     async getGroup(_, { groupId }) {
       const group = await Group.findById(groupId);
-      group.posts=group.posts.reverse();
+      group.posts = group.posts.reverse();
       return RefGroup(group);
     },
     async getCommentInGroup(_, { groupId, postId }) {
@@ -74,11 +74,13 @@ module.exports = {
       });
       return post;
     },
-    async findGroups(_,{name}){
-      const group=await Group.find();
-      let values = group.filter(i => i.name.toLowerCase().indexOf(name.toLowerCase()) > -1)
+    async findGroups(_, { name }) {
+      const group = await Group.find();
+      let values = group.filter(
+        (i) => i.name.toLowerCase().indexOf(name.toLowerCase()) > -1
+      );
       return values;
-    }
+    },
   },
   Mutation: {
     async createGroup(
@@ -120,7 +122,7 @@ module.exports = {
           const ct = checkAuth(context);
           const leader = await User.findOne({ username: ct.username });
           const members = [];
-          members.push(leader);
+          members.push({ ...leader._doc, id: leader._id });
           const newGroup = new Group({
             leader,
             members,
