@@ -149,7 +149,13 @@ module.exports = gql`
     name: String!
     slug: String!
   }
-
+  type Join {
+    id: ID!
+    groupId: String!
+    name: String!
+    imageCover: String!
+    member: User!
+  }
   type Group {
     id: ID!
     leader: User!
@@ -183,13 +189,7 @@ module.exports = gql`
     to: User!
     from: User!
   }
-  type Join {
-    id: ID!
-    groupId: String!
-    name: String!
-    imageCover: String!
-    member: User!
-  }
+
 
   input RegisterInput {
     username: String!

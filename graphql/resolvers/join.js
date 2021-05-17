@@ -38,6 +38,7 @@ module.exports = {
       const group = await Group.findById(groupId);
       const user = await User.findById(userId);
       const join = group.joins.find(x=>x.id===joinId);
+      console.log(join.member.username)
       const ref = isUser(group, user.username);
       if (ref === true) {
         if (user.username === join.member.username) {
