@@ -26,9 +26,9 @@ module.exports = {
           groupId: group.id,
           name: group.name,
           imageCover: group.imageCover,
-          member: { ...user._doc, id: user._id },
+          member: { ...newJoin._doc, id: newJoin._id },
         });
-       group.joins.push(newJoin);
+       group.joins.push({...to._doc, id: to._id });
        await group.save();
       }
       return ref;
