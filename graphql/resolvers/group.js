@@ -262,5 +262,17 @@ module.exports = {
       await group.save();
       return ref;
     },
+
+    async deletePostInGroup(_,{groupId,postId}){
+      const group=await Group.findById(groupId);
+      const index=group.posts.findIndex(x=>x.id===postId)
+      if(index>=0){
+        group.posts.splice(index,1);
+        await group.save();
+        return true
+      }
+      return false;
+    
+    }
   },
 };

@@ -293,6 +293,7 @@ module.exports = gql`
       postId: String!
       body: String!
     ): Boolean!
+    deletePostInGroup(groupId:String!,postId:String!):Boolean!
 
     createInvite(groupId:String!,userId:String!):Boolean!
     acceptInvite(groupId:String!,userId:String!,inviteId:String!):Boolean!
