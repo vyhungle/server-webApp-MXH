@@ -5,6 +5,7 @@ const cloudinary = require("cloudinary");
 const Chat = require("../../models/Chat.js");
 const User = require("../../models/User.js");
 const checkAuth = require("../../util/check-auth");
+const { isUser } = require("../../util/function/chat.js");
 
 module.exports = {
   Query: {
@@ -113,6 +114,8 @@ module.exports = {
           members.push(user)
         }
         const room = new Chat({
+          image:from.profile.avatar,
+          name:`Nhóm của ${from.displayname}`,
           members,
         });
         room.save();
@@ -195,5 +198,16 @@ module.exports = {
         throw new Error("Không tìm thấy id phòng");
       }
     },
+    async addMembers(_,{roomId,userId}){
+      const room=await Chat.findById(roomId);
+      for(var i=0;i<userId.length;i++){
+        const user=await User.findById(userId[i]);
+        if(user && isUser(room.members,user.username)===false){
+          room.members.push(user)
+        }
+      }
+      await room.save()
+      return true;
+    }
   },
 };

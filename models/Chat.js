@@ -1,7 +1,8 @@
 const { model, Schema } = require("mongoose");
 
 const chatSchema = new Schema({
-  
+  name:String,
+  image:String,
   members: [
     {
       username: String,
