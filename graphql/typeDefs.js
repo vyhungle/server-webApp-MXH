@@ -45,13 +45,13 @@ module.exports = gql`
     content: [Chat]!
     members: [User]!
   }
-  type GroupChat {
-    id: ID!
-    body: String!
-    leader: String!
-    members: [Member]!
-    content: [Chat]!
-  }
+  # type GroupChat {
+  #   id: ID!
+  #   body: String!
+  #   leader: String!
+  #   members: [Member]!
+  #   content: [Chat]!
+  # }
 
   type Chat {
     id: ID!
@@ -248,7 +248,8 @@ module.exports = gql`
     createComment(postId: String!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
-    createRoomChat(userId: String!): String!
+    createRoomChat(userId: [String]!): String!
+    
     createRoomChatUsername(username: String!): RoomChat!
     deleteRoomChat(roomId: ID!): String
     createContentChat(

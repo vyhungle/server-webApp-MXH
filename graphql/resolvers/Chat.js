@@ -45,14 +45,10 @@ module.exports = {
       try {
         const chat = await Chat.find();
         chat.forEach((element) => {
-          if (
-            element.members[0].username === username ||
-            element.members[1].username === username
-          ) {
-            values.push(element);
-          }
+          element.members.map((m)=>{
+           if( m.username===username) values.push(element)
+          })
         });
-
         return values;
       } catch (err) {
         throw new Error(err);
@@ -62,47 +58,65 @@ module.exports = {
   Mutation: {
     async createRoomChat(_, { userId }, context) {
       const user = checkAuth(context);
-      const to = await User.findById(userId);
+    
       const from = await User.findOne({ username: user.username });
-      const chat = await Chat.find();
-      var dk = 1;
-      try {
-        chat.forEach((element) => {
-          if (
-            (element.members[0].username === to.username &&
-              element.members[1].username === from.username) ||
-            (element.members[0].username === from.username &&
-              element.members[1].username === to.username)
-          ) {
-            dk = 0;
-          }
-        });
-        if (dk == 1 && to && from) {
-          const members = [];
-          members.push(to);
-          members.push(from);
-          const room = new Chat({
-            members,
-          });
-          room.save();
-          return room.id;
-        } else {
-          const seller = await User.findById(userId);
-          const rooms = await Chat.find();
-          var rID = "";
-          rooms.map((r) => {
+      if (userId.length <= 1) {
+        const to = await User.findById(userId[0]);
+        const chat = await Chat.find();
+        var dk = 1;
+        try {
+          chat.forEach((element) => {
             if (
-            (  r.members[0].username === user.username &&
-              r.members[1].username === seller.username) ||( r.members[1].username === user.username &&
-                r.members[0].username === seller.username)
+              (element.members[0].username === to.username &&
+                element.members[1].username === from.username) ||
+              (element.members[0].username === from.username &&
+                element.members[1].username === to.username)
             ) {
-              rID = r.id;
+              dk = 0;
             }
           });
-          return rID;
+          if (dk == 1 && to && from) {
+            const members = [];
+            members.push(to);
+            members.push(from);
+            const room = new Chat({
+              members,
+            });
+            room.save();
+            return room.id;
+          } else {
+            const seller = await User.findById(userId[0]);
+            const rooms = await Chat.find();
+            var rID = "";
+            rooms.map((r) => {
+              if (
+                (r.members[0].username === user.username &&
+                  r.members[1].username === seller.username) ||
+                (r.members[1].username === user.username &&
+                  r.members[0].username === seller.username)
+              ) {
+                rID = r.id;
+              }
+            });
+            return rID;
+          }
+        } catch (error) {
+          throw new Error(error);
         }
-      } catch (error) {
-        throw new Error(error);
+      }
+      else{
+        const members = [];
+        members.push(from);
+       
+        for(var i=0;i<userId.length;i++){
+          const user=await User.findById(userId[i]);
+          members.push(user)
+        }
+        const room = new Chat({
+          members,
+        });
+        room.save();
+        return room.id;
       }
     },
     async createRoomChatUsername(_, { username }, context) {
