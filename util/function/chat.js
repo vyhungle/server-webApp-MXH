@@ -7,3 +7,12 @@ module.exports.isUser = (Members,username) => {
     return ref;
   };
   
+  module.exports.isMember = (Members,id) => {
+    var ref=false;
+    Members.map((m)=>{
+        if(m.id===id) ref=true;
+    })
+
+    return ref;
+  };
+  

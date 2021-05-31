@@ -5,7 +5,7 @@ const cloudinary = require("cloudinary");
 const Chat = require("../../models/Chat.js");
 const User = require("../../models/User.js");
 const checkAuth = require("../../util/check-auth");
-const { isUser } = require("../../util/function/chat.js");
+const { isUser, isMember } = require("../../util/function/chat.js");
 
 module.exports = {
   Query: {
@@ -27,28 +27,27 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getChatReverse(_, { roomId }, context) {
-      try {
-        const chat = await Chat.findById(roomId);
-        if (chat) {
-          chat.content.reverse();
-          return chat;
-        } else throw new Error("Phong nay khong ton tai");
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
+    // async getChatReverse(_, { roomId }, context) {
+    //   try {
+    //     const chat = await Chat.findById(roomId);
+    //     if (chat) {
+    //       chat.content.reverse();
+    //       return chat;
+    //     } else throw new Error("Phong nay khong ton tai");
+    //   } catch (err) {
+    //     throw new Error(err);
+    //   }
+    // },
     async getRoomChat(_, {}, context) {
       let values = [];
-
       const user = checkAuth(context);
       var username = user.username;
       try {
         const chat = await Chat.find();
         chat.forEach((element) => {
-          element.members.map((m)=>{
-           if( m.username===username) values.push(element)
-          })
+          element.members.map((m) => {
+            if (m.username === username) values.push(element);
+          });
         });
         return values;
       } catch (err) {
@@ -59,7 +58,7 @@ module.exports = {
   Mutation: {
     async createRoomChat(_, { userId }, context) {
       const user = checkAuth(context);
-    
+
       const from = await User.findOne({ username: user.username });
       if (userId.length <= 1) {
         const to = await User.findById(userId[0]);
@@ -104,18 +103,17 @@ module.exports = {
         } catch (error) {
           throw new Error(error);
         }
-      }
-      else{
+      } else {
         const members = [];
         members.push(from);
-       
-        for(var i=0;i<userId.length;i++){
-          const user=await User.findById(userId[i]);
-          members.push(user)
+
+        for (var i = 0; i < userId.length; i++) {
+          const user = await User.findById(userId[i]);
+          members.push(user);
         }
         const room = new Chat({
-          image:from.profile.avatar,
-          name:`Nhóm của ${from.displayname}`,
+          image: from.profile.avatar,
+          name: `Nhóm của ${from.displayname}`,
           members,
         });
         room.save();
@@ -198,16 +196,38 @@ module.exports = {
         throw new Error("Không tìm thấy id phòng");
       }
     },
-    async addMembers(_,{roomId,userId}){
-      const room=await Chat.findById(roomId);
-      for(var i=0;i<userId.length;i++){
-        const user=await User.findById(userId[i]);
-        if(user && isUser(room.members,user.username)===false){
-          room.members.push(user)
+    async addMembers(_, { roomId, userId }) {
+      const room = await Chat.findById(roomId);
+      for (var i = 0; i < userId.length; i++) {
+        const user = await User.findById(userId[i]);
+        if (user && isUser(room.members, user.username) === false) {
+          room.members.push(user);
         }
       }
-      await room.save()
+      await room.save();
       return true;
-    }
+    },
+    async leaveTheRoom(_, { roomId }, context) {
+      const room = await Chat.findById(roomId);
+      if (room) {
+        const ct = checkAuth(context);
+        const member = room.members.filter((x) => x.username !== ct.username);
+        room.members = member;
+        await room.save();
+        return true;
+      }
+      return false;
+    },
+    async joinTheRoom(_, { roomId, userIds }) {
+      const room = await Chat.findById(roomId);
+      for(var id of userIds){
+        if(isMember(room.members,id)===false){
+          const user=await User.findById(id);
+          room.members.push(user);
+          await room.save();
+        }
+      }
+      return true;
+    },
   },
 };

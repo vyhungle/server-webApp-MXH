@@ -206,8 +206,6 @@ module.exports = gql`
     getRoomChat: [RoomChat]
     findUsers(displayname: String!): [User]
 
-    # getGroup(groupId: ID!): GroupChat
-    # getGroupChat: [GroupChat]
 
     getNotification: Notifications
 
@@ -298,6 +296,10 @@ module.exports = gql`
     createJoin(groupId:String!):Boolean!
     acceptJoin(groupId:String!,userId:String!,joinId:String!):Boolean!
     removeJoin(groupId:String!,joinId:String!):Boolean!
+
+
+    leaveTheRoom(roomId:String!):Boolean!
+    joinTheRoom(roomId:String!,userIds:[String]!):Boolean!
   }
   type Subscription {
     newPost: Post!
