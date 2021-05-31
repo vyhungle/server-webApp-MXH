@@ -112,7 +112,7 @@ module.exports = {
           members.push(user);
         }
         const room = new Chat({
-          image: from.profile.avatar,
+          image: "",
           name: `Nhóm của ${from.displayname}`,
           members,
         });
