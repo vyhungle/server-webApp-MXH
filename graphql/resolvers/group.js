@@ -273,6 +273,17 @@ module.exports = {
       }
       return false;
     
+    },
+    async leaveTheGroup(_,{groupId},context){
+      const ct=checkAuth(context)
+      const group=await Group.findById(groupId);
+      const index=group.members.findIndex(x=>x.username===ct.username)
+      if(index>=0){
+        group.members.splice(index,1);
+        await group.save();
+        return true
+      }
+      return false;
     }
   },
 };

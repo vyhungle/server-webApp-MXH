@@ -300,6 +300,7 @@ module.exports = gql`
 
     leaveTheRoom(roomId:String!):Boolean!
     joinTheRoom(roomId:String!,userIds:[String]!):Boolean!
+    leaveTheGroup(groupId:String!):Boolean!
   }
   type Subscription {
     newPost: Post!
