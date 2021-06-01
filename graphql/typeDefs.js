@@ -198,7 +198,6 @@ module.exports = gql`
     getMyPosts(username: String!, cursor: String, limit: Int!): PaginatedPost!
     getChats: [RoomChat]
     getChat(roomId: ID): RoomChat
-    getChatReverse(roomId: ID): RoomChat
     getUsers: [User]
     getUser(username: String!): User
     getMyUser: User

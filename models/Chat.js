@@ -35,6 +35,7 @@ const chatSchema = new Schema({
         story: String,
         coverImage: String,
       },
+      stay:Boolean,
     },
   ],
   content: [
