@@ -212,20 +212,22 @@ module.exports = {
     },
     async joinTheRoom(_, { roomId, userIds }) {
       const room = await Chat.findById(roomId);
-      for(var id of userIds){
-        if(isMember(room.members,id)===false){
-          const user=await User.findById(id);
-          room.members.push({...user._doc,stay:true});
-          await room.save(); 
+      if(room){
+        for(var id of userIds){
+          if(isMember(room.members,id)===false){
+            const user=await User.findById(id);
+            room.members.push({...user._doc,stay:true});
+            await room.save(); 
+          }
+          else {
+            const index=room.members.findIndex(x=>x.id===id)        
+            room.members[index].stay=true
+            await room.save(); 
+          }
         }
-        else {
-          const index=room.members.findIndex(x=>x.id===id)
-         
-          room.members[index].stay=true
-          await room.save(); 
-        }
+        return true;
       }
-      return true;
+      return false;
     },
   },
 };
