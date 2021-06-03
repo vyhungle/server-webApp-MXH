@@ -89,6 +89,8 @@ module.exports = {
         }
         const room = new Chat({
           members,
+          name:`Nhóm của ${from.displayname}`,
+          image:"",
         });
         await room.save();
         return room.id;
