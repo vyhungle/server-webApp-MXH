@@ -89,8 +89,8 @@ module.exports = {
         }
         const room = new Chat({
           members,
-          name:`Nhóm của ${from.displayname}`,
-          image:"",
+          name: `Nhóm của ${from.displayname}`,
+          image: "",
         });
         await room.save();
         return room.id;
@@ -178,6 +178,29 @@ module.exports = {
             await room.save();
           }
         }
+        return true;
+      }
+      return false;
+    },
+
+    async editRoom(_, { roomId, image, name }) {
+      const room = await Chat.findById(roomId);
+      cloudinary.config({
+        cloud_name: "web-img",
+        api_key: "539575672138879",
+        api_secret: "9ELOxX7cMOVowibJjcVMV9CdN2Y",
+      });
+      var uri = "";
+      if (image.trim() !== "") {
+        const result = await cloudinary.v2.uploader.upload(image, {
+          allowed_formats: ["jpg", "png", "gif"],
+          public_id: "",
+          folder: "Chat",
+        });
+        uri = result.url;
+      }
+      if (room) {
+        (room.image = uri), (room.name = name), await room.save();
         return true;
       }
       return false;

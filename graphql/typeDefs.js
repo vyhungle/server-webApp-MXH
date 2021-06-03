@@ -42,8 +42,8 @@ module.exports = gql`
 
   type RoomChat {
     id: ID!
-    name:String,
-    image:String,
+    name: String
+    image: String
     content: [Chat]!
     members: [User]!
   }
@@ -163,7 +163,7 @@ module.exports = gql`
     describe: String!
     posts: [Post]
     createdAt: String!
-    joins:[Join]
+    joins: [Join]
   }
   type PostInGroup {
     groupId: String!
@@ -183,7 +183,6 @@ module.exports = gql`
     to: User!
     from: User!
   }
-
 
   input RegisterInput {
     username: String!
@@ -205,7 +204,6 @@ module.exports = gql`
     getRoomChat: [RoomChat]
     findUsers(displayname: String!): [User]
 
-
     getNotification: Notifications
 
     getProduct(productId: ID!): Product
@@ -222,10 +220,10 @@ module.exports = gql`
     getGroup(groupId: String!): Group!
     getCommentInGroup(groupId: String!, postId: String!): [Comment]!
     getPostInGroup(groupId: String!, postId: String!): Post!
-    findGroups(name:String!):[Group]!
+    findGroups(name: String!): [Group]!
 
-    getMyInvites:[Invite]!
-    getJoinInGroup(groupId:String!):[Join]!
+    getMyInvites: [Invite]!
+    getJoinInGroup(groupId: String!): [Join]!
   }
 
   type Mutation {
@@ -240,7 +238,7 @@ module.exports = gql`
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
     createRoomChat(userId: [String]!): String!
-    addMembers(roomId:String!,userId:[String]!):Boolean!
+    addMembers(roomId: String!, userId: [String]!): Boolean!
     deleteRoomChat(roomId: ID!): String
     createContentChat(
       roomId: String!
@@ -284,20 +282,21 @@ module.exports = gql`
       postId: String!
       body: String!
     ): Boolean!
-    deletePostInGroup(groupId:String!,postId:String!):Boolean!
+    deletePostInGroup(groupId: String!, postId: String!): Boolean!
 
-    createInvite(groupId:String!,userId:String!):Boolean!
-    acceptInvite(groupId:String!,userId:String!,inviteId:String!):Boolean!
-    removeInvite(inviteId:String!):Boolean!
+    createInvite(groupId: String!, userId: String!): Boolean!
+    acceptInvite(groupId: String!, userId: String!, inviteId: String!): Boolean!
+    removeInvite(inviteId: String!): Boolean!
 
-    createJoin(groupId:String!):Boolean!
-    acceptJoin(groupId:String!,userId:String!,joinId:String!):Boolean!
-    removeJoin(groupId:String!,joinId:String!):Boolean!
+    createJoin(groupId: String!): Boolean!
+    acceptJoin(groupId: String!, userId: String!, joinId: String!): Boolean!
+    removeJoin(groupId: String!, joinId: String!): Boolean!
 
+    leaveTheRoom(roomId: String!): Boolean!
+    joinTheRoom(roomId: String!, userIds: [String]!): Boolean!
+    leaveTheGroup(groupId: String!): Boolean!
 
-    leaveTheRoom(roomId:String!):Boolean!
-    joinTheRoom(roomId:String!,userIds:[String]!):Boolean!
-    leaveTheGroup(groupId:String!):Boolean!
+    editRoom(roomId:String!,image:String,name:String):Boolean!
   }
   type Subscription {
     newPost: Post!
