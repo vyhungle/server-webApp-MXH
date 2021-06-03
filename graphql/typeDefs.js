@@ -241,8 +241,6 @@ module.exports = gql`
     likePost(postId: ID!): Post!
     createRoomChat(userId: [String]!): String!
     addMembers(roomId:String!,userId:[String]!):Boolean!
-    
-    createRoomChatUsername(username: String!): RoomChat!
     deleteRoomChat(roomId: ID!): String
     createContentChat(
       roomId: String!

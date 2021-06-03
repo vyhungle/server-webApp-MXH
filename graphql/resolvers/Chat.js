@@ -35,7 +35,7 @@ module.exports = {
         const chat = await Chat.find();
         chat.forEach((element) => {
           element.members.map((m) => {
-            if (m.id === id && m.stay===true) values.push(element);
+            if (m.id === id && m.stay === true) values.push(element);
           });
         });
         // console.log(values.leave)
@@ -48,100 +48,53 @@ module.exports = {
   Mutation: {
     async createRoomChat(_, { userId }, context) {
       const user = checkAuth(context);
-
-      const from = await User.findOne({ username: user.username });
-      if (userId.length <= 1) {
-        const to = await User.findById(userId[0]);
-        const chat = await Chat.find();
-        var dk = 1;
-        try {
-          chat.forEach((element) => {
+      const from = await User.findById(user.id);
+      const to = await User.findById(userId[0]);
+      const members = [];
+      members.push({ ...to._doc, stay: true });
+      members.push({ ...from._doc, stay: true });
+      const rooms = await Chat.find();
+      var room;
+      if (userId.length === 1) {
+        rooms.map((r) => {
+          if (r.members.length === 2) {
             if (
-              (element.members[0].username === to.username &&
-                element.members[1].username === from.username) ||
-              (element.members[0].username === from.username &&
-                element.members[1].username === to.username)
+              (r.members[0].id === userId[0] && r.members[1].id === user.id) ||
+              (r.members[1].id === userId[0] && r.members[0].id === user.id)
             ) {
-              dk = 0;
+              room = r;
             }
-          });
-          if (dk == 1 && to && from) {
-            const members = [];
-            members.push({...to._doc,stay:true});
-            members.push({...from._doc,stay:true});
-            const room = new Chat({
-              members
-            });
-            room.save();
-            return room.id;
-          } else {
-            const seller = await User.findById(userId[0]);
-            const rooms = await Chat.find();
-            var rID = "";
-            rooms.map((r) => {
-              if (
-                (r.members[0].username === user.username &&
-                  r.members[1].username === seller.username) ||
-                (r.members[1].username === user.username &&
-                  r.members[0].username === seller.username)
-              ) {
-                rID = r.id;
-              }
-            });
-            return rID;
-          }
-        } catch (error) {
-          throw new Error(error);
-        }
-      } else {
-        const members = [];
-        members.push({...from._doc,stay:true});
-
-        for (var i = 0; i < userId.length; i++) {
-          const user = await User.findById(userId[i]);
-          members.push({...user._doc,stay:true});
-        }
-        const room = new Chat({
-          image: "",
-          name: `Nhóm của ${from.displayname}`,
-          members,
-        });
-        room.save();
-        return room.id;
-      }
-    },
-    async createRoomChatUsername(_, { username }, context) {
-      const user = checkAuth(context);
-      const to = await User.findOne({ username: username });
-
-      const from = await User.findOne({ username: user.username });
-      const chat = await Chat.find();
-      var dk = 1;
-      try {
-        chat.forEach((element) => {
-          if (
-            (element.members[0].username === to.username &&
-              element.members[1].username === from.username) ||
-            (element.members[0].username === from.username &&
-              element.members[1].username === to.username)
-          ) {
-            dk = 0;
           }
         });
-        if (dk == 1 && to && from) {
-          const members = [];
-          members.push(to);
-          members.push(from);
+
+        if (room) {
+          const updateRoom = await Chat.findById(room.id);
+          updateRoom.members = members;
+          await updateRoom.save();
+          return room.id;
+        } else {
           const room = new Chat({
             members,
           });
-          room.save();
-          return room;
-        } else throw new Error("Bạn đã là bạn của người này rồi");
-      } catch (error) {
-        throw new Error(error);
+          await room.save();
+          return room.id;
+        }
+      } else {
+        for (var i = 1; i < userId.length; i++) {
+          const member = await User.findById(userId[i]);
+          members.push({
+            ...member._doc,
+            stay: true,
+          });
+        }
+        const room = new Chat({
+          members,
+        });
+        await room.save();
+        return room.id;
       }
     },
+
     async deleteRoomChat(_, { roomId }) {
       const room = await Chat.findById(roomId);
       if (room) {
@@ -191,7 +144,7 @@ module.exports = {
       for (var i = 0; i < userId.length; i++) {
         const user = await User.findById(userId[i]);
         if (user && isUser(room.members, user.username) === false) {
-          room.members.push({...user._doc,stay:true});
+          room.members.push({ ...user._doc, stay: true });
         }
       }
       await room.save();
@@ -201,28 +154,26 @@ module.exports = {
       const room = await Chat.findById(roomId);
       if (room) {
         const ct = checkAuth(context);
-        const index=room.members.findIndex(x=>x.username===ct.username)
-        console.log(index)
-        room.members[index].stay=false,
-        await room.save();
+        const index = room.members.findIndex((x) => x.username === ct.username);
+        console.log(index);
+        (room.members[index].stay = false), await room.save();
         return true;
       }
-      
+
       return false;
     },
     async joinTheRoom(_, { roomId, userIds }) {
       const room = await Chat.findById(roomId);
-      if(room){
-        for(var id of userIds){
-          if(isMember(room.members,id)===false){
-            const user=await User.findById(id);
-            room.members.push({...user._doc,stay:true});
-            await room.save(); 
-          }
-          else {
-            const index=room.members.findIndex(x=>x.id===id)        
-            room.members[index].stay=true
-            await room.save(); 
+      if (room) {
+        for (var id of userIds) {
+          if (isMember(room.members, id) === false) {
+            const user = await User.findById(id);
+            room.members.push({ ...user._doc, stay: true });
+            await room.save();
+          } else {
+            const index = room.members.findIndex((x) => x.id === id);
+            room.members[index].stay = true;
+            await room.save();
           }
         }
         return true;
