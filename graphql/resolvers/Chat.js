@@ -134,6 +134,7 @@ module.exports = {
           content,
           displayname: user.displayname,
           image: uri,
+          avatar:user.profile.avatar
         });
         await chat.save();
         return chat;

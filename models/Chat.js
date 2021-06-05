@@ -45,6 +45,7 @@ const chatSchema = new Schema({
       createdAt: String,
       content: String,
       image:String,
+      avatar:String,
     },
   ],
   user: {

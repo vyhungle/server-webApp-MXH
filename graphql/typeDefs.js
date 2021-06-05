@@ -54,6 +54,7 @@ module.exports = gql`
     createdAt: String!
     content: String
     image: String
+    avatar:String
   }
   type Member {
     id: ID!
